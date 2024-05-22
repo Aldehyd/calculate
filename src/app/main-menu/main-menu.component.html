@@ -1,10 +1,15 @@
 <nav>
   <ul class="main-menu">
-    <li>
-      <a routerLink="">Outils</a>
+    <li class="main-menu_item">
+      <a
+        routerLink=""
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Outils</a
+      >
     </li>
-    <li>
-      <a routerLink="projects">Mes projets</a>
+    <li class="main-menu_item">
+      <a routerLink="projects" routerLinkActive="active">Mes projets</a>
     </li>
   </ul>
 </nav>
