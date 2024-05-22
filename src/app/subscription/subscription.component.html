@@ -1,4 +1,35 @@
 <h1>Inscription</h1>
+<p>Tous les champs sont obligatoires.</p>
+<form
+  class="account-form account-form--connexion"
+  #emailForm="ngForm"
+  (ngSubmit)="onSubmitForm(emailForm)"
+>
+  <p>
+    <label for="emailInput">Email : </label>
+    <input
+      id="emailInput"
+      name="userEmail"
+      type="email"
+      [(ngModel)]="userEmail"
+    />
+  </p>
+  <p>
+    <label for="passwordInput">Mot de passe : </label>
+    <input id="passwordInput" name="userPassword" [(ngModel)]="userPassword" />
+    <button>Voir</button>
+  </p>
+  <p>
+    <label for="confirmedPasswordInput">Confirmez le mot de passe : </label>
+    <input
+      id="confirmedPasswordInput"
+      name="userConfirmedPassword"
+      [(ngModel)]="userConfirmedPassword"
+    />
+    <button>Voir</button>
+  </p>
+  <button type="submit">S'inscrire</button>
+</form>
 <p>
   Vous avez déjà un compte ? Connectez-vous <a routerLink="/connexion">ici</a>.
 </p>

@@ -1,6 +1,10 @@
 <h1>Connexion</h1>
 <p>Tous les champs sont obligatoires.</p>
-<form #emailForm="ngForm" (ngSubmit)="onSubmitForm(emailForm)">
+<form
+  class="account-form account-form--connexion"
+  #emailForm="ngForm"
+  (ngSubmit)="onSubmitForm(emailForm)"
+>
   <p>
     <label for="emailInput">Email : </label>
     <input
