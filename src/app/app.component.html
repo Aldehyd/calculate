@@ -1,5 +1,11 @@
 <app-header></app-header>
 <main>
-  <app-main-tabs class="main-tabs"></app-main-tabs>
-  <app-main-content class="main-content"></app-main-content>
+  <app-main-tabs
+    class="main-tabs-container"
+    role="tablist"
+    aria-label="principaux"
+  ></app-main-tabs>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 </main>

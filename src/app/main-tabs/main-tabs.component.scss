@@ -4,3 +4,15 @@
     flex-wrap: nowrap;
     width: 100%;
 }
+.main-tab {
+    padding: 1rem 8rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    background-color: #fff;
+    border: solid #ACFDAB;
+    border-width: 0.4rem 0.4rem 0 0.4rem;
+    cursor: pointer;
+    &[aria-selected='true'] {
+        background-color: #ACFDAB;
+    }
+}

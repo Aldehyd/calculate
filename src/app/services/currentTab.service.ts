@@ -4,13 +4,13 @@ import { Injectable, OnInit } from "@angular/core";
     providedIn: 'root'
 })
 export class currentTabService implements OnInit {
-    currentTab!: string;
+    currentTab!: number;
 
     ngOnInit(): void {
-        this.currentTab = "toolsTab";
+        this.currentTab = 0;
     }
 
-    changeCurrentTab(tabTitle: string): void {
-        this.currentTab = tabTitle;
+    changeCurrentTab(tabId: number): void {
+        this.currentTab = tabId;
     }
 }
