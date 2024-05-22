@@ -1,5 +1,23 @@
 <h1>Connexion</h1>
-<form>
-  <input type="email" id="emailInput" />
+<p>Tous les champs sont obligatoires.</p>
+<form #emailForm="ngForm" (ngSubmit)="onSubmitForm(emailForm)">
+  <p>
+    <label for="emailInput">Email : </label>
+    <input
+      id="emailInput"
+      name="userEmail"
+      type="email"
+      [(ngModel)]="userEmail"
+    />
+  </p>
+  <p>
+    <label for="passwordInput">Mot de passe : </label>
+    <input id="passwordInput" name="userPassword" [(ngModel)]="userPassword" />
+    <button>Voir</button>
+  </p>
   <button type="submit">Se connecter</button>
 </form>
+<p>
+  Si vous n'avez pas encore de compte, vous pouvez vous inscrire
+  <a routerLink="/subscription">ici</a>.
+</p>
