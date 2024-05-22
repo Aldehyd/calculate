@@ -15,6 +15,6 @@ export class MainTabsComponent implements OnInit{
 
   ngOnInit(): void {
     this.toolsTab = new Tab(0,"Outils");
-    this.projectsTab = new Tab(0,"Projects");
+    this.projectsTab = new Tab(0,"Mes projects");
   }
 }
