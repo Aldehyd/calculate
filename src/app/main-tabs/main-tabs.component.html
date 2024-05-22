@@ -1,4 +1,16 @@
-<div class="main-tabs-container">
-  <app-main-tab [tab]="toolsTab"></app-main-tab>
-  <app-main-tab [tab]="projectsTab"></app-main-tab>
+<div class="main-tabs-container" role="tablist" aria-label="principaux">
+  <app-main-tab
+    [tab]="toolsTab"
+    id="tools-tab"
+    role="tab"
+    aria-controls="tools-tabpanel"
+    aria-selected="true"
+  ></app-main-tab>
+  <app-main-tab
+    [tab]="projectsTab"
+    id="projects-tab"
+    role="tab"
+    aria-controls="projects-tabpanel"
+    aria-selected="{currentTab === toolsTab.title ? 'true' : 'false'}"
+  ></app-main-tab>
 </div>
