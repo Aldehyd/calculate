@@ -1,0 +1,32 @@
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    &_title {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    &_details-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        &_arrow {
+            display: block;
+        }
+    }
+}
+
+.details-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    & p {
+        margin: 0.5rem;
+    }
+}
+

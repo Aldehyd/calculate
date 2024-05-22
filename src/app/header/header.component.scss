@@ -1,0 +1,14 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 10rem;
+    padding: 0 40px;
+}
+
+.links-container {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    height: 100%;
+    width: fit-content;
+}

@@ -1,0 +1,22 @@
+<div class="main-container">
+  <button class="main-container_title">
+    <h3>{{ tool.title }}</h3>
+  </button>
+  <button
+    class="main-container_details-button"
+    (click)="onDetailsButtonClick()"
+  >
+    Voir détails
+    <span
+      class="main-container_details-button_arrow"
+      [ngStyle]="{
+        transform: tool.detailsHidden === true ? 'rotate(180deg)' : ''
+      }"
+      >&#11206;</span
+    >
+  </button>
+</div>
+<div class="details-container" *ngIf="tool.detailsHidden === true">
+  <p>{{ tool.description }}</p>
+  <p>{{ tool.norm }}</p>
+</div>
