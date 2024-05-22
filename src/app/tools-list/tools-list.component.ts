@@ -18,12 +18,14 @@ export class ToolsListComponent implements OnInit{
       {
         id: 0,
         title: "Section à parois minces",
+        url: "section-tool",
         description: "Calcul des propriétés d'une section à parois minces avec ou sans raidisseur.",
         norm: "Norme: EN NF 1993 1-3"
       },
       {
         id: 1,
         title: "Vent",
+        url: "wind",
         description: "Calcul du vent.",
         norm: "Norme: EN NF 1991 1-1"
       }

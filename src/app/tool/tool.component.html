@@ -1,7 +1,7 @@
 <div class="main-container">
-  <button class="main-container_title">
-    <h3>{{ tool.title }}</h3>
-  </button>
+  <h3>
+    <a [routerLink]="tool.url">{{ tool.title }}</a>
+  </h3>
   <button
     class="main-container_details-button"
     (click)="onDetailsButtonClick()"
