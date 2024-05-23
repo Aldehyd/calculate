@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ConnectedButtonComponent } from '../connected-button/connected-button.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,ConnectedButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
