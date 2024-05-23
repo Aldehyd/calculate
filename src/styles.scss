@@ -62,3 +62,25 @@ main {
     font-weight: bold;
     color: red;
 }
+.basic-button {
+    padding: 1rem;
+    background-color: #51E950;
+    border: none;
+    cursor: pointer;
+}
+.bottom-links-container {
+    display: flex;
+    gap: 4rem;
+    margin: 2rem;
+    & a {
+        padding: 1rem;
+        color: #000;
+        text-decoration: none;
+        background-color: #51E950;
+        border: none;
+        cursor: pointer;
+        &:visited {
+            color: #000;
+        }
+    }
+}
