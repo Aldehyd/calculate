@@ -1,2 +1,21 @@
 <h1>Suppression du compte</h1>
+<p>
+  Afin de procéder à la suppression de votre compte, veuillez entrer votre mot
+  de passe.
+</p>
+<form
+  class="account-form account-form--delete-account"
+  #emailForm="ngForm"
+  (ngSubmit)="onSubmitForm(emailForm)"
 >
+  <p>
+    <label for="passwordInput">Mot de passe : </label>
+    <input id="passwordInput" name="userPassword" [(ngModel)]="userPassword" />
+  </p>
+  <p class="warning-message">Le mot de passe est incorrect.</p>
+  <label>
+    <input type="checkbox" />
+    J'ai conscience que mes projets enregistrés seront perdus.
+  </label>
+  <button type="submit">Supprimer le compte</button>
+</form>

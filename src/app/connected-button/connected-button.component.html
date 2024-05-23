@@ -1,7 +1,16 @@
-<button>Connecté</button>
-<div role="menu">
+<button
+  (click)="onClick()"
+  class="connexion-button"
+  aria-haspopup="true"
+  [attr.aria-expanded]="menuDisplayed.toString()"
+>
+  Connecté <span class="connexion-button_arrow">&#11206;</span>
+</button>
+<div role="menu" class="user-menu" *ngIf="menuDisplayed">
   <ul>
     <li role="menu-item">Se déconnecter</li>
-    <li role="menu-item">Supprimer le compte</li>
+    <li role="menu-item">
+      <a routerLink="delete-account">Supprimer le compte</a>
+    </li>
   </ul>
 </div>

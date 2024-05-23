@@ -5,12 +5,14 @@ import { SectionToolComponent } from './section-tool/section-tool.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { SectionToolGeometryComponent } from './section-tool-geometry/section-tool-geometry.component';
+import { DeleteAccountComponent } from './delete-account/delete-account.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
     {path: 'projects', component: ProjetcsComponent},
     {path: 'connexion', component: ConnexionComponent},
     {path: 'subscription', component: SubscriptionComponent},
+    {path: 'delete-account', component: DeleteAccountComponent},
     {path: 'section-tool', component: SectionToolComponent},
     {path: 'section-tool/geometry', component: SectionToolGeometryComponent},
 ];
