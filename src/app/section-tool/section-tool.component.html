@@ -1,4 +1,20 @@
 <h1>Calcul de section à parois minces</h1>
-<label>Entrez un nom de projet :</label>
-<a routerLink="">Retour aux outils</a>
-<a routerLink="./geometry">Suivant</a>
+<form
+  class="tool-form"
+  #projectForm="ngForm"
+  (ngSubmit)="onSubmitForm(projectForm)"
+>
+  <p>
+    <label for="emailInput">Nom du projet : </label>
+    <input
+      id="project-name-input"
+      name="projectName"
+      type="text"
+      [(ngModel)]="projectName"
+    />
+  </p>
+  <div class="bottom-links-container">
+    <a routerLink="">Retour aux outils</a>
+    <a routerLink="./geometry">Suivant</a>
+  </div>
+</form>
