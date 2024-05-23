@@ -1,0 +1,21 @@
+<li>
+  <span>Point {{ point.indice }} : </span>
+  <label>
+    X :
+    <input
+      type="number"
+      [formControlName]="formControlNameX"
+      [(ngModel)]="point.x"
+    />
+    <span>mm</span>
+  </label>
+  <label>
+    Y :
+    <input
+      type="number"
+      [formControlName]="formControlNameY"
+      [(ngModel)]="point.y"
+    />
+    <span>mm</span>
+  </label>
+</li>
