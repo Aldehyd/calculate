@@ -38,10 +38,15 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
           indice: 1,
           x: 20,
           y: 40
-      }
+      },
+      {
+        indice: 2,
+        x: 50,
+        y: 90
+    }
   ]
     // this.geometry = this.sectionToolService.sectionGeometry;
-    this.sectionForm = this.formBuilder.group(this.translateGeometry(this.geometry));
+    this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
   }
 
   ngAfterViewInit(): void {
@@ -49,31 +54,60 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.context = this.canvas.nativeElement.getContext("2d");
     this.updateSection$ = this.sectionForm.valueChanges.pipe(
       tap(geometry => {
-        console.log(geometry)
         // this.sectionToolService.setGeometry(geometry);
-        // this.drawSection(geometry);
+        this.drawSection(this.translateGeometryFromForm(geometry));
       })
     );
     this.updateSection$.subscribe();
   }
 
   drawSection(geometry: any): void {
-    // this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-    // this.context.beginPath();
-    // this.context.lineWidth = geometry.thickness;
-    // this.context.moveTo(geometry.originX,geometry.originY);
-    // this.context.lineTo(geometry.point1X,geometry.point1Y)
-    // this.context.stroke(); 
+    this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    this.context.beginPath();
+    this.context.lineWidth = geometry.thickness;
+    
+    for(let point in geometry) {
+      if(point !== "thickness") {
+          this.context.lineTo(geometry[point].x,geometry[point].y)
+          this.context.moveTo(geometry[point].x,geometry[point].y);
+      };
+    };
+    
+    this.context.stroke(); 
   }
 
-  translateGeometry(geometry: PointLineForm[]): any {
+  translateGeometryToForm(geometry: PointLineForm[]): any {
     let translatedGeometry = {thickness: 2};
 
     for(let point of geometry) {
-      let newPoint = {pointX: point.x, pointY: point.y}
-      translatedGeometry = {...translatedGeometry, ...newPoint}
+      translatedGeometry = {...translatedGeometry, ...{['point'+ point.indice +'X']: point.x}}
+      translatedGeometry = {...translatedGeometry, ...{['point'+ point.indice +'Y']: point.y}}
     };
-   
+  
+    return translatedGeometry
+  }
+
+  translateGeometryFromForm(geometry: any[]): any {
+    let translatedGeometry = {thickness: 2};
+
+    let pointIndice = 0;
+    let index = 0;
+    let coorX = 0;
+    for(let coor in geometry) {
+      if(coor !== "thickness") {
+        let newPoint = {};
+        if(index % 2 === 0) {
+          coorX = geometry[coor];
+          console.log(coor,'pair',coorX)
+        } else {
+          newPoint = {['point'+pointIndice]: {x:coorX, y:geometry[coor]}};
+          console.log(coor,'impair',newPoint)
+          translatedGeometry = {...translatedGeometry, ...newPoint};
+          pointIndice++;
+        };
+        index++;
+      };
+    };
     return translatedGeometry
   }
 
@@ -84,7 +118,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
       y: this.geometry[this.geometry.length-1].y
     };
     this.geometry = [...this.geometry, newPoint];
-    this.sectionForm = this.formBuilder.group(this.translateGeometry(this.geometry));
+    this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
   }
   
 }

@@ -12,12 +12,12 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class PointFormLineComponent implements OnInit {
 
   @Input() point!: PointLineForm;
+  @Input() formGroup!: FormGroup;
 
   formControlNameX!: string;
   formControlNameY!: string;
 
   ngOnInit(): void {
-    console.log(this.point)
     this.formControlNameX = `point${this.point.indice}X`;
     this.formControlNameY = `point${this.point.indice}Y`;
   }

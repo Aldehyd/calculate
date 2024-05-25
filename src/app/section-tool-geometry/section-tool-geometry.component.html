@@ -4,7 +4,7 @@
   <form [formGroup]="sectionForm">
     <p>
       <label>
-        Thickness :
+        Epaisseur des parois :
         <input type="number" formControlName="thickness" /><span>mm</span>
       </label>
     </p>
@@ -12,6 +12,7 @@
       <app-point-form-line
         *ngFor="let point of geometry"
         [point]="point"
+        [formGroup]="sectionForm"
       ></app-point-form-line>
     </ul>
     <button class="basic-button" (click)="createNewPoint()">
