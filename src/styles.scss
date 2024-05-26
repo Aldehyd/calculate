@@ -33,13 +33,6 @@ main {
 .main-menu {
     width: 100%;
 }
-.tool {
-    position: relative;
-    z-index: 0;
-    display: block;
-    margin-bottom: 2rem;
-    box-shadow: 0 0 4px 0.5px rgba(0,0,0,0.4);
-}
 
 .account-form {
     display: flex;
@@ -85,4 +78,8 @@ main {
             color: #000;
         }
     }
+}
+
+.projects {
+    width: 100%;
 }

@@ -1,7 +1,8 @@
 <p *ngIf="accountService.connected === false">
   Vous devez être connecté pour accéder à vos projets.
-  <a routerLink="/connexion">Se connecter</a>
 </p>
+<a routerLink="/connexion">Se connecter</a>
 <app-projects-list
-  *ngIf="accountService.connected === undefined"
+  class="projects-list"
+  *ngIf="accountService.connected === true"
 ></app-projects-list>
