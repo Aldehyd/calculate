@@ -2,8 +2,7 @@
 <p>Tous les champs sont obligatoires.</p>
 <form
   class="account-form account-form--subscription"
-  #subscriptionForm="ngForm"
-  (ngSubmit)="onSubmitForm(subscriptionForm)"
+  [formGroup]="subscriptionForm"
 >
   <p>
     <label for="emailInput">Email : </label>
@@ -11,24 +10,56 @@
       id="emailInput"
       name="userEmail"
       type="email"
-      [(ngModel)]="userEmail"
+      formControlName="userEmail"
     />
   </p>
-  <p>
+  <div>
+    <span>Le mot de passe doit contenir au moins :</span>
+    <ul>
+      <li>8 caractères <span *ngIf="userPassword.length >= 8">Ok</span></li>
+      <li>
+        1 lettre majuscule
+        <span *ngIf="userPasswordIncludesUppercase === true">Ok</span>
+      </li>
+      <li>
+        1 caractère spécial
+        <span *ngIf="userPasswordIncludesSpecialCharacter === true">Ok</span>
+      </li>
+      <li>
+        1 chiffre <span *ngIf="userPasswordIncludesNumber === true">Ok</span>
+      </li>
+    </ul>
     <label for="passwordInput">Mot de passe : </label>
-    <input id="passwordInput" name="userPassword" [(ngModel)]="userPassword" />
-    <button>Voir</button>
+    <input
+      id="passwordInput"
+      name="userPassword"
+      formControlName="userPassword"
+      [(ngModel)]="userPassword"
+    />
+    <button (click)="handlePasswordVisibility()">
+      {{ isPasswordVisible ? "Cacher" : "Voir" }}
+    </button>
+  </div>
+  <p>
+    Sécurité :
+    <span [ngStyle]="{ color: userPasswordSecurityColor }">{{
+      checkPassword$ | async
+    }}</span>
   </p>
   <p>
     <label for="confirmedPasswordInput">Confirmez le mot de passe : </label>
     <input
       id="confirmedPasswordInput"
       name="userConfirmedPassword"
-      [(ngModel)]="userConfirmedPassword"
+      formControlName="userConfirmedPassword"
     />
     <button>Voir</button>
   </p>
-  <button type="submit">S'inscrire</button>
+  <button type="submit" disabled="subscriptionForm.invalid">S'inscrire</button>
+  <p class="warning-message">
+    Un compte existant est déjà associé à cette adresse email.
+  </p>
+  <p class="warning-message">Les mots de passe ne sont pas identiques.</p>
 </form>
 <p>
   Vous avez déjà un compte ? Connectez-vous <a routerLink="/connexion">ici</a>.
