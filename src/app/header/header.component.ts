@@ -13,14 +13,11 @@ import { accountService } from '../services/account.service';
 })
 export class HeaderComponent implements OnInit {
   urlLogo!: string;
-  userConnected$!: Observable<boolean>;
 
-  constructor(private accountService: accountService) {}
+  constructor(public accountService: accountService) {}
 
   ngOnInit(): void {
     this.urlLogo = "../../assets/img/logo.png";
-    // console.log(this.connexionService.connected)
-    // this.userConnected$ = interval(500).pipe
   }
 
 }

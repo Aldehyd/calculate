@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { accountService } from '../services/account.service';
 @Component({
   selector: 'app-connected-button',
   standalone: true,
@@ -11,12 +12,18 @@ import { RouterModule } from '@angular/router';
 export class ConnectedButtonComponent implements OnInit {
   menuDisplayed!: boolean;
 
+  constructor(public accountService: accountService) {}
+
   ngOnInit(): void {
     this.menuDisplayed = false;
   }
 
-  onClick():void {
+  expandMenu():void {
     this.menuDisplayed = !this.menuDisplayed;
+  }
+
+  disconnect(): void {
+    this.accountService.connected = false;
   }
 
 }

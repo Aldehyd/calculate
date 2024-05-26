@@ -2,9 +2,12 @@
   <a routerLink="" aria-label="accueil">
     <img [src]="urlLogo" alt="" />
   </a>
-  <div class="links-container">
-    <a routerLink="connexion">Connexion</a>
-    <a routerLink="subscription">Inscription</a>
+  <div class="links-container" *ngIf="accountService.connected === false">
+    <a class="links-container_link" routerLink="connexion">Connexion</a>
+    <a class="links-container_link" routerLink="subscription">Inscription</a>
   </div>
-  <app-connected-button class="user-menu-container"></app-connected-button>
+  <app-connected-button
+    class="user-menu-container"
+    *ngIf="accountService.connected === true"
+  ></app-connected-button>
 </header>
