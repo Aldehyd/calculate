@@ -6,9 +6,8 @@
     padding: 20px;
     background-color: #fff;
     &_title {
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
+        color: #000;
+        text-decoration: none;
     }
     &_details-button {
         display: flex;
@@ -18,14 +17,17 @@
         border: none;
         cursor: pointer;
         &_arrow {
+            position: relative;
+            top: -0.2rem;
             display: block;
+            transition: 200ms ease-in-out;
         }
     }
 }
 
 .details-container {
     width: 100%;
-    padding: 20px;
+    padding: 5px 20px 20px 20px;
     background-color: #fff;
     & p {
         margin: 0.5rem;

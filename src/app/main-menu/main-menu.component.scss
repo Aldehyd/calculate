@@ -5,9 +5,12 @@
     width: 100%;
     list-style: none;
     &_item {
+        position: relative;
+        z-index: 0;
         font-size: 1.6rem;
         font-weight: bold;
-        border: solid #ACFDAB;
+        background-color: #BAFFB9;
+        border: solid #BAFFB9;
         border-width: 0.4rem 0.4rem 0 0.4rem;
         cursor: pointer;
         & a {
@@ -17,12 +20,24 @@
             padding: 1rem 8rem;
             color: #000;
             text-decoration: none;
-            background-color: #ACFDAB;
             &:visited {
                 color: #000;
             }
-            &.active {
+            &::before {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
                 background-color: #fff;
+                transform-origin: 0 50%;
+                transform: scaleX(0);
+                transition: 200ms ease-in-out;
+            }
+            &.active::before {
+                transform: scaleX(1);
             }
         }
     }

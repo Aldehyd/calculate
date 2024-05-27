@@ -1,6 +1,6 @@
 <div class="main-container">
   <h3>
-    <a [routerLink]="tool.url">{{ tool.title }}</a>
+    <a [routerLink]="tool.url" class="main-container_title">{{ tool.title }}</a>
   </h3>
   <button
     class="main-container_details-button"
@@ -10,7 +10,8 @@
     <span
       class="main-container_details-button_arrow"
       [ngStyle]="{
-        transform: tool.detailsHidden === true ? 'rotate(180deg)' : ''
+        transform: tool.detailsHidden === true ? 'rotate(180deg)' : '',
+        top: tool.detailsHidden === true ? '0' : ''
       }"
       >&#11206;</span
     >

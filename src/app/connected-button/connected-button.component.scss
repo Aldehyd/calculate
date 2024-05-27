@@ -6,10 +6,16 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    & .connexion-button_arrow {
+        position: relative;
+        top: -0.2rem;
+        display: block;
+        transition: 200ms ease-in-out;
+    }
     &[aria-expanded = 'true'] {
         align-items: inherit;
         & .connexion-button_arrow {
-            display: block;
+            top: 0;
             transform: rotate(180deg);
         }
     }
@@ -21,7 +27,7 @@
     bottom: 0;
     right: 0;
     transform: translateY(100%);
-    background-color: #ACFDAB;
+    background-color: #BAFFB9;
     box-shadow: 0 0 4px 0.5px rgba(0,0,0,0.4);
     & ul {
         width: 15rem;

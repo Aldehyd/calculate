@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { accountService } from '../services/account.service';
 @Component({
   selector: 'app-connected-button',
@@ -12,7 +12,7 @@ import { accountService } from '../services/account.service';
 export class ConnectedButtonComponent implements OnInit {
   menuDisplayed!: boolean;
 
-  constructor(public accountService: accountService) {}
+  constructor(public accountService: accountService, private router:Router) {}
 
   ngOnInit(): void {
     this.menuDisplayed = false;
@@ -24,6 +24,11 @@ export class ConnectedButtonComponent implements OnInit {
 
   disconnect(): void {
     this.accountService.connected = false;
+    this.router.navigateByUrl('');
   }
 
+  deleteAccount():void {
+    this.menuDisplayed = false;
+    this.router.navigateByUrl('delete-account');
+  }
 }
