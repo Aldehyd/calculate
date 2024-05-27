@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { sectionToolService } from '../services/section-tool.service';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
@@ -22,13 +22,16 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   sectionForm!: FormGroup;
   context!: any;
   geometry!: PointLineForm[];
+  errorOnSubmit!: boolean;
 
   constructor(
     private sectionToolService: sectionToolService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private rooter:Router
   ) {}
 
   ngOnInit(): void {
+    this.errorOnSubmit = false;
     this.projectName = this.sectionToolService.projectName;
     this.geometry = [
       {
@@ -116,5 +119,11 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.sectionForm.addControl(`point${this.geometry.length-1}Y`, this.formBuilder.control(''));
   }
 
-  
+  submitForm(): void {
+    if(this.geometry.length <=2) {
+      this.errorOnSubmit = true;
+    } else {
+      this.rooter.navigateByUrl('/section-tool/analysis');
+    }
+  }
 }

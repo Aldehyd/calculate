@@ -21,9 +21,16 @@
         + Ajouter un point
       </button>
     </fieldset>
-
-    <input type="submit" value="Analyser la section" class="basic-button" />
+    <p class="warning-message" *ngIf="errorOnSubmit === true">
+      La section doit contenir au moins deux parois !
+    </p>
+    <input
+      type="submit"
+      value="Analyser la section"
+      class="basic-button"
+      (click)="submitForm()"
+    />
   </form>
 </div>
 
-<a routerLink="./.." class="basic-button">Précédent</a>
+<a routerLink="/.." class="basic-button">Précédent</a>
