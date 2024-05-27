@@ -1,4 +1,4 @@
-<h1>Calcul de section à parois minces - Géométrie</h1>
+<h1>{{ projectName }} : Calcul de section à parois minces - Géométrie</h1>
 <div class="main-content">
   <canvas class="section-canvas" #canvas></canvas>
   <form [formGroup]="sectionForm">
@@ -8,22 +8,22 @@
         <input type="number" formControlName="thickness" /><span>mm</span>
       </label>
     </p>
-    <ul>
-      <app-point-form-line
-        *ngFor="let point of geometry"
-        [point]="point"
-        [formGroup]="sectionForm"
-      ></app-point-form-line>
-    </ul>
-    <button class="basic-button" (click)="createNewPoint()">
-      + Ajouter un point
-    </button>
+    <fieldset>
+      <legend>Contour</legend>
+      <ul>
+        <app-point-form-line
+          *ngFor="let point of geometry"
+          [point]="point"
+          [formGroup]="sectionForm"
+        ></app-point-form-line>
+      </ul>
+      <button class="basic-button" (click)="createNewPoint()">
+        + Ajouter un point
+      </button>
+    </fieldset>
+
+    <input type="submit" value="Analyser la section" class="basic-button" />
   </form>
-  <!-- <div *ngIf="showSection$ | async as section">
-    <p>thickness : {{ section.thickness }} mm</p>
-    <p>origin : X : {{ section.originX }} , Y : {{ section.originY }}</p>
-    <p>point n°1 : X : {{ section.point1X }} , Y : {{ section.point1Y }}</p>
-  </div> -->
 </div>
 
 <a routerLink="./.." class="basic-button">Précédent</a>

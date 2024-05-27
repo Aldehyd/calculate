@@ -4,6 +4,7 @@ import { Injectable, OnInit } from "@angular/core";
     providedIn: 'root'
 })
 export class sectionToolService implements OnInit {
+    projectName!: string;
     sectionGeometry!: any;
     sectionThickness!: number;
 

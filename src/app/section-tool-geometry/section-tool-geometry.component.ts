@@ -17,6 +17,7 @@ import { PointLineForm } from '../models/point-line-form.model';
 export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
 
   @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+  projectName!: string;
   updateSection$!: Observable<any>;
   sectionForm!: FormGroup;
   context!: any;
@@ -28,22 +29,13 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.projectName = this.sectionToolService.projectName;
     this.geometry = [
       {
           indice: 0,
           x: 0,
           y: 0
-      },
-      {
-          indice: 1,
-          x: 20,
-          y: 40
-      },
-      {
-        indice: 2,
-        x: 50,
-        y: 90
-    }
+      }
   ]
     // this.geometry = this.sectionToolService.sectionGeometry;
     this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
@@ -87,8 +79,9 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     return translatedGeometry
   }
 
-  translateGeometryFromForm(geometry: any[]): any {
-    let translatedGeometry = {thickness: 2};
+  translateGeometryFromForm(geometry: any): any {
+    console.log('geometry: ',geometry)
+    let translatedGeometry = {thickness: geometry.thickness};
 
     let pointIndice = 0;
     let index = 0;
@@ -108,6 +101,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
         index++;
       };
     };
+    console.log('translated geometry : ',translatedGeometry)
     return translatedGeometry
   }
 
@@ -118,7 +112,9 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
       y: this.geometry[this.geometry.length-1].y
     };
     this.geometry = [...this.geometry, newPoint];
-    this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
+    this.sectionForm.addControl(`point${this.geometry.length-1}X`, this.formBuilder.control(''));
+    this.sectionForm.addControl(`point${this.geometry.length-1}Y`, this.formBuilder.control(''));
   }
+
   
 }
