@@ -1,6 +1,7 @@
 <h1>Inscription</h1>
-<p>Tous les champs sont obligatoires.</p>
+<p *ngIf="confirmationMailSend === false">Tous les champs sont obligatoires.</p>
 <form
+  *ngIf="confirmationMailSend === false"
   class="account-form account-form--subscription"
   [formGroup]="subscriptionForm"
 >
@@ -16,17 +17,38 @@
   <div>
     <span>Le mot de passe doit contenir au moins :</span>
     <ul>
-      <li>8 caractères <span *ngIf="userPassword.length >= 8">Ok</span></li>
+      <li>
+        8 caractères
+        <span *ngIf="userPassword.length >= 8" [ngStyle]="{ color: 'green' }">
+          &#x2714;</span
+        >
+      </li>
       <li>
         1 lettre majuscule
-        <span *ngIf="userPasswordIncludesUppercase === true">Ok</span>
+        <span
+          *ngIf="userPasswordIncludesUppercase === true"
+          [ngStyle]="{ color: 'green' }"
+        >
+          &#x2714;</span
+        >
       </li>
       <li>
         1 caractère spécial
-        <span *ngIf="userPasswordIncludesSpecialCharacter === true">Ok</span>
+        <span
+          *ngIf="userPasswordIncludesSpecialCharacter === true"
+          [ngStyle]="{ color: 'green' }"
+        >
+          &#x2714;</span
+        >
       </li>
       <li>
-        1 chiffre <span *ngIf="userPasswordIncludesNumber === true">Ok</span>
+        1 chiffre
+        <span
+          *ngIf="userPasswordIncludesNumber === true"
+          [ngStyle]="{ color: 'green' }"
+        >
+          &#x2714;</span
+        >
       </li>
     </ul>
     <label for="passwordInput">Mot de passe : </label>
@@ -52,15 +74,33 @@
       id="confirmedPasswordInput"
       name="userConfirmedPassword"
       formControlName="userConfirmedPassword"
+      [(ngModel)]="userConfirmedPassword"
     />
     <button>Voir</button>
   </p>
-  <button type="submit" disabled="subscriptionForm.invalid">S'inscrire</button>
-  <p class="warning-message">
+  <button
+    type="submit"
+    [disabled]="subscriptionForm.invalid"
+    (click)="onSubmitForm()"
+  >
+    S'inscrire
+  </button>
+  <p class="warning-message" *ngIf="isExistingMail === true">
     Un compte existant est déjà associé à cette adresse email.
   </p>
-  <p class="warning-message">Les mots de passe ne sont pas identiques.</p>
+  <p class="warning-message" *ngIf="arePasswordsSimilar === false">
+    Les mots de passe ne sont pas identiques.
+  </p>
+  <p class="warning-message" *ngIf="errorOnSubmit === true">
+    Une erreur s'est produite. Veuillez réessayer svp.
+  </p>
 </form>
-<p>
+<div *ngIf="confirmationMailSend === true" class="account-form">
+  <p>Un mail de confirmation a été envoyé à l'adresse renseignée.</p>
+  <p>
+    Veuillez cliquer sur le lien contenu dans ce mail pour activer votre compte.
+  </p>
+</div>
+<p *ngIf="confirmationMailSend === false">
   Vous avez déjà un compte ? Connectez-vous <a routerLink="/connexion">ici</a>.
 </p>

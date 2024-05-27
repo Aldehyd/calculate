@@ -14,35 +14,59 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 export class SubscriptionComponent {
 
   checkPassword$!: Observable<any>;
-  visiblePassword$!: Observable<any>;
+  hidePassword$!: Observable<any>;
   subscriptionForm!: FormGroup;
 
   isPasswordVisible!: boolean;
   userPassword!: string;
   savedUserPassword! : string;
+  userConfirmedPassword!: string;
+  savedUserConfirmedPassword!: string;
   userPasswordIncludesNumber!: boolean;
   userPasswordIncludesUppercase!: boolean;
   userPasswordIncludesSpecialCharacter!: boolean;
   userPasswordSecurityColor!: string; 
   userPasswordRegEx!: RegExp;
 
+  arePasswordsSimilar!: boolean;
+  isExistingMail!: boolean;
+
+  confirmationMailSend!: boolean;
+  errorOnSubmit!: boolean;
+
   constructor(
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.errorOnSubmit = false;
+    this.confirmationMailSend = false;
+    this.arePasswordsSimilar = true;
     this.userPassword= '';
+    this.userConfirmedPassword= '';
     this.savedUserPassword = this.userPassword;
     this.userPasswordIncludesNumber = false;
     this.userPasswordIncludesUppercase = false;
     this.userPasswordIncludesSpecialCharacter = false;
-    this.userPasswordRegEx = /[A-Z]{1}[0-9]{1}[<>?.,;:!§&~"#'(){}\-_|\\\/^@=+*£%°²]{1}/g;
+    this.userPasswordRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[<>\?\.,;:!§&~"#'\(\)\{\}\-_\|\\\/\^@=\+\*£%°²])[ -~]{8,}$/g;
     this.isPasswordVisible = false;
     this.subscriptionForm = this.formBuilder.group({
-      userEmail: [null,[Validators.required]],
+      userEmail: [null,[Validators.required,Validators.email]],
       userPassword: [null,[Validators.required,Validators.pattern(this.userPasswordRegEx)]],
       userConfirmedPassword: [null,[Validators.required]]
     });
+    this.hidePassword$ = this.subscriptionForm.valueChanges.pipe(
+      tap(values => this.savedUserPassword = values.userPassword),
+      tap(values => {
+        if(this.isPasswordVisible === false) {
+          this.userPassword = '';
+          for(let character of this.userPassword) {
+            this.userPassword += '\u25cf';
+          };
+        };
+      })
+    );
+    this.hidePassword$.subscribe();
     this.checkPassword$ = this.subscriptionForm.valueChanges.pipe(
       tap(values => this.checkPasswordNumber(values.userPassword)),
       tap(values => this.checkPasswordUppercase(values.userPassword)),
@@ -78,13 +102,14 @@ export class SubscriptionComponent {
 
   handlePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
-    if(this.isPasswordVisible) {
+    if(this.isPasswordVisible === true) {
+      console.log(this.savedUserPassword)
       this.userPassword = this.savedUserPassword;
     } else {
       this.savedUserPassword = this.userPassword;
       let hiddenPassword = '';
       for(let character of this.userPassword) {
-        hiddenPassword += '*';
+        hiddenPassword += '\u25cf';
       };
       this.userPassword = hiddenPassword;
     };
@@ -124,8 +149,32 @@ export class SubscriptionComponent {
     };
   }
 
-  onSubmitForm(form: NgForm) {
-    console.log(form.value);
+  onSubmitForm() {
+    this.checkPasswordsSimilarity();
   }
 
+  checkPasswordsSimilarity():void {
+    this.arePasswordsSimilar = this.userPassword === this.userConfirmedPassword;
+    if(this.arePasswordsSimilar === true)
+      this.checkExistingMail();
+  }
+
+  checkExistingMail():void {
+    if(this.userPassword.includes('M')) { //replace by fetch to server
+      this.isExistingMail = true;
+    } else {
+      this.isExistingMail = false;
+    };
+    
+    if(this.isExistingMail === false) {
+      this.submitForm();
+    };  
+  }
+
+  submitForm():void {
+    // this.subscriptionForm.reset();
+    this.confirmationMailSend = false;
+    this.errorOnSubmit = true;
+    console.log('suscribed !')
+  }
 }
