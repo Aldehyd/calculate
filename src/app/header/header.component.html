@@ -1,7 +1,24 @@
 <header>
   <a routerLink="" aria-label="accueil">
-    <img [src]="urlLogo" alt="" />
+    <svg
+      width="120"
+      height="120"
+      xmlns="http://www.w3.org/2000/svg"
+      class="logo"
+    >
+      <polyline
+        fill="none"
+        stroke="black"
+        points=" 50,25 60,25 60,15 20,15 20,55 60,55 60,45 50,45"
+      />
+      <polyline
+        fill="none"
+        stroke="black"
+        points="80,50 80,40 40,40 40,65 80,65 80,90 40,90 40,80"
+      />
+    </svg>
   </a>
+  <span class="main-title">Calculs de structure</span>
   <div class="links-container" *ngIf="accountService.connected === false">
     <a class="links-container_link" routerLink="connexion">Connexion</a>
     <a class="links-container_link" routerLink="subscription">Inscription</a>
