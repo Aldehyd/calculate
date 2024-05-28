@@ -1,1 +1,30 @@
-<p>section-tool-analysis works!</p>
+<h1>
+  {{ sectionToolService.projectName }} : Calcul de section à parois minces -
+  Analyse
+</h1>
+<div class="main-content">
+  <p>
+    {{
+      isClosed === true ? "La section est fermée." : "La section est ouverte"
+    }}
+  </p>
+  <p>
+    {{
+      isXSymetric === true
+        ? "La section est symétrique selon X."
+        : "La section n'est pas symétrique selon X."
+    }}
+  </p>
+  <p>
+    {{
+      isYSymetric === true
+        ? "La section est symétrique selon Y."
+        : "La section n'est pas symétrique selon Y."
+    }}
+  </p>
+  <p *ngIf="sectionShape !== 'inconnue'">
+    La section est un : {{ sectionShape }}.
+  </p>
+  <p *ngIf="sectionShape === 'inconnue'">La section est inconnue.</p>
+  <p>Nombre de raidisseur(s) détecté(s) : {{ stiffenersNumber }}</p>
+</div>

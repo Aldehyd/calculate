@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { PointFormLineComponent } from '../point-form-line/point-form-line.component';
 import { PointLineForm } from '../models/point-line-form.model';
-
+import { Point } from '../models/point.model';
 @Component({
   selector: 'app-section-tool-geometry',
   standalone: true,
@@ -21,7 +21,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   updateSection$!: Observable<any>;
   sectionForm!: FormGroup;
   context!: any;
-  geometry!: PointLineForm[];
+  geometry!: Point[];
   errorOnSubmit!: boolean;
 
   constructor(
@@ -37,7 +37,8 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
       {
           indice: 0,
           x: 0,
-          y: 0
+          y: 0,
+          angle: 0
       }
   ]
     // this.geometry = this.sectionToolService.sectionGeometry;
@@ -83,7 +84,6 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
 
   translateGeometryFromForm(geometry: any): any {
-    console.log('geometry: ',geometry)
     let translatedGeometry = {thickness: geometry.thickness};
 
     let pointIndice = 0;
@@ -94,17 +94,14 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
         let newPoint = {};
         if(index % 2 === 0) {
           coorX = geometry[coor];
-          console.log(coor,'pair',coorX)
         } else {
           newPoint = {['point'+pointIndice]: {x:coorX, y:geometry[coor]}};
-          console.log(coor,'impair',newPoint)
           translatedGeometry = {...translatedGeometry, ...newPoint};
           pointIndice++;
         };
         index++;
       };
     };
-    console.log('translated geometry : ',translatedGeometry)
     return translatedGeometry
   }
 
@@ -112,7 +109,8 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     const newPoint = {
       indice: this.geometry.length,
       x: this.geometry[this.geometry.length-1].x,
-      y: this.geometry[this.geometry.length-1].y
+      y: this.geometry[this.geometry.length-1].y,
+      angle: 0
     };
     this.geometry = [...this.geometry, newPoint];
     this.sectionForm.addControl(`point${this.geometry.length-1}X`, this.formBuilder.control(''));
@@ -123,6 +121,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     if(this.geometry.length <=2) {
       this.errorOnSubmit = true;
     } else {
+      this.sectionToolService.sectionGeometry = this.geometry;
       this.rooter.navigateByUrl('/section-tool/analysis');
     }
   }

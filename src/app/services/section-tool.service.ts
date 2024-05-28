@@ -1,27 +1,16 @@
 import { Injectable, OnInit } from "@angular/core";
-
+import { Point } from "../models/point.model";
 @Injectable({
     providedIn: 'root'
 })
 export class sectionToolService implements OnInit {
     projectName!: string;
-    sectionGeometry!: any;
+    sectionGeometry!: Point[];
     sectionThickness!: number;
 
     ngOnInit(): void {
         this.sectionThickness = 2;
-        this.sectionGeometry = [
-            {
-                indice: 0,
-                x: 0,
-                y: 0
-            },
-            {
-                indice: 1,
-                x: 20,
-                y: 40
-            }
-        ];
+        this.sectionGeometry = [];
     }
 
     setGeometry(geometry: any): void {
