@@ -3,14 +3,14 @@ import { Router, RouterModule } from '@angular/router';
 import { sectionToolService } from '../services/section-tool.service';
 import { Form, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule,NgStyle } from '@angular/common';
 import { PointFormLineComponent } from '../point-form-line/point-form-line.component';
 import { PointLineForm } from '../models/point-line-form.model';
 import { Point } from '../models/point.model';
 @Component({
   selector: 'app-section-tool-geometry',
   standalone: true,
-  imports: [RouterModule,ReactiveFormsModule,AsyncPipe,CommonModule,PointFormLineComponent],
+  imports: [RouterModule,ReactiveFormsModule,AsyncPipe,CommonModule,PointFormLineComponent,NgStyle],
   templateUrl: './section-tool-geometry.component.html',
   styleUrl: './section-tool-geometry.component.scss'
 })
@@ -22,6 +22,8 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   sectionForm!: FormGroup;
   context!: any;
   geometry!: Point[];
+  areCoordonatesVisible!: boolean;
+  coordonatesPosition!: {x:number, y:number};
   errorOnSubmit!: boolean;
 
   constructor(
@@ -31,6 +33,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.coordonatesPosition = {x:0, y:0};
     this.errorOnSubmit = false;
     this.projectName = this.sectionToolService.projectName;
     this.geometry = [
@@ -46,7 +49,6 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    
     this.context = this.canvas.nativeElement.getContext("2d");
     this.updateSection$ = this.sectionForm.valueChanges.pipe(
       tap(geometry => {
@@ -115,6 +117,17 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.geometry = [...this.geometry, newPoint];
     this.sectionForm.addControl(`point${this.geometry.length-1}X`, this.formBuilder.control(''));
     this.sectionForm.addControl(`point${this.geometry.length-1}Y`, this.formBuilder.control(''));
+  }
+
+  handleCoordonatesVisibility(visible: boolean) {
+    visible ? this.areCoordonatesVisible = true : this.areCoordonatesVisible = false;
+  }
+
+  handleMouseMove(e: MouseEvent) {
+    if(this.areCoordonatesVisible === true) {
+      this.coordonatesPosition.x = Math.floor(e.clientX - this.canvas.nativeElement.getBoundingClientRect().left);
+      this.coordonatesPosition.y = Math.floor(e.clientY - this.canvas.nativeElement.getBoundingClientRect().top);
+    };
   }
 
   submitForm(): void {

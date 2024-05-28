@@ -2,7 +2,32 @@
     display: flex;
     gap: 20px;
 }
-
+.canvas-container {
+    position: relative;
+    padding: 2rem;
+    &_coordonates {
+        position: absolute;
+        padding: 10px;
+        background-color: #BAFFB9;
+    }
+    &_axe {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        &--x {
+            height: 0.2rem;
+            width: 90%;
+            background-color: #000;
+            transform: translateY(-0.1rem);
+        }
+        &--y {
+            width: 0.2rem;
+            height: 90%;
+            background-color: #000;
+            transform: translateX(-0.1rem);
+        }
+    }
+}
 .section-canvas {
     width: 300px;
     height: 300px;

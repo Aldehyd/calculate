@@ -1,6 +1,25 @@
 <h1>{{ projectName }} : Calcul de section à parois minces - Géométrie</h1>
 <div class="main-content">
-  <canvas class="section-canvas" #canvas></canvas>
+  <div class="canvas-container">
+    <div class="canvas-container_axe canvas-container_axe--x"></div>
+    <div class="canvas-container_axe canvas-container_axe--y"></div>
+    <span
+      class="canvas-container_coordonates"
+      *ngIf="areCoordonatesVisible === true"
+      [ngStyle]="{
+        left: coordonatesPosition.x + 50 + 'px',
+        top: coordonatesPosition.y + 50 + 'px'
+      }"
+      >x : {{ coordonatesPosition.x }} , y : {{ coordonatesPosition.y }}</span
+    >
+    <canvas
+      class="section-canvas"
+      #canvas
+      (mouseover)="handleCoordonatesVisibility(true)"
+      (mouseleave)="handleCoordonatesVisibility(false)"
+      (mousemove)="handleMouseMove($event)"
+    ></canvas>
+  </div>
   <form [formGroup]="sectionForm">
     <p>
       <label>
