@@ -29,6 +29,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   coordonatesPosition!: {x:number, y:number};
   currentPoint!: {index:number, x:number, y:number};
   mouseOverPoint!: boolean;
+  mouseDownOnPoint!: boolean;
   errorOnSubmit!: boolean;
 
   constructor(
@@ -38,6 +39,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.mouseDownOnPoint = false;
     this.mouseOverPoint = false;
     this.coorMax = 300;
     this.sectionThickness = this.sectionToolService.sectionThickness;
@@ -155,6 +157,23 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.mouseOverPoint = false;
   }
 
+  handleMouseDownOnPoint(value:boolean):void {
+    this.mouseDownOnPoint = value;
+    console.log(this.coordonatesPosition)
+  }
+
+  handlePointMove(): void {
+    this.geometry[this.currentPoint.index].x = this.coordonatesPosition.x;
+    this.geometry[this.currentPoint.index].y = 300-this.coordonatesPosition.y;
+  }
+
+  handleMouseOverSvg(): void {
+    this.handleCoordonatesVisibility(true);
+    if(this.mouseDownOnPoint) {
+      this.handlePointMove();
+    };
+  }
+  
   submitForm(): void {
     if(this.geometry.length <=2) {
       this.errorOnSubmit = true;

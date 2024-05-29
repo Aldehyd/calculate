@@ -1,93 +1,78 @@
 <h1>{{ projectName }} : Calcul de section à parois minces - Géométrie</h1>
 <div class="main-content">
-  <div
-    class="svg-container"
-    #svg
-    (mouseover)="handleCoordonatesVisibility(true)"
-    (mouseleave)="handleCoordonatesVisibility(false)"
-  >
-    <span
-      class="svg-container_coordonates"
-      *ngIf="areCoordonatesVisible === true"
-      [ngStyle]="{
-        left: coordonatesPosition.x + 50 + 'px',
-        top: coordonatesPosition.y + 50 + 'px'
-      }"
-      >{{ mouseOverPoint ? "Point " + currentPoint.index + " :" : "" }} x :
-      {{
-        mouseOverPoint
-          ? currentPoint.x
-          : ((coordonatesPosition.x * coorMax) / 300 | number : "1.0-0")
-      }}
-      , y :
-      {{
-        mouseOverPoint
-          ? currentPoint.y
-          : (((300 - coordonatesPosition.y) * coorMax) / 300 | number : "1.0-0")
-      }}</span
-    >
-    <span class="svg-container_indicator svg-container_indicator--origin"
-      >(0,0)</span
-    >
+  <div class="graphical-background">
     <div
-      class="svg-container_point"
-      *ngFor="let point of geometry"
-      [ngStyle]="{
-        left: (point.x * 300) / coorMax + 'px',
-        bottom: (point.y * 300) / coorMax + 'px'
-      }"
+      class="svg-container"
+      #svg
+      (mouseover)="handleMouseOverSvg()"
+      (mouseleave)="handleCoordonatesVisibility(false)"
+      (mouseup)="handleMouseDownOnPoint(false)"
     >
       <span
-        class="svg-container_point_geometry"
-        (mouseover)="handleMouseOverPoint(point)"
-        (mouseleave)="handleMouseLeavePoint()"
-      ></span>
-      <span class="svg-container_point_index">{{
-        geometry.indexOf(point)
-      }}</span>
+        class="svg-container_coordonates"
+        *ngIf="areCoordonatesVisible === true"
+        [ngStyle]="{
+          left: coordonatesPosition.x + 50 + 'px',
+          top: coordonatesPosition.y + 50 + 'px'
+        }"
+        >{{ mouseOverPoint ? "Point " + currentPoint.index + " :" : "" }} x :
+        {{
+          mouseOverPoint
+            ? currentPoint.x
+            : ((coordonatesPosition.x * coorMax) / 300 | number : "1.0-0")
+        }}
+        , y :
+        {{
+          mouseOverPoint
+            ? currentPoint.y
+            : (((300 - coordonatesPosition.y) * coorMax) / 300
+              | number : "1.0-0")
+        }}</span
+      >
+      <span class="svg-container_indicator svg-container_indicator--origin"
+        >(0,0)</span
+      >
+      <div
+        class="svg-container_point"
+        *ngFor="let point of geometry"
+        [ngStyle]="{
+          left: (point.x * 300) / coorMax + 'px',
+          bottom: (point.y * 300) / coorMax + 'px'
+        }"
+      >
+        <span
+          class="svg-container_point_geometry"
+          (mouseover)="handleMouseOverPoint(point)"
+          (mouseleave)="handleMouseLeavePoint()"
+          (mousedown)="handleMouseDownOnPoint(true)"
+        ></span>
+        <span class="svg-container_point_index">{{
+          geometry.indexOf(point)
+        }}</span>
+      </div>
+      <span class="svg-container_indicator svg-container_indicator--X">X</span>
+      <span class="svg-container_indicator svg-container_indicator--Y">Y</span>
+      <div class="svg-container_axe svg-container_axe--x">
+        <span class="svg-container_axe_length">{{ coorMax }} mm</span>
+        <span class="svg-container_axe_arrow"></span>
+      </div>
+      <div class="svg-container_axe svg-container_axe--y">
+        <span class="svg-container_axe_length">{{ coorMax }} mm</span>
+        <span class="svg-container_axe_arrow"></span>
+      </div>
+      <svg
+        class="svg-container_svg"
+        xmlns="http://www.w3.org/2000/svg"
+        (mousemove)="handleMouseMove($event)"
+      >
+        <polyline
+          fill="none"
+          [attr.points]="pointsSvgAttribute"
+          [attr.stroke-width]="sectionThickness"
+        />
+      </svg>
     </div>
-    <span class="svg-container_indicator svg-container_indicator--X">X</span>
-    <span class="svg-container_indicator svg-container_indicator--Y">Y</span>
-    <div class="svg-container_axe svg-container_axe--x">
-      <span class="svg-container_axe_length">{{ coorMax }} mm</span>
-      <span class="svg-container_axe_arrow"></span>
-    </div>
-    <div class="svg-container_axe svg-container_axe--y">
-      <span class="svg-container_axe_length">{{ coorMax }} mm</span>
-      <span class="svg-container_axe_arrow"></span>
-    </div>
-    <svg
-      class="svg-container_svg"
-      xmlns="http://www.w3.org/2000/svg"
-      (mousemove)="handleMouseMove($event)"
-    >
-      <polyline
-        fill="none"
-        [attr.points]="pointsSvgAttribute"
-        [attr.stroke-width]="sectionThickness"
-      />
-    </svg>
   </div>
-  <!-- <div class="canvas-container">
-    <div class="canvas-container_axe canvas-container_axe--x"></div>
-    <div class="canvas-container_axe canvas-container_axe--y"></div>
-    <span
-      class="canvas-container_coordonates"
-      *ngIf="areCoordonatesVisible === true"
-      [ngStyle]="{
-        left: coordonatesPosition.x + 50 + 'px',
-        top: coordonatesPosition.y + 50 + 'px'
-      }"
-      >x : {{ coordonatesPosition.x }} , y : {{ coordonatesPosition.y }}</span
-    >
-    <canvas
-      class="section-canvas"
-      #canvas
-      (mouseover)="handleCoordonatesVisibility(true)"
-      (mouseleave)="handleCoordonatesVisibility(false)"
-      (mousemove)="handleMouseMove($event)"
-    ></canvas>
-  </div> -->
   <form [formGroup]="sectionForm">
     <p>
       <label>
@@ -108,9 +93,18 @@
         + Ajouter un point
       </button>
     </fieldset>
-    <p class="warning-message" *ngIf="errorOnSubmit === true">
-      La section doit contenir au moins deux parois !
-    </p>
+    <div class="warnings-container">
+      <h2>A corriger :</h2>
+      <p class="warning-message" *ngIf="errorOnSubmit === true">
+        La section n'est pas un C !
+      </p>
+      <p class="warning-message" *ngIf="errorOnSubmit === true">
+        La section doit contenir au moins deux parois !
+      </p>
+      <p class="warning-message" *ngIf="errorOnSubmit === true">
+        La section ne respecte pas les critères d'élancement !
+      </p>
+    </div>
     <input
       type="submit"
       value="Analyser la section"

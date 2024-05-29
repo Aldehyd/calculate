@@ -2,6 +2,10 @@
     display: flex;
     gap: 20px;
 }
+.graphical-background {
+    padding: 4rem;
+    background: #fff;
+}
 .svg-container {
     position: relative;
     width: 300px;
@@ -13,16 +17,18 @@
         &--X {
             right: 0;
             bottom: 0;
+            transform: translateY(150%);
         }
         &--Y {
             left: 0;
             top: 0;
+            transform: translateX(-150%);
         }
         &--origin {
             display: block;
             left: 0;
             bottom: 0;
-            transform: translate(-100%);
+            transform: translate(-150%);
         }
     }
     &_coordonates {
@@ -37,8 +43,8 @@
         &_index {
             position: absolute;
             font-weight: bold;
-            bottom: 1rem;
-            left: 1rem;
+            bottom: 0.5rem;
+            left: 0.5rem;
             color: #51E950;
         }
         &_geometry {
@@ -48,12 +54,18 @@
             height: 1rem;
             background-color: #51E950;
             transform: translate(-50%,100%);
+            &:hover {
+                background-color: red;
+            }
+            &:hover + .svg-container_point_index {
+                color: red;
+            }
         }
     }
     &_axe {
         position: absolute;
-        bottom: 1rem;
-        left: 1rem;
+        bottom: 0;
+        left: 0;
         &_length {
             display: block;
             position: absolute;
@@ -71,11 +83,11 @@
         }
         &--x {
             height: 0.2rem;
-            width: 90%;
+            width: 100%;
             background-color: #000;
             transform: translateY(-0.1rem);
             & .svg-container_axe_length {
-                top: 0.2rem;
+                top: 0.3rem;
                 left: 50%;
                 transform: translateX(-50%);
             }
@@ -88,7 +100,7 @@
         }
         &--y {
             width: 0.2rem;
-            height: 90%;
+            height: 100%;
             background-color: #000;
             transform: translateX(-0.1rem);
             & .svg-container_axe_length {
@@ -109,4 +121,9 @@
         height: 100%;
         stroke: orange;
     }
+}
+
+.warnings-container {
+    padding: 1rem;
+    border: solid 0.1rem #000;
 }
