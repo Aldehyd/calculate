@@ -16,14 +16,19 @@ import { Point } from '../models/point.model';
 })
 export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
 
-  @ViewChild('canvas') canvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('svg') svg!: ElementRef;
   projectName!: string;
   updateSection$!: Observable<any>;
   sectionForm!: FormGroup;
   context!: any;
   geometry!: Point[];
+  sectionThickness!: number;
+  pointsSvgAttribute!: string;
+  coorMax!: number;
   areCoordonatesVisible!: boolean;
   coordonatesPosition!: {x:number, y:number};
+  currentPoint!: {index:number, x:number, y:number};
+  mouseOverPoint!: boolean;
   errorOnSubmit!: boolean;
 
   constructor(
@@ -33,7 +38,11 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.mouseOverPoint = false;
+    this.coorMax = 300;
+    this.sectionThickness = this.sectionToolService.sectionThickness;
     this.coordonatesPosition = {x:0, y:0};
+    this.currentPoint = {index: 0, x:0, y:0};
     this.errorOnSubmit = false;
     this.projectName = this.sectionToolService.projectName;
     this.geometry = [
@@ -49,29 +58,34 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.context = this.canvas.nativeElement.getContext("2d");
     this.updateSection$ = this.sectionForm.valueChanges.pipe(
-      tap(geometry => {
+      tap(formValues => {
         // this.sectionToolService.setGeometry(geometry);
-        this.drawSection(this.translateGeometryFromForm(geometry));
+        this.drawSection(this.translateGeometryFromForm(formValues));
       })
     );
     this.updateSection$.subscribe();
   }
 
-  drawSection(geometry: any): void {
-    this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
-    this.context.beginPath();
-    this.context.lineWidth = geometry.thickness;
-    
-    for(let point in geometry) {
-      if(point !== "thickness") {
-          this.context.lineTo(geometry[point].x,geometry[point].y)
-          this.context.moveTo(geometry[point].x,geometry[point].y);
+  drawSection(formValues:any): void {
+    this.sectionThickness = formValues.thickness;
+    this.coorMax = 0;
+    for(let formValue in formValues) {
+      if(formValue !== "thickness") {
+        this.coorMax = Math.max(this.coorMax,formValues[formValue].x,formValues[formValue].y);
       };
     };
-    
-    this.context.stroke(); 
+    let points = "";
+    for(let formValue in formValues) {
+      if(formValue !== "thickness" && this.coorMax !== 0) {
+        if(formValue === 'point0') {
+          points += ` ${formValues[formValue].x},${300-formValues[formValue].y}`;
+        } else {
+          points += ` ${formValues[formValue].x * 300/this.coorMax},${300 - formValues[formValue].y * 300/this.coorMax}`;
+        };
+      };
+    };
+    this.pointsSvgAttribute = points;
   }
 
   translateGeometryToForm(geometry: PointLineForm[]): any {
@@ -125,9 +139,20 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
 
   handleMouseMove(e: MouseEvent) {
     if(this.areCoordonatesVisible === true) {
-      this.coordonatesPosition.x = Math.floor(e.clientX - this.canvas.nativeElement.getBoundingClientRect().left);
-      this.coordonatesPosition.y = Math.floor(e.clientY - this.canvas.nativeElement.getBoundingClientRect().top);
+      this.coordonatesPosition.x = Math.floor(e.clientX - this.svg.nativeElement.getBoundingClientRect().left);
+      this.coordonatesPosition.y = Math.floor(e.clientY - this.svg.nativeElement.getBoundingClientRect().top);
     };
+  }
+
+  handleMouseOverPoint(point: Point): void {
+    this.mouseOverPoint = true;
+    this.currentPoint.index = this.geometry.indexOf(point);
+    this.currentPoint.x = point.x;
+    this.currentPoint.y = point.y;
+  }
+
+  handleMouseLeavePoint(): void {
+    this.mouseOverPoint = false;
   }
 
   submitForm(): void {
