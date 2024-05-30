@@ -14,8 +14,4 @@ export class sectionToolService implements OnInit {
         this.sectionThickness = 2;
         this.sectionGeometry = [];
     }
-
-    setGeometry(geometry: any): void {
-        this.sectionGeometry = geometry;
-    }
 }

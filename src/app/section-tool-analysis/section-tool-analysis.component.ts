@@ -3,11 +3,12 @@ import { sectionToolService } from '../services/section-tool.service';
 import { Point } from '../models/point.model';
 import { CommonModule } from '@angular/common';
 import { AnalyzedSection } from '../models/analyzedSection.model';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-section-tool-analysis',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './section-tool-analysis.component.html',
   styleUrl: './section-tool-analysis.component.scss'
 })
@@ -28,7 +29,7 @@ export class SectionToolAnalysisComponent implements OnInit {
   topWingSvgCoor!: string;
   webSvgCoor!: string;
 
-  constructor(public sectionToolService: sectionToolService) {}
+  constructor(public sectionToolService: sectionToolService, private router:Router) {}
 
   ngOnInit():void {
     this.xPoints = [];
@@ -277,4 +278,7 @@ export class SectionToolAnalysisComponent implements OnInit {
               this.analyzedSection.web.compliant = true;
   }
 
-}
+  submitForm():void {
+    // this.router.navigateByUrl('');
+  }
+} 

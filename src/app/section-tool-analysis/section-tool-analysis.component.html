@@ -1,6 +1,6 @@
 <h1>
-  {{ sectionToolService.projectName }} : Calcul de section à parois minces -
-  Analyse
+  {{ sectionToolService.projectName | titlecase }} : Calcul de section à parois
+  minces - Analyse
 </h1>
 <div class="main-content">
   <div class="results-container">
@@ -86,5 +86,11 @@
         />
       </svg>
     </div>
+  </div>
+  <div class="bottom-links-container">
+    <a routerLink="./../geometry" class="basic-button">Précédent</a>
+    <button type="submit" class="basic-button" (click)="submitForm()">
+      Analyser la section
+    </button>
   </div>
 </div>

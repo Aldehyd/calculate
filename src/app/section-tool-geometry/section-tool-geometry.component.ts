@@ -32,7 +32,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   mouseOverPoint!: boolean;
   mouseDownOnPoint!: boolean;
 
-  errorOnSubmit!: boolean;
+  errorOnSubmit!: string;
 
   constructor(
     private sectionToolService: sectionToolService,
@@ -47,7 +47,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.sectionThickness = this.sectionToolService.sectionThickness;
     this.coordonatesPosition = {x:0, y:0};
     this.currentPoint = {index: 0, x:0, y:0};
-    this.errorOnSubmit = false;
+    this.errorOnSubmit = '';
     this.projectName = this.sectionToolService.projectName;
     this.geometry = [
       {
@@ -180,7 +180,11 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   
   submitForm(): void {
     if(this.geometry.length <=2) {
-      this.errorOnSubmit = true;
+      this.errorOnSubmit = 'min-walls';
+    } else if((this.geometry.length-1) % 2 ===0) {
+      this.errorOnSubmit = 'pair-walls';
+    } else if(this.geometry[0].x === this.geometry[this.geometry.length-1].x && this.geometry[0].y === this.geometry[this.geometry.length-1].y) {
+      this.errorOnSubmit = 'closed';
     } else {
       this.sectionToolService.sectionGeometry = this.geometry;
       this.sectionToolService.sectionThickness = this.sectionThickness;

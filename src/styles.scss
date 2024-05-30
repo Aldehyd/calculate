@@ -39,6 +39,30 @@ main {
     padding: 3%;
     background: linear-gradient(#BAFFB9,#D5FFD4);
 }
+input {
+    margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    padding: 0.4rem;
+    border-color: #268D75;
+    &[type='number'] {
+        appearance: textfield;
+        -moz-appearance:textfield;
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+}
+fieldset {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-color: #268D75;
+    & legend {
+        padding: 0 0.5rem;
+    }
+}
 .main-menu {
     width: 100%;
 }
@@ -68,7 +92,9 @@ main {
     padding: 1rem;
     background-color: #51E950;
     border: none;
-    &:not([disabled]) {
+    opacity: 0.5;
+    &:not([aria-disabled='true']) {
+        opacity: 1;
         cursor: pointer;
     }
 }
@@ -88,6 +114,12 @@ main {
         }
     }
 }
+.project-name {
+    color: #268D75;
+    font-weight: bold;
+}
+
+
 
 .projects {
     width: 100%;

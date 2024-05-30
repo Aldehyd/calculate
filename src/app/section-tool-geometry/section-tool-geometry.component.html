@@ -1,4 +1,7 @@
-<h1>{{ projectName }} : Calcul de section à parois minces - Géométrie</h1>
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Calcul de
+  section à parois minces - Géométrie
+</h1>
 <div class="main-content">
   <div class="graphical-background">
     <div
@@ -77,14 +80,21 @@
     <p>
       <label>
         Epaisseur des parois :
-        <input type="number" formControlName="thickness" /><span>mm</span>
+        <input
+          type="number"
+          formControlName="thickness"
+          class="thickness-field"
+          max="4"
+          min="1"
+        /><span>mm</span>
       </label>
     </p>
     <fieldset>
       <legend>Contour</legend>
-      <ul>
+      <ul class="points-list">
         <app-point-form-line
           *ngFor="let point of geometry"
+          [geometry]="geometry"
           [point]="point"
           [formGroup]="sectionForm"
         ></app-point-form-line>
@@ -97,25 +107,23 @@
         + Ajouter un point
       </button>
     </fieldset>
-    <div class="warnings-container">
+    <div class="warnings-container" *ngIf="errorOnSubmit !== ''">
       <h2>A corriger :</h2>
-      <p class="warning-message" *ngIf="errorOnSubmit === true">
+      <p class="warning-message" *ngIf="errorOnSubmit === 'closed'">
         La section n'est pas un C !
       </p>
-      <p class="warning-message" *ngIf="errorOnSubmit === true">
+      <p class="warning-message" *ngIf="errorOnSubmit === 'min-walls'">
         La section doit contenir au moins deux parois !
       </p>
-      <p class="warning-message" *ngIf="errorOnSubmit === true">
+      <p class="warning-message" *ngIf="errorOnSubmit === 'pair-walls'">
         La section possède un nombre de parois paire !
       </p>
     </div>
-    <input
-      type="submit"
-      value="Analyser la section"
-      class="basic-button"
-      (click)="submitForm()"
-    />
+    <div class="bottom-links-container">
+      <a routerLink="./.." class="basic-button">Précédent</a>
+      <button type="submit" class="basic-button" (click)="submitForm()">
+        Analyser la section
+      </button>
+    </div>
   </form>
 </div>
-
-<a routerLink="/.." class="basic-button">Précédent</a>
