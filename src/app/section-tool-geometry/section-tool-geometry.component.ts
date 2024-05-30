@@ -20,16 +20,18 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   projectName!: string;
   updateSection$!: Observable<any>;
   sectionForm!: FormGroup;
-  context!: any;
   geometry!: Point[];
   sectionThickness!: number;
+
   pointsSvgAttribute!: string;
   coorMax!: number;
+
   areCoordonatesVisible!: boolean;
   coordonatesPosition!: {x:number, y:number};
   currentPoint!: {index:number, x:number, y:number};
   mouseOverPoint!: boolean;
   mouseDownOnPoint!: boolean;
+
   errorOnSubmit!: boolean;
 
   constructor(
@@ -124,15 +126,17 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
 
   createNewPoint(): void {
-    const newPoint = {
-      indice: this.geometry.length,
-      x: this.geometry[this.geometry.length-1].x,
-      y: this.geometry[this.geometry.length-1].y,
-      angle: 0
+    if(this.geometry.length < 8) {
+      const newPoint = {
+        indice: this.geometry.length,
+        x: this.geometry[this.geometry.length-1].x,
+        y: this.geometry[this.geometry.length-1].y,
+        angle: 0
+      };
+      this.geometry = [...this.geometry, newPoint];
+      this.sectionForm.addControl(`point${this.geometry.length-1}X`, this.formBuilder.control(''));
+      this.sectionForm.addControl(`point${this.geometry.length-1}Y`, this.formBuilder.control(''));
     };
-    this.geometry = [...this.geometry, newPoint];
-    this.sectionForm.addControl(`point${this.geometry.length-1}X`, this.formBuilder.control(''));
-    this.sectionForm.addControl(`point${this.geometry.length-1}Y`, this.formBuilder.control(''));
   }
 
   handleCoordonatesVisibility(visible: boolean) {
@@ -179,6 +183,8 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
       this.errorOnSubmit = true;
     } else {
       this.sectionToolService.sectionGeometry = this.geometry;
+      this.sectionToolService.sectionThickness = this.sectionThickness;
+      this.sectionToolService.pointsSvgAttribute = this.pointsSvgAttribute;
       this.rooter.navigateByUrl('/section-tool/analysis');
     }
   }

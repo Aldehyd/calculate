@@ -3,28 +3,88 @@
   Analyse
 </h1>
 <div class="main-content">
-  <p>
-    {{
-      isClosed === true ? "La section est fermée." : "La section est ouverte"
-    }}
-  </p>
-  <p>
-    {{
-      isXSymetric === true
-        ? "La section est symétrique selon X."
-        : "La section n'est pas symétrique selon X."
-    }}
-  </p>
-  <p>
-    {{
-      isYSymetric === true
-        ? "La section est symétrique selon Y."
-        : "La section n'est pas symétrique selon Y."
-    }}
-  </p>
-  <p *ngIf="sectionShape !== 'inconnue'">
-    La section est un : {{ sectionShape }}.
-  </p>
-  <p *ngIf="sectionShape === 'inconnue'">La section est inconnue.</p>
-  <p>Nombre de raidisseur(s) détecté(s) : {{ stiffenersNumber }}</p>
+  <div class="results-container">
+    <p>
+      {{
+        analyzedSection.xSymetry.isXSymetric === true
+          ? "La section est symétrique selon X."
+          : "La section n'est pas symétrique selon X."
+      }}
+    </p>
+    <ul>
+      <li>
+        Aile supérieure :
+        <span
+          [ngStyle]="{
+            color: analyzedSection.topWing.compliant === true ? 'green' : 'red'
+          }"
+          >{{
+            analyzedSection.topWing.compliant === true
+              ? "conforme"
+              : "non conforme"
+          }}</span
+        >
+      </li>
+      <li>
+        Ame :
+        <span
+          [ngStyle]="{
+            color: analyzedSection.web.compliant === true ? 'green' : 'red'
+          }"
+          >{{
+            analyzedSection.web.compliant === true ? "conforme" : "non conforme"
+          }}</span
+        >
+      </li>
+      <li>
+        Aile inférieure :
+        <span
+          [ngStyle]="{
+            color:
+              analyzedSection.bottomWing.compliant === true ? 'green' : 'red'
+          }"
+          >{{
+            analyzedSection.bottomWing.compliant === true
+              ? "conforme"
+              : "non conforme"
+          }}</span
+        >
+      </li>
+    </ul>
+    <p>Nombre de raidisseurs : {{ analyzedSection.wallsNumber > 3 ? 2 : 0 }}</p>
+    <p *ngIf="analyzedSection.wallsNumber > 3">
+      Type de raidisseurs :
+      {{ analyzedSection.wallsNumber === 5 ? "simple pli" : "double pli" }}
+    </p>
+  </div>
+  <div class="graphical-background">
+    <div class="svg-container" #svg>
+      <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+        <polyline
+          fill="none"
+          [attr.points]="bottomWingSvgCoor"
+          stroke-width="4"
+          [attr.stroke]="
+            analyzedSection.bottomWing.compliant === true ? 'green' : 'red'
+          "
+        />
+        <polyline
+          fill="none"
+          [attr.points]="topWingSvgCoor"
+          stroke-width="4"
+          [attr.stroke]="
+            analyzedSection.topWing.compliant === true ? 'green' : 'red'
+          "
+        />
+        <polyline
+          fill="none"
+          [attr.points]="webSvgCoor"
+          stroke-width="4"
+          [attr.stroke]="
+            analyzedSection.web.compliant === true ? 'green' : 'red'
+          "
+        />
+      </svg>
+    </div>
+  </div>
 </div>

@@ -89,7 +89,11 @@
           [formGroup]="sectionForm"
         ></app-point-form-line>
       </ul>
-      <button class="basic-button" (click)="createNewPoint()">
+      <button
+        class="basic-button"
+        (click)="createNewPoint()"
+        [attr.aria-disabled]="geometry.length === 8 ? 'true' : 'false'"
+      >
         + Ajouter un point
       </button>
     </fieldset>
@@ -102,7 +106,7 @@
         La section doit contenir au moins deux parois !
       </p>
       <p class="warning-message" *ngIf="errorOnSubmit === true">
-        La section ne respecte pas les critères d'élancement !
+        La section possède un nombre de parois paire !
       </p>
     </div>
     <input

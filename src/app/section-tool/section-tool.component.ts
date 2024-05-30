@@ -1,25 +1,35 @@
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Form, FormGroup, FormsModule, NgForm, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { sectionToolService } from '../services/section-tool.service';
 @Component({
   selector: 'app-section-tool',
   standalone: true,
-  imports: [RouterModule,FormsModule],
+  imports: [RouterModule,FormsModule,ReactiveFormsModule],
   templateUrl: './section-tool.component.html',
   styleUrl: './section-tool.component.scss'
 })
 export class SectionToolComponent {
-  projectName!: string;
+  projectForm!: FormGroup;
 
-  constructor(private router: Router, private sectionToolService: sectionToolService) {}
+  constructor(
+    private router: Router, 
+    private sectionToolService: sectionToolService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-
+    this.projectForm = this.formBuilder.group({
+      name: [null,[Validators.required]],
+      sectionShape: [null,[Validators.required]],
+    });
   }
 
-  onSubmitForm(form: NgForm) {
-    this.sectionToolService.projectName = this.projectName;
-    this.router.navigateByUrl("section-tool/geometry");
+  onSubmitForm() {
+    if(this.projectForm.value.name !== null && this.projectForm.value.name.length > 0 && this.projectForm.value.sectionShape) {
+      this.sectionToolService.projectName = this.projectForm.value.name;
+      this.sectionToolService.projectShape= this.projectForm.value.sectionShape;
+      this.router.navigateByUrl("section-tool/geometry");
+    };
   }
 }

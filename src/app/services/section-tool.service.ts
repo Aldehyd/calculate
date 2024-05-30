@@ -5,8 +5,10 @@ import { Point } from "../models/point.model";
 })
 export class sectionToolService implements OnInit {
     projectName!: string;
+    projectShape!: string;
     sectionGeometry!: Point[];
     sectionThickness!: number;
+    pointsSvgAttribute!: string;
 
     ngOnInit(): void {
         this.sectionThickness = 2;
