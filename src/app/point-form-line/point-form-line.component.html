@@ -6,8 +6,9 @@
       type="number"
       [formControlName]="formControlNameX"
       [(ngModel)]="point.x"
+      class="coor-field"
     />
-    <span>mm</span>
+    <span>mm , </span>
   </label>
   <label>
     Y :
@@ -15,7 +16,15 @@
       type="number"
       [formControlName]="formControlNameY"
       [(ngModel)]="point.y"
+      class="coor-field"
     />
     <span>mm</span>
   </label>
+  <button
+    class="basic-button"
+    (click)="removePoint()"
+    *ngIf="point.indice !== 0"
+  >
+    X
+  </button>
 </li>
