@@ -22,7 +22,8 @@ export class AnalyzedSection {
             angle: number,
             stiffener: {
                 type: string,
-                walls: {length: number, angle: number}[]
+                compliant: boolean,
+                walls: {start: number, end:number, length: number, angle: number, verticalLength: number}[]
             },
             compliant: boolean
         },
@@ -41,7 +42,8 @@ export class AnalyzedSection {
             angle: number,
             stiffener: {
                 type: string,
-                walls: {length: number, angle: number}[]
+                compliant: boolean,
+                walls: {start:number, end:number, length: number, angle: number, verticalLength: number}[]
             },
             compliant: boolean
         },

@@ -56,10 +56,55 @@
       Type de raidisseurs :
       {{ analyzedSection.wallsNumber === 5 ? "simple pli" : "double pli" }}
     </p>
+    <ul *ngIf="analyzedSection.wallsNumber > 3">
+      <li>
+        Raidisseur aile inférieure :
+        <span
+          [ngStyle]="{
+            color:
+              analyzedSection.bottomWing.stiffener.compliant === true
+                ? 'green'
+                : 'red'
+          }"
+          >{{
+            analyzedSection.bottomWing.stiffener.compliant === true
+              ? "conforme"
+              : "non conforme"
+          }}</span
+        >
+      </li>
+      <li>
+        Raidisseur aile supérieure :
+        <span
+          [ngStyle]="{
+            color:
+              analyzedSection.topWing.stiffener.compliant === true
+                ? 'green'
+                : 'red'
+          }"
+          >{{
+            analyzedSection.topWing.stiffener.compliant === true
+              ? "conforme"
+              : "non conforme"
+          }}</span
+        >
+      </li>
+    </ul>
   </div>
   <div class="graphical-background">
     <div class="svg-container" #svg>
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+        <polyline
+          fill="none"
+          [attr.points]="bottomStiffenerSvgCoor"
+          stroke-width="4"
+          [attr.stroke]="
+            analyzedSection.bottomWing.stiffener.compliant === true
+              ? 'green'
+              : 'red'
+          "
+          *ngIf="analyzedSection.wallsNumber >= 5"
+        />
         <polyline
           fill="none"
           [attr.points]="bottomWingSvgCoor"
@@ -78,6 +123,17 @@
         />
         <polyline
           fill="none"
+          [attr.points]="topStiffenerSvgCoor"
+          stroke-width="4"
+          [attr.stroke]="
+            analyzedSection.topWing.stiffener.compliant === true
+              ? 'green'
+              : 'red'
+          "
+          *ngIf="analyzedSection.wallsNumber >= 5"
+        />
+        <polyline
+          fill="none"
           [attr.points]="webSvgCoor"
           stroke-width="4"
           [attr.stroke]="
@@ -89,7 +145,20 @@
   </div>
   <div class="bottom-links-container">
     <a routerLink="./../geometry" class="basic-button">Précédent</a>
-    <button type="submit" class="basic-button" (click)="submitForm()">
+    <button
+      type="submit"
+      class="basic-button"
+      (click)="submitForm()"
+      [attr.aria-disabled]="
+        analyzedSection.topWing.compliant === true &&
+        analyzedSection.bottomWing.compliant === true &&
+        analyzedSection.topWing.stiffener.compliant === true &&
+        analyzedSection.bottomWing.stiffener.compliant === true &&
+        analyzedSection.web.compliant === true
+          ? 'false'
+          : 'true'
+      "
+    >
       Analyser la section
     </button>
   </div>

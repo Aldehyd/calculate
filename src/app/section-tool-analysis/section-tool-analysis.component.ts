@@ -28,6 +28,8 @@ export class SectionToolAnalysisComponent implements OnInit {
   bottomWingSvgCoor!: string;
   topWingSvgCoor!: string;
   webSvgCoor!: string;
+  bottomStiffenerSvgCoor!: string;
+  topStiffenerSvgCoor!: string;
 
   constructor(public sectionToolService: sectionToolService, private router:Router) {}
 
@@ -55,6 +57,7 @@ export class SectionToolAnalysisComponent implements OnInit {
         angle: 0,
         stiffener : {
           type: "none",
+          compliant: false,
           walls: []
         },
         compliant: false
@@ -74,6 +77,7 @@ export class SectionToolAnalysisComponent implements OnInit {
         angle: 0,
         stiffener : {
           type: "none",
+          compliant: false,
           walls: []
         },
         compliant: false
@@ -109,14 +113,9 @@ export class SectionToolAnalysisComponent implements OnInit {
     this.isXSymetric = false;
 
     if(this.geometry[0].x === this.geometry[this.geometry.length-1].x) {
-      // if(this.geometry[0].y === this.geometry[this.geometry.length-1].y) {
-      //   this.isClosed = true;
-      //   this.pointsNumber--;
-      // };
       this.detectXSymetry();
     } 
     this.detectMainWalls();
-    this.detectStiffeners();
   }
 
   detectXSymetry() { //ATTENTION : le résultat dépend de l'ordre dans lequel on a déclaré les points ! A corriger !
@@ -157,18 +156,8 @@ export class SectionToolAnalysisComponent implements OnInit {
           this.analyzedSection.bottomWing = this.fillAnalyzedSectionWing('bottom',1,2);
           this.analyzedSection.web = this.fillAnalyzedSectionWeb(2,3);
         };
-        // this.analyzedSection.topWing.stiffener = {
-        //   type: "simple pli",
-        //   walls: []
-        // };
-        // this.analyzedSection.bottomWing.stiffener = this.analyzedSection.topWing.stiffener;
         break;
       case 7: 
-        // this.analyzedSection.topWing.stiffener = {
-        //   type: "double pli",
-        //   walls: []
-        // };
-        // this.analyzedSection.bottomWing.stiffener = this.analyzedSection.topWing.stiffener;
         if(this.yPoints[0] > this.yPoints[this.analyzedSection.pointsNumber-1]) {
           this.analyzedSection.topWing = this.fillAnalyzedSectionWing('top',3,2);
           this.analyzedSection.bottomWing = this.fillAnalyzedSectionWing('bottom',5,4);
@@ -188,6 +177,10 @@ export class SectionToolAnalysisComponent implements OnInit {
     return Math.sqrt(Math.pow(this.geometry[start].x - this.geometry[end].x,2)+Math.pow(this.geometry[start].y - this.geometry[end].y,2))
   }
 
+  calculateWallVerticalLength(start:number,end:number):number {
+    return Math.abs(this.geometry[start].y - this.geometry[end].y)
+  }
+
   calculateAngle(index:number):number {
     const a = Math.sqrt(Math.pow(this.geometry[index-1].x - this.geometry[index].x,2)+Math.pow(this.geometry[index-1].y - this.geometry[index].y,2));
     const b =  Math.sqrt(Math.pow(this.geometry[index+1].x - this.geometry[index].x,2)+Math.pow(this.geometry[index+1].y - this.geometry[index].y,2));
@@ -201,6 +194,69 @@ export class SectionToolAnalysisComponent implements OnInit {
   }
 
   fillAnalyzedSectionWing(type:string,start:number,end:number):AnalyzedSection['topWing'] {
+    let stiffener: {type:string,compliant:boolean,walls: any[]} = {type: 'none',compliant: false, walls: []};
+    if(this.analyzedSection.wallsNumber === 5) {
+      stiffener.type = 'simple pli';
+      if(type === 'top') {
+        stiffener.walls = [
+          {
+            start: end,
+            end: end+1,
+            length: this.calculateWallLength(end,end+1),
+            angle: this.calculateAngle(end),
+            verticalLength: this.calculateWallVerticalLength(end,end+1)
+          }
+        ];
+      } else {
+        stiffener.walls = [
+          {
+            start: start-1,
+            end: start,
+            length: this.calculateWallLength(start-1,start),
+            angle: this.calculateAngle(start),
+            verticalLength: this.calculateWallVerticalLength(start-1,start)
+          }
+        ];
+      };
+    };
+    if(this.analyzedSection.wallsNumber === 7) {
+      stiffener.type = 'double pli';
+      if(type === 'top') {
+        stiffener.walls = [
+          {
+            start: end,
+            end: end+1,
+            length: this.calculateWallLength(end,end+1),
+            angle: this.calculateAngle(end),
+            verticalLength: this.calculateWallVerticalLength(end,end+1)
+          },
+          {
+            start: end+1,
+            end: end+2,
+            length: this.calculateWallLength(end+1,end+2),
+            angle: this.calculateAngle(end+1),
+            verticalLength: this.calculateWallVerticalLength(end+1,end+2)
+          }
+        ];
+      } else {
+        stiffener.walls = [
+          {
+            start: start-2,
+            end: start-1,
+            length: this.calculateWallLength(start-1,start-2),
+            angle: this.calculateAngle(start-1),
+            verticalLength: this.calculateWallVerticalLength(start-1,start-2)
+          },
+          {
+            start: start-1,
+            end: start,
+            length: this.calculateWallLength(start-1,start),
+            angle: this.calculateAngle(start),
+            verticalLength: this.calculateWallVerticalLength(start-1,start)
+          }
+        ];
+      };
+    } 
     return {
       start : {
         index: start,
@@ -214,10 +270,7 @@ export class SectionToolAnalysisComponent implements OnInit {
       },
       length: this.calculateWallLength(start,end),
       angle: type === 'top' ? this.calculateAngle(start) : this.calculateAngle(end),
-      stiffener : {
-        type: "none",
-        walls: []
-      },
+      stiffener : stiffener,
       compliant: false
     }
   }
@@ -239,16 +292,15 @@ export class SectionToolAnalysisComponent implements OnInit {
     }
   }
 
-  detectStiffeners(): void {
-    this.stiffenersNumber = 0;
-    for(let i=1; i<this.geometry.length-1; i++) {
-      if(this.geometry[i].angle <= 135 && this.geometry[i].angle >= 45) {
-        this.stiffenersNumber++;
-      };
-    };
-  }
-
   drawSection(): void {
+    if(this.analyzedSection.wallsNumber >= 5) {
+      this.bottomStiffenerSvgCoor = `${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[0].start]},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[0].start]} ${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[0].end]},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[0].end]}`;
+      this.topStiffenerSvgCoor = `${this.xPoints[this.analyzedSection.topWing.stiffener.walls[0].start]},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[0].start]} ${this.xPoints[this.analyzedSection.topWing.stiffener.walls[0].end]},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[0].end]}`;
+    };
+    if(this.analyzedSection.wallsNumber === 7) {
+      this.bottomStiffenerSvgCoor += ` ${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[1].end]},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[1].end]}`;
+      this.topStiffenerSvgCoor += ` ${this.xPoints[this.analyzedSection.topWing.stiffener.walls[1].end]},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[1].end]}`;
+    };
     this.bottomWingSvgCoor = `${this.analyzedSection.bottomWing.start.x},${300-this.analyzedSection.bottomWing.start.y} ${this.analyzedSection.bottomWing.end.x},${300-this.analyzedSection.bottomWing.end.y}`;
     this.topWingSvgCoor = `${this.analyzedSection.topWing.start.x},${300-this.analyzedSection.topWing.start.y} ${this.analyzedSection.topWing.end.x},${300-this.analyzedSection.topWing.end.y}`;
     this.webSvgCoor = `${this.analyzedSection.web.start.x},${300-this.analyzedSection.web.start.y} ${this.analyzedSection.web.end.x},${300-this.analyzedSection.web.end.y}`
@@ -259,12 +311,28 @@ export class SectionToolAnalysisComponent implements OnInit {
       case 'none':
         this.analyzedSection.bottomWing.compliant = this.analyzedSection.bottomWing.length / this.analyzedSection.thickness <= 50;
         break;
+      case 'simple pli':
+        this.analyzedSection.bottomWing.compliant = this.analyzedSection.bottomWing.length / this.analyzedSection.thickness <= 50 || (this.analyzedSection.bottomWing.length / this.analyzedSection.thickness <= 60 && this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.bottomWing.stiffener.walls[0].verticalLength / this.analyzedSection.bottomWing.length >=0.2 && this.analyzedSection.bottomWing.stiffener.walls[0].verticalLength / this.analyzedSection.bottomWing.length <=0.6);
+        this.analyzedSection.bottomWing.stiffener.compliant = this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.bottomWing.stiffener.walls[0].verticalLength / this.analyzedSection.bottomWing.length >=0.2 && this.analyzedSection.bottomWing.stiffener.walls[0].verticalLength / this.analyzedSection.bottomWing.length <=0.6;
+        break;
+      case 'double pli':
+        this.analyzedSection.bottomWing.compliant = this.analyzedSection.bottomWing.length / this.analyzedSection.thickness <= 50 || (this.analyzedSection.bottomWing.length / this.analyzedSection.thickness <= 60 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.thickness <= 50 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.bottomWing.length >=0.2 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.bottomWing.length <=0.6) || (this.analyzedSection.bottomWing.length <=90 && this.analyzedSection.bottomWing.stiffener.walls[0].length <=50 && this.analyzedSection.bottomWing.stiffener.walls[1].length <=60 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.bottomWing.length >=0.2 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.bottomWing.length <=0.6 && this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.bottomWing.length >=0.1 && this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.bottomWing.length <=0.3);
+        this.analyzedSection.bottomWing.stiffener.compliant = this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.bottomWing.stiffener.walls[1].length / this.analyzedSection.thickness <= 60 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.bottomWing.length >=0.2 && this.analyzedSection.bottomWing.stiffener.walls[1].verticalLength / this.analyzedSection.bottomWing.length <=0.6 && this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.bottomWing.length >=0.1 && this.analyzedSection.bottomWing.stiffener.walls[0].length / this.analyzedSection.bottomWing.length <=0.3;
+        break;
       default:
         break;
     };
     switch(this.analyzedSection.topWing.stiffener.type) {
       case 'none':
         this.analyzedSection.topWing.compliant = this.analyzedSection.topWing.length / this.analyzedSection.thickness <= 50;
+        break;
+      case 'simple pli':
+        this.analyzedSection.topWing.compliant = this.analyzedSection.topWing.length / this.analyzedSection.thickness <= 50 || (this.analyzedSection.topWing.length / this.analyzedSection.thickness <= 60 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.topWing.length >=0.2 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.topWing.length <=0.6);
+        this.analyzedSection.topWing.stiffener.compliant = this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.topWing.length >=0.2 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.topWing.length <=0.6;
+        break;
+      case 'double pli':
+        this.analyzedSection.topWing.compliant = this.analyzedSection.topWing.length / this.analyzedSection.thickness <= 50 || (this.analyzedSection.topWing.length / this.analyzedSection.thickness <= 60 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.topWing.stiffener.walls[0].verticalLength / this.analyzedSection.topWing.length >=0.2 && this.analyzedSection.topWing.stiffener.walls[0].verticalLength / this.analyzedSection.topWing.length <=0.6) || (this.analyzedSection.topWing.length <=90 && this.analyzedSection.topWing.stiffener.walls[1].length <=50 && this.analyzedSection.topWing.stiffener.walls[0].length <=60 && this.analyzedSection.topWing.stiffener.walls[0].verticalLength / this.analyzedSection.topWing.length >=0.2 && this.analyzedSection.topWing.stiffener.walls[0].verticalLength / this.analyzedSection.topWing.length <=0.6 && this.analyzedSection.topWing.stiffener.walls[1].length / this.analyzedSection.topWing.length >=0.1 && this.analyzedSection.topWing.stiffener.walls[1].length / this.analyzedSection.topWing.length <=0.3);
+        this.analyzedSection.topWing.stiffener.compliant = this.analyzedSection.topWing.stiffener.walls[1].length / this.analyzedSection.thickness <= 50 && this.analyzedSection.topWing.stiffener.walls[0].length / this.analyzedSection.thickness <= 60 && this.analyzedSection.topWing.stiffener.walls[0].verticalLength / this.analyzedSection.topWing.length >=0.2 && this.analyzedSection.topWing.stiffener.walls[0].verticalLength / this.analyzedSection.topWing.length <=0.6 && this.analyzedSection.topWing.stiffener.walls[1].length / this.analyzedSection.topWing.length >=0.1 && this.analyzedSection.topWing.stiffener.walls[1].length / this.analyzedSection.topWing.length <=0.3;
         break;
       default:
         break;
