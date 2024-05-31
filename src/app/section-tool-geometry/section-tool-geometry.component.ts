@@ -186,6 +186,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     } else if(this.geometry[0].x === this.geometry[this.geometry.length-1].x && this.geometry[0].y === this.geometry[this.geometry.length-1].y) {
       this.errorOnSubmit = 'closed';
     } else {
+      this.sectionToolService.coorMax = this.coorMax;
       this.sectionToolService.sectionGeometry = this.geometry;
       this.sectionToolService.sectionThickness = this.sectionThickness;
       this.sectionToolService.pointsSvgAttribute = this.pointsSvgAttribute;

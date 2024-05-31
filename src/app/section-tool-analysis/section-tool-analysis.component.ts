@@ -19,7 +19,6 @@ export class SectionToolAnalysisComponent implements OnInit {
   xPoints!: number[];
   yPoints!: number[];
 
-  isClosed!: boolean;
   isXSymetric!: boolean;
   xSymetryAxeYCoor!: number;
   stiffenersNumber!: number;
@@ -109,7 +108,6 @@ export class SectionToolAnalysisComponent implements OnInit {
     this.analyzedSection.pointsNumber = this.geometry.length;
     this.analyzedSection.wallsNumber = this.geometry.length-1;
 
-    this.isClosed = false;
     this.isXSymetric = false;
 
     if(this.geometry[0].x === this.geometry[this.geometry.length-1].x) {
@@ -294,16 +292,16 @@ export class SectionToolAnalysisComponent implements OnInit {
 
   drawSection(): void {
     if(this.analyzedSection.wallsNumber >= 5) {
-      this.bottomStiffenerSvgCoor = `${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[0].start]},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[0].start]} ${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[0].end]},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[0].end]}`;
-      this.topStiffenerSvgCoor = `${this.xPoints[this.analyzedSection.topWing.stiffener.walls[0].start]},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[0].start]} ${this.xPoints[this.analyzedSection.topWing.stiffener.walls[0].end]},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[0].end]}`;
+      this.bottomStiffenerSvgCoor = `${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[0].start]*300/this.sectionToolService.coorMax},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[0].start]*300/this.sectionToolService.coorMax} ${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[0].end]*300/this.sectionToolService.coorMax},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[0].end]*300/this.sectionToolService.coorMax}`;
+      this.topStiffenerSvgCoor = `${this.xPoints[this.analyzedSection.topWing.stiffener.walls[0].start]*300/this.sectionToolService.coorMax},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[0].start]*300/this.sectionToolService.coorMax} ${this.xPoints[this.analyzedSection.topWing.stiffener.walls[0].end]*300/this.sectionToolService.coorMax},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[0].end]*300/this.sectionToolService.coorMax}`;
     };
     if(this.analyzedSection.wallsNumber === 7) {
-      this.bottomStiffenerSvgCoor += ` ${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[1].end]},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[1].end]}`;
-      this.topStiffenerSvgCoor += ` ${this.xPoints[this.analyzedSection.topWing.stiffener.walls[1].end]},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[1].end]}`;
+      this.bottomStiffenerSvgCoor += ` ${this.xPoints[this.analyzedSection.bottomWing.stiffener.walls[1].end]*300/this.sectionToolService.coorMax},${300-this.yPoints[this.analyzedSection.bottomWing.stiffener.walls[1].end]*300/this.sectionToolService.coorMax}`;
+      this.topStiffenerSvgCoor += ` ${this.xPoints[this.analyzedSection.topWing.stiffener.walls[1].end]*300/this.sectionToolService.coorMax},${300-this.yPoints[this.analyzedSection.topWing.stiffener.walls[1].end]*300/this.sectionToolService.coorMax}`;
     };
-    this.bottomWingSvgCoor = `${this.analyzedSection.bottomWing.start.x},${300-this.analyzedSection.bottomWing.start.y} ${this.analyzedSection.bottomWing.end.x},${300-this.analyzedSection.bottomWing.end.y}`;
-    this.topWingSvgCoor = `${this.analyzedSection.topWing.start.x},${300-this.analyzedSection.topWing.start.y} ${this.analyzedSection.topWing.end.x},${300-this.analyzedSection.topWing.end.y}`;
-    this.webSvgCoor = `${this.analyzedSection.web.start.x},${300-this.analyzedSection.web.start.y} ${this.analyzedSection.web.end.x},${300-this.analyzedSection.web.end.y}`
+    this.bottomWingSvgCoor = `${this.analyzedSection.bottomWing.start.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.bottomWing.start.y*300/this.sectionToolService.coorMax} ${this.analyzedSection.bottomWing.end.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.bottomWing.end.y*300/this.sectionToolService.coorMax}`;
+    this.topWingSvgCoor = `${this.analyzedSection.topWing.start.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.topWing.start.y*300/this.sectionToolService.coorMax} ${this.analyzedSection.topWing.end.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.topWing.end.y*300/this.sectionToolService.coorMax}`;
+    this.webSvgCoor = `${this.analyzedSection.web.start.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.web.start.y*300/this.sectionToolService.coorMax} ${this.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.web.end.y*300/this.sectionToolService.coorMax}`
   }
 
   analyzeCompliance(): void {

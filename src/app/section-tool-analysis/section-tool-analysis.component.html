@@ -143,23 +143,23 @@
       </svg>
     </div>
   </div>
-  <div class="bottom-links-container">
-    <a routerLink="./../geometry" class="basic-button">Précédent</a>
-    <button
-      type="submit"
-      class="basic-button"
-      (click)="submitForm()"
-      [attr.aria-disabled]="
-        analyzedSection.topWing.compliant === true &&
-        analyzedSection.bottomWing.compliant === true &&
-        analyzedSection.topWing.stiffener.compliant === true &&
-        analyzedSection.bottomWing.stiffener.compliant === true &&
-        analyzedSection.web.compliant === true
-          ? 'false'
-          : 'true'
-      "
-    >
-      Analyser la section
-    </button>
-  </div>
+</div>
+<div class="bottom-links-container">
+  <a routerLink="./../geometry" class="basic-button">Précédent</a>
+  <button
+    type="submit"
+    class="basic-button"
+    (click)="submitForm()"
+    [attr.aria-disabled]="
+      analyzedSection.topWing.compliant === true &&
+      analyzedSection.bottomWing.compliant === true &&
+      analyzedSection.topWing.stiffener.compliant === true &&
+      analyzedSection.bottomWing.stiffener.compliant === true &&
+      analyzedSection.web.compliant === true
+        ? 'false'
+        : 'true'
+    "
+  >
+    Suivant
+  </button>
 </div>
