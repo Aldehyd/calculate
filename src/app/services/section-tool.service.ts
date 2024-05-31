@@ -8,11 +8,13 @@ export class sectionToolService implements OnInit {
     projectShape!: string;
     sectionGeometry!: Point[];
     sectionThickness!: number;
+    roundCorner!: number;
     coorMax!: number;
     pointsSvgAttribute!: string;
 
     ngOnInit(): void {
         this.sectionThickness = 2;
+        this.roundCorner = 4;
         this.sectionGeometry = [];
     }
 }
