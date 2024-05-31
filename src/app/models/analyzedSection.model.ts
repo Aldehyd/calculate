@@ -1,6 +1,7 @@
 export class AnalyzedSection {
     constructor(
         public thickness : number,
+        public roundCorner: number,
         public pointsNumber: number,
         public wallsNumber: number,
         public xSymetry: {

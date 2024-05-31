@@ -7,6 +7,7 @@ import { SubscriptionComponent } from './subscription/subscription.component';
 import { SectionToolGeometryComponent } from './section-tool-geometry/section-tool-geometry.component';
 import { DeleteAccountComponent } from './delete-account/delete-account.component';
 import { SectionToolAnalysisComponent } from './section-tool-analysis/section-tool-analysis.component';
+import { SectionToolSollicitationComponent } from './section-tool-sollicitation/section-tool-sollicitation.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
@@ -17,4 +18,5 @@ export const routes: Routes = [
     {path: 'section-tool', component: SectionToolComponent},
     {path: 'section-tool/geometry', component: SectionToolGeometryComponent},
     {path: 'section-tool/analysis', component: SectionToolAnalysisComponent},
+    {path: 'section-tool/sollicitation', component: SectionToolSollicitationComponent}
 ];

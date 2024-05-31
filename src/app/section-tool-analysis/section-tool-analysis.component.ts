@@ -38,6 +38,7 @@ export class SectionToolAnalysisComponent implements OnInit {
     this.geometry = this.sectionToolService.sectionGeometry;
     this.analyzedSection = {
       thickness: this.sectionToolService.sectionThickness,
+      roundCorner: this.sectionToolService.roundCorner,
       pointsNumber: 0,
       wallsNumber: 0,
       xSymetry: {isXSymetric: false,axeYCoor: 0},
@@ -344,7 +345,23 @@ export class SectionToolAnalysisComponent implements OnInit {
               this.analyzedSection.web.compliant = true;
   }
 
+  checkSection(): boolean {
+    if(this.analyzedSection.topWing.compliant === true &&
+      this.analyzedSection.bottomWing.compliant === true &&
+      this.analyzedSection.web.compliant === true) {
+        if((this.analyzedSection.topWing.stiffener.type !== 'none' && this.analyzedSection.topWing.stiffener.compliant === false) ||
+        (this.analyzedSection.bottomWing.stiffener.type !== 'none' && this.analyzedSection.bottomWing.stiffener.compliant === false)) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return false
+      };
+  }
+
   submitForm():void {
-    // this.router.navigateByUrl('');
+    if(this.checkSection())
+      this.router.navigateByUrl('/section-tool/sollicitation');
   }
 } 

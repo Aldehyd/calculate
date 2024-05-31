@@ -1,0 +1,29 @@
+<h1>
+  {{ sectionToolService.projectName | titlecase }} : Calcul de section à parois
+  minces - Sollicitation
+</h1>
+<div class="main-content">
+  <form
+    class="tool-form"
+    [formGroup]="sollicitationForm"
+    (ngSubmit)="onSubmitForm()"
+  >
+    <label>
+      Limite d'élasticité :
+      <input type="number" /> MPa
+    </label>
+    <fieldset>
+      <legend>Types de sollicitation</legend>
+      <label>
+        <input type="radio" value="flexion" formControlName="flexion" />
+        Flexion
+      </label>
+    </fieldset>
+    <div class="bottom-links-container">
+      <a routerLink="/section-tool/analysis" class="basic-button">Précédent</a>
+      <button type="submit" class="basic-button" (click)="onSubmitForm()">
+        Calculer l'aire efficace
+      </button>
+    </div>
+  </form>
+</div>
