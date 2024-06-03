@@ -75,6 +75,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
 
   drawSection(formValues:any): void {
     this.sectionThickness = formValues.thickness;
+    this.roundCorner = formValues.roundCorner;
     this.coorMax = 0;
     for(let formValue in formValues) {
       if(formValue !== "thickness" && formValue !== "roundCorner") {

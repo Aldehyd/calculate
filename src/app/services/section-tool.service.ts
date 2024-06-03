@@ -1,5 +1,7 @@
 import { Injectable, OnInit } from "@angular/core";
 import { Point } from "../models/point.model";
+import { AnalyzedSection } from "../models/analyzedSection.model";
+import { SectionArea } from "../models/section-area.model";
 @Injectable({
     providedIn: 'root'
 })
@@ -11,6 +13,10 @@ export class sectionToolService implements OnInit {
     roundCorner!: number;
     coorMax!: number;
     pointsSvgAttribute!: string;
+    analyzedSection!: AnalyzedSection;
+    sectionArea!: SectionArea;
+    sollicitationType!: string;
+    elasticLimit!: number;
 
     ngOnInit(): void {
         this.sectionThickness = 2;

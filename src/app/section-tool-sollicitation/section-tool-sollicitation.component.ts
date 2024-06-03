@@ -29,6 +29,8 @@ export class SectionToolSollicitationComponent implements OnInit {
   }
 
   onSubmitForm(): void {
+    this.sectionToolService.sollicitationType = this.sollicitationForm.value.sollicitationType;
+    this.sectionToolService.elasticLimit = this.sollicitationForm.value.elasticLimit;
     this.router.navigateByUrl('/section-tool/area');
   }
 }

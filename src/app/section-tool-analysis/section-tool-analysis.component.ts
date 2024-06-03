@@ -305,7 +305,7 @@ export class SectionToolAnalysisComponent implements OnInit {
     this.webSvgCoor = `${this.analyzedSection.web.start.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.web.start.y*300/this.sectionToolService.coorMax} ${this.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-this.analyzedSection.web.end.y*300/this.sectionToolService.coorMax}`
   }
 
-  analyzeCompliance(): void {
+  analyzeCompliance(): void { //AJOUTER ANGLES RAIDISSEURS MIN ET MAX VERIF selon 5.5.3.2
     switch(this.analyzedSection.bottomWing.stiffener.type) {
       case 'none':
         this.analyzedSection.bottomWing.compliant = this.analyzedSection.bottomWing.length / this.analyzedSection.thickness <= 50;
@@ -361,7 +361,9 @@ export class SectionToolAnalysisComponent implements OnInit {
   }
 
   submitForm():void {
-    if(this.checkSection())
+    if(this.checkSection()) {
+      this.sectionToolService.analyzedSection = this.analyzedSection;
       this.router.navigateByUrl('/section-tool/sollicitation');
+    };
   }
 } 

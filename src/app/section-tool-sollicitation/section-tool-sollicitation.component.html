@@ -10,12 +10,16 @@
   >
     <label>
       Limite d'élasticité :
-      <input type="number" /> MPa
+      <input type="number" formControlName="elasticLimit" /> MPa
     </label>
     <fieldset>
       <legend>Types de sollicitation</legend>
       <label>
-        <input type="radio" value="flexion" formControlName="flexion" />
+        <input
+          type="radio"
+          value="flexion"
+          formControlName="sollicitationType"
+        />
         Flexion
       </label>
     </fieldset>
