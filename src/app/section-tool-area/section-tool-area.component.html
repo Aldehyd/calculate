@@ -3,14 +3,69 @@
   minces - Aire efficace
 </h1>
 <div class="main-content">
-  <ul>
-    <li>be1 : {{ sectionArea.topWing.be1 | number : "1.0,2" }} mm</li>
-    <li>be2 : {{ sectionArea.topWing.be1 | number : "1.0,2" }} mm</li>
-    <li>ceff : {{ sectionArea.topWing.ceff | number : "1.0,2" }} mm</li>
-    <li>
-      tred : {{ sectionArea.topWing.stiffener.tred | number : "1.0,2" }} mm
-    </li>
-    <li>he1 : {{ sectionArea.web.be1 | number : "1.0,2" }} mm</li>
-    <li>he2 : {{ sectionArea.web.be2 | number : "1.0,2" }} mm</li>
-  </ul>
+  <div class="results-container">
+    <ul>
+      <li>be1 : {{ sectionArea.topWing.be1 | number : "1.0-2" }} mm</li>
+      <li>be2 : {{ sectionArea.topWing.be2 | number : "1.0-2" }} mm</li>
+      <li>ceff : {{ sectionArea.topWing.ceff | number : "1.0-2" }} mm</li>
+      <li>
+        tred : {{ sectionArea.topWing.stiffener.tred | number : "1.0-2" }} mm
+      </li>
+      <li>he1 : {{ sectionArea.web.be1 | number : "1.0-2" }} mm</li>
+      <li>he2 : {{ sectionArea.web.be2 | number : "1.0-2" }} mm</li>
+    </ul>
+  </div>
+  <div class="graphical-background">
+    <div class="svg-container" #svg>
+      <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+        <polyline
+          fill="none"
+          [attr.points]="sectionToolService.pointsSvgAttribute"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="be1SvgCoor"
+          stroke-width="8"
+          [attr.stroke]="'pink'"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="otherSvgCoor"
+          stroke-width="8"
+          [attr.stroke]="'orange'"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="be2SvgCoor"
+          stroke-width="8"
+          [attr.stroke]="'yellow'"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="ceffSvgCoor"
+          stroke-width="8"
+          [attr.stroke]="'blue'"
+          *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="he1SvgCoor"
+          stroke-width="8"
+          [attr.stroke]="'brown'"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="he2SvgCoor"
+          stroke-width="8"
+          [attr.stroke]="'purple'"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+<div class="bottom-links-container">
+  <a routerLink="./../sollicitation" class="basic-button">Précédent</a>
+  <button type="submit" class="basic-button">Suivant</button>
 </div>
