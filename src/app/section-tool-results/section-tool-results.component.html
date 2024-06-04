@@ -1,0 +1,33 @@
+<h1>
+  {{ sectionToolService.projectName | titlecase }} : Calcul de section à parois
+  minces - Résultats
+</h1>
+<div class="main-content">
+  <div class="results-container">
+    <ul>
+      <li>Aire brute : mm²</li>
+      <li>Aire efficace : mm²</li>
+      <li>Iz : mm4</li>
+      <li>Iy : mm4</li>
+      <li>Iyz : mm4</li>
+      <li>ys : mm</li>
+      <li>zs : mm</li>
+    </ul>
+  </div>
+  <div class="graphical-background">
+    <div class="svg-container" #svg>
+      <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+        <polyline
+          fill="none"
+          [attr.points]="sectionToolService.pointsSvgAttribute"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+<div class="bottom-links-container">
+  <a routerLink="./../area" class="basic-button">Précédent</a>
+  <button type="submit" class="basic-button">Enregistrer</button>
+</div>
