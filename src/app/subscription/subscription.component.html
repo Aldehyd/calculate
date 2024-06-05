@@ -4,6 +4,7 @@
   *ngIf="confirmationMailSend === false"
   class="account-form account-form--subscription"
   [formGroup]="subscriptionForm"
+  (ngSubmit)="submitForm()"
 >
   <p>
     <label for="emailInput">Email : </label>
@@ -19,7 +20,13 @@
     <ul>
       <li>
         8 caractères
-        <span *ngIf="userPassword.length >= 8" [ngStyle]="{ color: 'green' }">
+        <span
+          *ngIf="
+            subscriptionForm.value.userPassword !== null &&
+            subscriptionForm.value.userPassword.length >= 8
+          "
+          [ngStyle]="{ color: 'green' }"
+        >
           &#x2714;</span
         >
       </li>
@@ -54,11 +61,14 @@
     <label for="passwordInput">Mot de passe : </label>
     <input
       id="passwordInput"
+      [attr.type]="isPasswordVisible === true ? 'text' : 'password'"
       name="userPassword"
       formControlName="userPassword"
-      [(ngModel)]="userPassword"
     />
-    <button (click)="handlePasswordVisibility()">
+    <button
+      class="basic-button basic-button--password"
+      (click)="handlePasswordVisibility()"
+    >
       {{ isPasswordVisible ? "Cacher" : "Voir" }}
     </button>
   </div>
@@ -72,16 +82,21 @@
     <label for="confirmedPasswordInput">Confirmez le mot de passe : </label>
     <input
       id="confirmedPasswordInput"
+      [attr.type]="isConfirmedPasswordVisible === true ? 'text' : 'password'"
       name="userConfirmedPassword"
       formControlName="userConfirmedPassword"
-      [(ngModel)]="userConfirmedPassword"
     />
-    <button>Voir</button>
+    <button
+      class="basic-button basic-button--password"
+      (click)="handleConfirmedPasswordVisibility()"
+    >
+      {{ isConfirmedPasswordVisible ? "Cacher" : "Voir" }}
+    </button>
   </p>
   <button
     type="submit"
-    [disabled]="subscriptionForm.invalid"
-    (click)="onSubmitForm()"
+    class="basic-button"
+    [attr.aria-disabled]="isFormInvalid === true ? 'true' : 'false'"
   >
     S'inscrire
   </button>

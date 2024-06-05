@@ -1,22 +1,22 @@
 <h1>Connexion</h1>
 <p>Tous les champs sont obligatoires.</p>
-<form
-  class="account-form account-form--connexion"
-  #connexionForm="ngForm"
-  (ngSubmit)="onSubmitForm(connexionForm)"
->
+<form class="account-form account-form--connexion" (ngSubmit)="onSubmitForm()">
   <p>
     <label for="emailInput">Email : </label>
     <input
       id="emailInput"
       name="userEmail"
       type="email"
-      [(ngModel)]="userEmail"
+      formControlName="userEmail"
     />
   </p>
   <p>
     <label for="passwordInput">Mot de passe : </label>
-    <input id="passwordInput" name="userPassword" [(ngModel)]="userPassword" />
+    <input
+      id="passwordInput"
+      name="userPassword"
+      formControlName="userPassword"
+    />
     <button>Voir</button>
   </p>
   <button type="submit">Se connecter</button>

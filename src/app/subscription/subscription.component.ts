@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup,FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgForm } from '@angular/forms';
 import { Observable, tap, map } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 @Component({
@@ -12,24 +11,22 @@ import { AsyncPipe, CommonModule } from '@angular/common';
   styleUrl: './subscription.component.scss'
 })
 export class SubscriptionComponent {
-
-  checkPassword$!: Observable<any>;
+  checkFormValidity$!: Observable<any>;
+  checkPassword$!: Observable<any> | undefined;
   hidePassword$!: Observable<any>;
   subscriptionForm!: FormGroup;
 
   isPasswordVisible!: boolean;
-  userPassword!: string;
-  savedUserPassword! : string;
-  userConfirmedPassword!: string;
-  savedUserConfirmedPassword!: string;
+  isConfirmedPasswordVisible!: boolean;
   userPasswordIncludesNumber!: boolean;
   userPasswordIncludesUppercase!: boolean;
   userPasswordIncludesSpecialCharacter!: boolean;
   userPasswordSecurityColor!: string; 
   userPasswordRegEx!: RegExp;
-
+  userEmailRegEx!: RegExp;
   arePasswordsSimilar!: boolean;
   isExistingMail!: boolean;
+  isFormInvalid!: boolean;
 
   confirmationMailSend!: boolean;
   errorOnSubmit!: boolean;
@@ -42,38 +39,35 @@ export class SubscriptionComponent {
     this.errorOnSubmit = false;
     this.confirmationMailSend = false;
     this.arePasswordsSimilar = true;
-    this.userPassword= '';
-    this.userConfirmedPassword= '';
-    this.savedUserPassword = this.userPassword;
     this.userPasswordIncludesNumber = false;
     this.userPasswordIncludesUppercase = false;
     this.userPasswordIncludesSpecialCharacter = false;
     this.userPasswordRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[<>\?\.,;:!§&~"#'\(\)\{\}\-_\|\\\/\^@=\+\*£%°²])[ -~]{8,}$/g;
+    this.userEmailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     this.isPasswordVisible = false;
+    this.isConfirmedPasswordVisible = false;
+    this.isFormInvalid = true;
     this.subscriptionForm = this.formBuilder.group({
       userEmail: [null,[Validators.required,Validators.email]],
       userPassword: [null,[Validators.required,Validators.pattern(this.userPasswordRegEx)]],
       userConfirmedPassword: [null,[Validators.required]]
     });
-    this.hidePassword$ = this.subscriptionForm.valueChanges.pipe(
-      tap(values => this.savedUserPassword = values.userPassword),
-      tap(values => {
-        if(this.isPasswordVisible === false) {
-          this.userPassword = '';
-          for(let character of this.userPassword) {
-            this.userPassword += '\u25cf';
-          };
-        };
-      })
+    this.checkFormValidity$ = this.subscriptionForm.valueChanges.pipe(
+      tap(value => {
+        if(value.userEmail !== null && value.userPassword !== null && value.userConfirmedPassword !== null)
+          this.checkFormValidity()
+    })
     );
-    this.hidePassword$.subscribe();
-    this.checkPassword$ = this.subscriptionForm.valueChanges.pipe(
-      tap(values => this.checkPasswordNumber(values.userPassword)),
-      tap(values => this.checkPasswordUppercase(values.userPassword)),
-      tap(values => this.checkPasswordSpecialCharacter(values.userPassword)),
-      map(values => this.checkPasswordSecurity(values.userPassword))
+    this.checkFormValidity$.subscribe();
+    this.checkPassword$ = this.subscriptionForm.get('userPassword')?.valueChanges.pipe(
+      tap(value => {
+        this.checkPasswordNumber(value);
+        this.checkPasswordUppercase(value);
+        this.checkPasswordSpecialCharacter(value);
+      }),
+      map(value => this.checkPasswordSecurity(value))
     );
-    this.checkPassword$.subscribe();
+    this.checkPassword$?.subscribe();
   }
 
   checkPasswordNumber(password: string): void {
@@ -102,17 +96,10 @@ export class SubscriptionComponent {
 
   handlePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
-    if(this.isPasswordVisible === true) {
-      console.log(this.savedUserPassword)
-      this.userPassword = this.savedUserPassword;
-    } else {
-      this.savedUserPassword = this.userPassword;
-      let hiddenPassword = '';
-      for(let character of this.userPassword) {
-        hiddenPassword += '\u25cf';
-      };
-      this.userPassword = hiddenPassword;
-    };
+  }
+
+  handleConfirmedPasswordVisibility(): void {
+    this.isConfirmedPasswordVisible = !this.isConfirmedPasswordVisible;
   }
 
   checkPasswordSecurity(password: string): string {
@@ -149,32 +136,46 @@ export class SubscriptionComponent {
     };
   }
 
-  onSubmitForm() {
-    this.checkPasswordsSimilarity();
+  checkFormValidity(): void {
+    if(this.subscriptionForm.value.userPassword.match(this.userPasswordRegEx) &&
+      this.subscriptionForm.value.userEmail.match(this.userEmailRegEx) &&
+      this.subscriptionForm.value.userConfirmedPassword.length > 0) {
+      this.isFormInvalid = false;
+    } else {
+      this.isFormInvalid = true;
+    };
   }
 
   checkPasswordsSimilarity():void {
-    this.arePasswordsSimilar = this.userPassword === this.userConfirmedPassword;
-    if(this.arePasswordsSimilar === true)
-      this.checkExistingMail();
+    if(this.subscriptionForm.value.userPassword === this.subscriptionForm.value.userConfirmedPassword) {
+      this.sendConfirmationMail();
+    } else {
+      this.arePasswordsSimilar = false;
+    };
   }
 
   checkExistingMail():void {
-    if(this.userPassword.includes('M')) { //replace by fetch to server
+    if(this.subscriptionForm.value.userEmail.includes('M')) { //replace by fetch to server
       this.isExistingMail = true;
     } else {
       this.isExistingMail = false;
     };
     
     if(this.isExistingMail === false) {
-      this.submitForm();
+      this.checkPasswordsSimilarity();
     };  
   }
 
-  submitForm():void {
-    // this.subscriptionForm.reset();
-    this.confirmationMailSend = false;
+  sendConfirmationMail(): void {
+    //send mail
     this.errorOnSubmit = true;
-    console.log('suscribed !')
+    this.confirmationMailSend = false;
+    // this.errorOnSubmit = false;
+    // this.confirmationMailSend = true;
+  }
+
+  submitForm():void {
+    if(this.isFormInvalid === false)
+      this.checkExistingMail();
   }
 }
