@@ -4,28 +4,34 @@ import { Router, RouterModule } from '@angular/router';
 import { accountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
 import { Observable, tap } from 'rxjs';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-connexion',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,CommonModule],
+  imports: [ReactiveFormsModule,RouterModule,CommonModule,HttpClientModule],
   templateUrl: './connexion.component.html',
   styleUrl: './connexion.component.scss'
 })
 export class ConnexionComponent implements OnInit {
   connexionForm!: FormGroup;
+  isPasswordCorrect!: boolean;
   isPasswordVisible!: boolean;
   isFormInvalid!: boolean;
   checkFormValidity$!: Observable<any>;
   isExistingMail!: boolean;
   noExistingMailError!: boolean;
+  checkExistingMail$!: Observable<any>;
+  checkPassword$!: Observable<Object>;
 
   constructor(
     private accountService: accountService,
     private formBuilder: FormBuilder,
-    private router:Router
+    private router:Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+    this.isPasswordCorrect = true;
     this.noExistingMailError = false;
     this.isPasswordVisible = false;
     this.isFormInvalid = true;
@@ -55,21 +61,43 @@ export class ConnexionComponent implements OnInit {
   }
 
   checkExistingMail():void {
-    if(this.connexionForm.value.userEmail.includes('m')) { //replace by fetch to server
-      this.isExistingMail = true;
+    this.checkExistingMail$ = this.http.get(`http://localhost:4000/app/check_existing_mail?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+      tap(res => {
+        console.log(res)
+        if(res === 'yes') {
+          this.isExistingMail = true;
+        } else {
+          this.isExistingMail = false;
+        }; 
+      })
+    );
+    this.checkExistingMail$.subscribe();
+    
+    if(this.isExistingMail === true) {
+      this.checkPassword();
     } else {
-      this.isExistingMail = false;
+      this.noExistingMailError = true;
     };
+  }
+
+  checkPassword(): void {
+    this.checkPassword$ = this.http.get(`http://localhost:4000/app/check_password?mail=${this.connexionForm.value.userEmail}&password=${this.connexionForm.value.userPassword}`,{responseType: 'text'}).pipe(
+      tap(res => {
+        if(res === 'ok') {
+          this.isPasswordCorrect = true;
+          this.accountService.connected = true;
+          this.router.navigateByUrl('/');
+        } else {
+          this.isPasswordCorrect = false;
+        }; 
+      })
+    );
+    this.checkPassword$.subscribe();
+    
   }
 
   onSubmitForm() {
     if(this.isFormInvalid === false)
       this.checkExistingMail();
-      if(this.isExistingMail === true) {
-        this.accountService.connected = true;
-        this.router.navigateByUrl('/')
-      } else {
-        this.noExistingMailError = true;
-      };
   }
 }

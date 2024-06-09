@@ -39,7 +39,9 @@
   <p class="warning-message" *ngIf="noExistingMailError === true">
     Il n'existe aucun compte lié à cette adresse email.
   </p>
-  <p class="warning-message">Le mot de passe est erroné.</p>
+  <p class="warning-message" *ngIf="isPasswordCorrect === false">
+    Le mot de passe est erroné.
+  </p>
 </form>
 <p>
   Si vous n'avez pas encore de compte, vous pouvez vous inscrire

@@ -147,6 +147,30 @@ app.get("/app/validate_subscription", async (req, res) => {
   }
 });
 
+app.get("/app/check_password", async (req, res) => {
+  const uri = process.env.URI;
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    const user = await client
+      .db(dbName)
+      .collection("users")
+      .findOne({ email: req.query.mail });
+    console.log(user);
+    if (user.password === req.query.password) {
+      res.status(200).send("ok");
+    } else {
+      res.send("non ok");
+    }
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
 app.listen(port, () => {
   console.log("starting server on port : ", port);
 });
