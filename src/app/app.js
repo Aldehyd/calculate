@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: "../../.env" });
 
 const express = require("express");
 
@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 // });
 
 app.get("/app/check_existing_mail", async (req, res) => {
-  const uri =
-    "mongodb+srv://labathugues:devaccessibledbAldehyd12@cluster0.fmuwexk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  const uri = process.env.URI;
+  console.log(uri);
   const client = new MongoClient(uri);
   const dbName = "calculate";
 
@@ -57,8 +57,7 @@ app.post("/app/send_mail", async (req, res) => {
   const userKey = generateRandomKey();
 
   async function createUser(req) {
-    const uri =
-      "mongodb+srv://labathugues:devaccessibledbAldehyd12@cluster0.fmuwexk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    const uri = process.env.URI;
     const client = new MongoClient(uri);
     const dbName = "calculate";
     //create inactive user
@@ -89,10 +88,8 @@ app.post("/app/send_mail", async (req, res) => {
     port: 587,
     secure: false,
     auth: {
-      // user: process.env.EMAIL,
-      // pass: process.env.PASSWORD,
-      user: "contact@dyskredy-art.com",
-      pass: "u499.0U,URjum@%u4R",
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
     },
     tls: {
       rejectUnauthorized: false,
@@ -121,8 +118,7 @@ app.post("/app/send_mail", async (req, res) => {
 });
 
 app.get("/app/validate_subscription", async (req, res) => {
-  const uri =
-    "mongodb+srv://labathugues:devaccessibledbAldehyd12@cluster0.fmuwexk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  const uri = process.env.URI;
   const client = new MongoClient(uri);
   const dbName = "calculate";
   try {
