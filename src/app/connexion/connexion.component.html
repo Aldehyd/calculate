@@ -1,6 +1,10 @@
 <h1>Connexion</h1>
 <p>Tous les champs sont obligatoires.</p>
-<form class="account-form account-form--connexion" (ngSubmit)="onSubmitForm()">
+<form
+  class="account-form account-form--connexion"
+  [formGroup]="connexionForm"
+  (ngSubmit)="onSubmitForm()"
+>
   <p>
     <label for="emailInput">Email : </label>
     <input
@@ -14,13 +18,25 @@
     <label for="passwordInput">Mot de passe : </label>
     <input
       id="passwordInput"
+      [attr.type]="isPasswordVisible === true ? 'text' : 'password'"
       name="userPassword"
       formControlName="userPassword"
     />
-    <button>Voir</button>
+    <button
+      class="basic-button basic-button--password"
+      (click)="handlePasswordVisibility()"
+    >
+      {{ isPasswordVisible ? "Cacher" : "Voir" }}
+    </button>
   </p>
-  <button type="submit">Se connecter</button>
-  <p class="warning-message">
+  <button
+    type="submit"
+    class="basic-button"
+    [attr.aria-disabled]="isFormInvalid === true ? 'true' : 'false'"
+  >
+    Se connecter
+  </button>
+  <p class="warning-message" *ngIf="noExistingMailError === true">
     Il n'existe aucun compte lié à cette adresse email.
   </p>
   <p class="warning-message">Le mot de passe est erroné.</p>

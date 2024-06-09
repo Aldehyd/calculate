@@ -3,10 +3,11 @@ import { ReactiveFormsModule, FormGroup,FormBuilder, Validators } from '@angular
 import { RouterModule } from '@angular/router';
 import { Observable, tap, map } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-subscription',
   standalone: true,
-  imports: [RouterModule,ReactiveFormsModule,AsyncPipe,CommonModule],
+  imports: [RouterModule,ReactiveFormsModule,AsyncPipe,CommonModule,HttpClientModule],
   templateUrl: './subscription.component.html',
   styleUrl: './subscription.component.scss'
 })
@@ -27,12 +28,14 @@ export class SubscriptionComponent {
   arePasswordsSimilar!: boolean;
   isExistingMail!: boolean;
   isFormInvalid!: boolean;
-
+  checkExistingMail$!: Observable<Object>;
+  sendConfirmationMail$!: Observable<Object>;
   confirmationMailSend!: boolean;
   errorOnSubmit!: boolean;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -155,23 +158,37 @@ export class SubscriptionComponent {
   }
 
   checkExistingMail():void {
-    if(this.subscriptionForm.value.userEmail.includes('M')) { //replace by fetch to server
-      this.isExistingMail = true;
-    } else {
-      this.isExistingMail = false;
-    };
-    
-    if(this.isExistingMail === false) {
-      this.checkPasswordsSimilarity();
-    };  
+    this.checkExistingMail$ = this.http.get(`http://localhost:4000/app/check_existing_mail?mail=${this.subscriptionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+      tap(res => {
+        console.log(res)
+        if(res === 'yes') {
+          this.isExistingMail = true;
+        } else {
+          this.isExistingMail = false;
+        };
+      
+        if(this.isExistingMail === false) {
+          this.checkPasswordsSimilarity();
+        };  
+      })
+    );
+    this.checkExistingMail$.subscribe();
   }
 
   sendConfirmationMail(): void {
-    //send mail
-    this.errorOnSubmit = true;
-    this.confirmationMailSend = false;
-    // this.errorOnSubmit = false;
-    // this.confirmationMailSend = true;
+    this.sendConfirmationMail$ = this.http.post('http://localhost:4000/app/send_mail',{email: this.subscriptionForm.value.userEmail, password: this.subscriptionForm.value.userPassword},{responseType: 'text'}).pipe(
+      tap(res => {
+        if(res !== null && res === 'ok') {
+          this.confirmationMailSend = true;
+          this.errorOnSubmit = false;
+        } else {
+          this.errorOnSubmit = true;
+          this.confirmationMailSend = false;
+        };
+      })
+    );
+    this.sendConfirmationMail$.subscribe();
+ 
   }
 
   submitForm():void {

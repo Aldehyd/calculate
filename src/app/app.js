@@ -1,0 +1,170 @@
+require("dotenv").config();
+
+const express = require("express");
+
+const app = express();
+const port = process.env.PORT || 4000;
+const nodemailer = require("nodemailer");
+
+const { MongoClient } = require("mongodb");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// const path = require("path");
+// const public_path = path.join(__dirname,'/dist');
+// app.use('/',express.static(public_path));
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  next();
+});
+
+// app.get("*",(req,res)=> {
+//     res.sendFile(path.join(public_path,'index.html'));
+// });
+
+app.get("/app/check_existing_mail", async (req, res) => {
+  const uri =
+    "mongodb+srv://labathugues:devaccessibledbAldehyd12@cluster0.fmuwexk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+
+  try {
+    await client.connect();
+    const result = await client.db(dbName).collection("users").findOne({
+      email: req.query.mail,
+    });
+    console.log(result);
+    if (result !== null) {
+      res.status(200).send("yes");
+    } else {
+      res.send("no");
+    }
+  } catch (err) {
+    // res.send(err);
+  } finally {
+    await client.close();
+  }
+});
+
+app.post("/app/send_mail", async (req, res) => {
+  const userKey = generateRandomKey();
+
+  async function createUser(req) {
+    const uri =
+      "mongodb+srv://labathugues:devaccessibledbAldehyd12@cluster0.fmuwexk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    const client = new MongoClient(uri);
+    const dbName = "calculate";
+    //create inactive user
+    try {
+      await client.connect();
+      await client.db(dbName).collection("users").insertOne({
+        email: req.body.email,
+        password: req.body.password,
+        active: false,
+      });
+      console.log("document inserted");
+      //create confirmation key
+      await client.db(dbName).collection("confirm-subscriptions").insertOne({
+        email: req.body.email,
+        key: userKey,
+      });
+    } catch (err) {
+      // res.send(err);
+    } finally {
+      await client.close();
+    }
+  }
+
+  createUser(req);
+
+  let config = {
+    host: "node197-eu.n0c.com",
+    port: 587,
+    secure: false,
+    auth: {
+      // user: process.env.EMAIL,
+      // pass: process.env.PASSWORD,
+      user: "contact@dyskredy-art.com",
+      pass: "u499.0U,URjum@%u4R",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  };
+
+  let transporter = nodemailer.createTransport(config);
+
+  const mailOptions = {
+    from: "contact@dyskredy-art.com",
+    to: req.body.email,
+    subject: `Calculate: terminez votre inscription`,
+    html: `Cliquez sur ce lien afin de terminer votre inscription : <a href="http://localhost:4000/app/validate_subscription?key=${userKey}">lien</a>`,
+  };
+
+  transporter
+    .sendMail(mailOptions)
+    .then((response) => {
+      if (response.rejected.length === 0) {
+        res.status(200).send("ok");
+      } else {
+        res.send("non ok");
+      }
+    })
+    .catch((err) => res.send("non ok"));
+});
+
+app.get("/app/validate_subscription", async (req, res) => {
+  const uri =
+    "mongodb+srv://labathugues:devaccessibledbAldehyd12@cluster0.fmuwexk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    const userToValidate = await client
+      .db(dbName)
+      .collection("confirm-subscriptions")
+      .findOne({ key: req.query.key });
+    await client
+      .db(dbName)
+      .collection("users")
+      .findOneAndUpdate(
+        { email: userToValidate.email },
+        { $set: { active: true } }
+      );
+    await client
+      .db(dbName)
+      .collection("confirm-subscriptions")
+      .findOneAndDelete({ email: userToValidate.email });
+    res.status(200).send("ok");
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
+app.listen(port, () => {
+  console.log("starting server on port : ", port);
+});
+
+const generateRandomKey = () => {
+  let key = "";
+
+  const characters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789²é~|èçà@$¤ù*µ!:;,.§<>*";
+
+  while (key.length < 128) {
+    const newCharacter =
+      characters[Math.floor(Math.random() * characters.length)];
+    key += newCharacter;
+  }
+  return key;
+};
