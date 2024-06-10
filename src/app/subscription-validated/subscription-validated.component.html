@@ -1,0 +1,8 @@
+<h1>Inscription validée</h1>
+<div class="account-form">
+  <p *ngIf="isAccountActive === true">Votre compte est désormais actif.</p>
+  <p *ngIf="isAccountActive === true">
+    Vous pouvez vous connecter <a routerLink="/connexion">ici</a>.
+  </p>
+  <p *ngIf="isAccountActive === false">Une erreur est survenue.</p>
+</div>

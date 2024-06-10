@@ -36,6 +36,10 @@
   >
     Se connecter
   </button>
+  <p class="warning-message" *ngIf="isAccountInactive === true">
+    Ce compte n'a pas encore été activé. Veuillez cliquer sur le lien contenu
+    dans l'email de confirmation qui vous a été envoyé.
+  </p>
   <p class="warning-message" *ngIf="noExistingMailError === true">
     Il n'existe aucun compte lié à cette adresse email.
   </p>

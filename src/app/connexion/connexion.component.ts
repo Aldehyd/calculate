@@ -16,12 +16,14 @@ export class ConnexionComponent implements OnInit {
   connexionForm!: FormGroup;
   isPasswordCorrect!: boolean;
   isPasswordVisible!: boolean;
+  isAccountInactive!: boolean;
   isFormInvalid!: boolean;
   checkFormValidity$!: Observable<any>;
   isExistingMail!: boolean;
   noExistingMailError!: boolean;
   checkExistingMail$!: Observable<any>;
   checkPassword$!: Observable<Object>;
+  checkAccountActive$!:Observable<Object>;
 
   constructor(
     private accountService: accountService,
@@ -35,6 +37,7 @@ export class ConnexionComponent implements OnInit {
     this.noExistingMailError = false;
     this.isPasswordVisible = false;
     this.isFormInvalid = true;
+    this.isAccountInactive = false;
     this.connexionForm = this.formBuilder.group({
       userEmail: [null,[Validators.required,Validators.email]],
       userPassword: [null]
@@ -74,10 +77,24 @@ export class ConnexionComponent implements OnInit {
     this.checkExistingMail$.subscribe();
     
     if(this.isExistingMail === true) {
-      this.checkPassword();
+      this.checkAccountActive();
     } else {
       this.noExistingMailError = true;
     };
+  }
+
+  checkAccountActive(): void {
+    this.checkAccountActive$ = this.http.get(`http://localhost:4000/app/check_account_active?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+      tap(res => {
+        if(res === 'ok') {
+          this.isAccountInactive = false;
+          this.checkPassword();
+        } else {
+          this.isAccountInactive = true;
+        }; 
+      })
+    );
+    this.checkAccountActive$.subscribe();
   }
 
   checkPassword(): void {
@@ -86,6 +103,7 @@ export class ConnexionComponent implements OnInit {
         if(res === 'ok') {
           this.isPasswordCorrect = true;
           this.accountService.connected = true;
+          this.accountService.userEmail = this.connexionForm.value.userEmail;
           this.router.navigateByUrl('/');
         } else {
           this.isPasswordCorrect = false;
@@ -93,7 +111,6 @@ export class ConnexionComponent implements OnInit {
       })
     );
     this.checkPassword$.subscribe();
-    
   }
 
   onSubmitForm() {

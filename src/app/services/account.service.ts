@@ -5,9 +5,11 @@ import { Injectable, OnInit } from "@angular/core";
 })
 export class accountService implements OnInit {
     connected!: boolean;
+    userEmail!: string;
 
     ngOnInit(): void {
         this.connected = false;
+        this.userEmail = '';
     }
 
 }

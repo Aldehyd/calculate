@@ -165,11 +165,8 @@ export class SubscriptionComponent {
           this.isExistingMail = true;
         } else {
           this.isExistingMail = false;
-        };
-      
-        if(this.isExistingMail === false) {
           this.checkPasswordsSimilarity();
-        };  
+        };
       })
     );
     this.checkExistingMail$.subscribe();

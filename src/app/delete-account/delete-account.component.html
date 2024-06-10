@@ -5,17 +5,35 @@
 </p>
 <form
   class="account-form account-form--delete-account"
-  #deleteAccountForm="ngForm"
-  (ngSubmit)="onSubmitForm(deleteAccountForm)"
+  [formGroup]="removeAccountForm"
+  (ngSubmit)="onSubmitForm()"
+  *ngIf="isAccountRemoved === false"
 >
   <p>
     <label for="passwordInput">Mot de passe : </label>
-    <input id="passwordInput" name="userPassword" [(ngModel)]="userPassword" />
+    <input
+      id="passwordInput"
+      name="userPassword"
+      formControlName="userPassword"
+    />
   </p>
   <p class="warning-message">Le mot de passe est incorrect.</p>
   <label>
-    <input type="checkbox" />
+    <input
+      type="checkbox"
+      [checked]="isProjectsLossWarningChecked"
+      (change)="handleCheckbox()"
+    />
     J'ai conscience que mes projets enregistrés seront perdus.
   </label>
-  <button type="submit">Supprimer le compte</button>
+  <button
+    type="submit"
+    class="basic-button"
+    [attr.aria-disabled]="isFormInvalid === true ? 'true' : 'false'"
+  >
+    Supprimer le compte
+  </button>
 </form>
+<div class="account-form" *ngIf="isAccountRemoved === true">
+  <p>Le compte a été supprimé.</p>
+</div>

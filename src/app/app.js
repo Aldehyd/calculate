@@ -68,7 +68,6 @@ app.post("/app/send_mail", async (req, res) => {
         password: req.body.password,
         active: false,
       });
-      console.log("document inserted");
       //create confirmation key
       await client.db(dbName).collection("confirm-subscriptions").insertOne({
         email: req.body.email,
@@ -102,7 +101,7 @@ app.post("/app/send_mail", async (req, res) => {
     from: "contact@dyskredy-art.com",
     to: req.body.email,
     subject: `Calculate: terminez votre inscription`,
-    html: `Cliquez sur ce lien afin de terminer votre inscription : <a href="http://localhost:4000/app/validate_subscription?key=${userKey}">lien</a>`,
+    html: `Cliquez sur ce lien afin de terminer votre inscription : <a href="http://localhost:4200/subscription-validated?key=${userKey}">lien</a>`,
   };
 
   transporter
@@ -147,6 +146,29 @@ app.get("/app/validate_subscription", async (req, res) => {
   }
 });
 
+app.get("/app/check_account_active", async (req, res) => {
+  const uri = process.env.URI;
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    const user = await client
+      .db(dbName)
+      .collection("users")
+      .findOne({ email: req.query.mail });
+    if (user.active === true) {
+      res.status(200).send("ok");
+    } else {
+      res.send("non ok");
+    }
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
 app.get("/app/check_password", async (req, res) => {
   const uri = process.env.URI;
   const client = new MongoClient(uri);
@@ -157,12 +179,29 @@ app.get("/app/check_password", async (req, res) => {
       .db(dbName)
       .collection("users")
       .findOne({ email: req.query.mail });
-    console.log(user);
     if (user.password === req.query.password) {
       res.status(200).send("ok");
     } else {
       res.send("non ok");
     }
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
+app.get("/app/remove_account", async (req, res) => {
+  const uri = process.env.URI;
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    const user = await client
+      .db(dbName)
+      .collection("users")
+      .findOneAndDelete({ email: req.query.mail });
   } catch (err) {
     res.send("non ok");
     console.log(err);

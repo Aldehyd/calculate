@@ -10,12 +10,14 @@ import { SectionToolAnalysisComponent } from './section-tool-analysis/section-to
 import { SectionToolSollicitationComponent } from './section-tool-sollicitation/section-tool-sollicitation.component';
 import { SectionToolAreaComponent } from './section-tool-area/section-tool-area.component';
 import { SectionToolResultsComponent } from './section-tool-results/section-tool-results.component';
+import { SubscriptionValidatedComponent } from './subscription-validated/subscription-validated.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
     {path: 'projects', component: ProjetcsComponent},
     {path: 'connexion', component: ConnexionComponent},
     {path: 'subscription', component: SubscriptionComponent},
+    {path: 'subscription-validated', component: SubscriptionValidatedComponent},
     {path: 'delete-account', component: DeleteAccountComponent},
     {path: 'section-tool', component: SectionToolComponent},
     {path: 'section-tool/geometry', component: SectionToolGeometryComponent},
