@@ -5,11 +5,12 @@ import { accountService } from '../services/account.service';
 import { ProjectsListComponent } from '../projects-list/projects-list.component';
 import { Observable, tap } from 'rxjs';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-projetcs',
   standalone: true,
-  imports: [RouterModule,CommonModule,ProjectsListComponent,HttpClientModule],
+  imports: [RouterModule,CommonModule,ProjectsListComponent,HttpClientModule,LoaderComponent],
   templateUrl: './projetcs.component.html',
   styleUrl: './projetcs.component.scss'
 })

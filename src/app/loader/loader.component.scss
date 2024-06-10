@@ -1,0 +1,38 @@
+.logo polyline {
+    stroke: #000;
+    stroke-width: 4px;
+}
+.logo--loader path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+}
+.logo--loader path:first-child {
+    animation: logoAnimationC 1s ease-in-out backwards infinite;
+}
+.logo--loader path:nth-child(2) {
+    animation: logoAnimationS 1s ease-in-out backwards infinite;
+}
+
+
+@keyframes logoAnimationC {
+    0% {
+        stroke-dashoffset: 1;
+    }
+    50% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+@keyframes logoAnimationS {
+    0% {
+        stroke-dashoffset: 1;
+    }
+    50% {
+        stroke-dashoffset: 1;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
