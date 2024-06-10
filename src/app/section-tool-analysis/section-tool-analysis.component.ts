@@ -117,26 +117,17 @@ export class SectionToolAnalysisComponent implements OnInit {
     this.detectMainWalls();
   }
 
-  detectXSymetry() { //ATTENTION : le résultat dépend de l'ordre dans lequel on a déclaré les points ! A corriger !
+  detectXSymetry() { 
     this.analyzedSection.xSymetry.axeYCoor = Math.abs(this.yPoints[0] - this.yPoints[this.analyzedSection.pointsNumber-1])/2 + Math.min(this.yPoints[0],this.yPoints[this.analyzedSection.pointsNumber-1]);
     
     const iterationNumber = Math.floor(this.analyzedSection.pointsNumber/2);
-    console.log('ycoor symetry axe: ',this.analyzedSection.xSymetry.axeYCoor,'iterationNumber: ',iterationNumber)
-    console.log('x points: ',this.xPoints)
-    console.log('y points: ',this.yPoints)
     this.analyzedSection.xSymetry.isXSymetric = true;
     for(let i=0; i < iterationNumber; i++) {
       if(this.xPoints[i] !== this.xPoints[this.analyzedSection.pointsNumber-1 - i]) 
         this.analyzedSection.xSymetry.isXSymetric = false;
 
-      console.log('iteration-',i,'x: ',this.xPoints[i],this.xPoints[this.analyzedSection.pointsNumber-1 - i])
-      console.log(this.analyzedSection.xSymetry.isXSymetric )
-
       if(Math.abs(this.yPoints[i] - this.yPoints[this.analyzedSection.pointsNumber-1 -i])/2 + Math.min(this.yPoints[i],this.yPoints[this.analyzedSection.pointsNumber-1 -i]) !== this.analyzedSection.xSymetry.axeYCoor)
         this.analyzedSection.xSymetry.isXSymetric = false;
-
-      console.log('iteration-',i,'y: ',Math.abs(this.yPoints[i] - this.yPoints[this.analyzedSection.pointsNumber-1 -i])/2 + Math.min(this.yPoints[i],this.yPoints[this.analyzedSection.pointsNumber-1 -i]))
-      console.log(this.analyzedSection.xSymetry.isXSymetric )
     };
   }
 
