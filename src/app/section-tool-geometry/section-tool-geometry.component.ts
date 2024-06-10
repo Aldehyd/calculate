@@ -85,11 +85,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     let points = "";
     for(let formValue in formValues) {
       if(formValue !== "thickness" && formValue!== "roundCorner" && this.coorMax !== 0) {
-        if(formValue === 'point0') {
-          points += ` ${formValues[formValue].x},${300-formValues[formValue].y}`;
-        } else {
           points += ` ${formValues[formValue].x * 300/this.coorMax},${300 - formValues[formValue].y * 300/this.coorMax}`;
-        };
       };
     };
     this.pointsSvgAttribute = points;
