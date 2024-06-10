@@ -101,6 +101,7 @@ export class ConnexionComponent implements OnInit {
     this.checkPassword$ = this.http.get(`http://localhost:4000/app/check_password?mail=${this.connexionForm.value.userEmail}&password=${this.connexionForm.value.userPassword}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
+          console.log('connect')
           this.isPasswordCorrect = true;
           this.accountService.connected = true;
           this.accountService.userEmail = this.connexionForm.value.userEmail;

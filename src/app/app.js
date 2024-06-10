@@ -63,11 +63,28 @@ app.post("/app/send_mail", async (req, res) => {
     //create inactive user
     try {
       await client.connect();
-      await client.db(dbName).collection("users").insertOne({
-        email: req.body.email,
-        password: req.body.password,
-        active: false,
-      });
+      await client
+        .db(dbName)
+        .collection("users")
+        .insertOne({
+          email: req.body.email,
+          password: req.body.password,
+          active: false,
+          projects: [
+            {
+              id: 0,
+              name: "bla",
+              tool: "section à paroi mince",
+              date: "05/06/24",
+            },
+            {
+              id: 1,
+              name: "bli",
+              tool: "vent",
+              date: "09/06/24",
+            },
+          ],
+        });
       //create confirmation key
       await client.db(dbName).collection("confirm-subscriptions").insertOne({
         email: req.body.email,
@@ -202,6 +219,25 @@ app.get("/app/remove_account", async (req, res) => {
       .db(dbName)
       .collection("users")
       .findOneAndDelete({ email: req.query.mail });
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
+app.get("/app/get_projects", async (req, res) => {
+  const uri = process.env.URI;
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    const currentUser = await client
+      .db(dbName)
+      .collection("users")
+      .findOne({ email: req.query.mail });
+    res.status(200).send(currentUser.projects);
   } catch (err) {
     res.send("non ok");
     console.log(err);
