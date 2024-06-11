@@ -24,6 +24,7 @@ export class SectionToolAreaComponent implements OnInit {
   otherSvgCoor!: string;
   areaPart!: string;
   coordonatesPosition!: {x:number, y:number};
+  notAvailableYet!: boolean;
 
   constructor(
     public sectionToolService: sectionToolService,
@@ -31,6 +32,7 @@ export class SectionToolAreaComponent implements OnInit {
   ) {}
 
   ngOnInit():void {
+    this.notAvailableYet = false;
     this.coordonatesPosition = {x:0,y:0};
     this.areaPart = '';
     this.sectionArea = {
@@ -240,12 +242,19 @@ export class SectionToolAreaComponent implements OnInit {
     } else {
       this.sectionArea.topWing.wing.rho = Math.min((this.sectionArea.topWing.lambdapbred-0.055*(3+this.sectionArea.topWing.stiffener.Psi))/Math.pow(this.sectionArea.topWing.lambdapbred,2),1);
     };
-    //bord tombé
+    //bord tombé simple pli
     this.sectionArea.topWing.lambdapc = this.sectionArea.topWing.bpc / this.sectionArea.t / (28.4* this.sectionArea.epsilon *Math.sqrt(this.sectionArea.topWing.stiffener.ksigma));
-    if(this.sectionArea.topWing.lambdapcred <= 0.5 + Math.sqrt(0.085 - 0.055*this.sectionArea.topWing.stiffener.Psi)) {
-      this.sectionArea.topWing.stiffener.rho = 1;
-    } else {
-      this.sectionArea.topWing.stiffener.rho = Math.min((this.sectionArea.topWing.lambdapcred-0.055*(3+this.sectionArea.topWing.stiffener.Psi))/Math.pow(this.sectionArea.topWing.lambdapcred,2),1);
+    if(this.sectionToolService.analyzedSection.wallsNumber === 5) {
+      if(this.sectionArea.topWing.lambdapcred <= 0.5 + Math.sqrt(0.085 - 0.055*this.sectionArea.topWing.stiffener.Psi)) {
+        this.sectionArea.topWing.stiffener.rho = 1;
+      } else {
+        this.sectionArea.topWing.stiffener.rho = Math.min((this.sectionArea.topWing.lambdapcred-0.055*(3+this.sectionArea.topWing.stiffener.Psi))/Math.pow(this.sectionArea.topWing.lambdapcred,2),1);
+      };
+    };
+    //bord tombé double pli
+    if(this.sectionToolService.analyzedSection.wallsNumber === 7) {
+      //voir tableau 4.1 en1993-1-5 pour déterminer rhoc et rhod
+      //mais comment fait-on les itérations dans le cas du double pli ?
     };
     //suite
     if(this.sectionArea.topWing.wing.rho >=0) {
@@ -297,6 +306,9 @@ export class SectionToolAreaComponent implements OnInit {
         this.he2SvgCoor = `${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.hc)*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.hc+this.sectionArea.web.be1)*300/this.sectionToolService.coorMax}`;
         this.otherSvgCoor = `${this.sectionToolService.sectionGeometry[this.sectionToolService.analyzedSection.bottomWing.stiffener.walls[0].start].x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.sectionGeometry[this.sectionToolService.analyzedSection.bottomWing.stiffener.walls[0].start].y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.start.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.start.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300 - (this.sectionToolService.analyzedSection.web.end.y - this.sectionArea.web.hc)*300/this.sectionToolService.coorMax}`;
         break;
+      case 7:
+        this.notAvailableYet = true;
+        break;
       default:
         break;
     }
@@ -310,12 +322,12 @@ export class SectionToolAreaComponent implements OnInit {
   }
 
   handleAreaPart(name:string):void {
-    console.log(name)
     this.areaPart = name;
   }
 
   onSubmitForm():void {
-    this.router.navigateByUrl('/section-tool/results');
+    if(this.notAvailableYet === false)
+      this.router.navigateByUrl('/section-tool/results');
   }
 
 }

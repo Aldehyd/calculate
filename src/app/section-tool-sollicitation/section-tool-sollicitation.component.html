@@ -25,7 +25,12 @@
     </fieldset>
     <div class="bottom-links-container">
       <a routerLink="/section-tool/analysis" class="basic-button">Précédent</a>
-      <button type="submit" class="basic-button" (click)="onSubmitForm()">
+      <button
+        type="submit"
+        class="basic-button"
+        (click)="onSubmitForm()"
+        [attr.aria-disabled]="isFormInvalid === true ? 'true' : 'false'"
+      >
         Calculer l'aire efficace
       </button>
     </div>

@@ -3,7 +3,11 @@
   minces - Aire efficace
 </h1>
 <div class="main-content">
-  <div class="results-container">
+  <p *ngIf="notAvailableYet === true">
+    Le calcul de l'aire efficace des C munis de bords tombés à double pli n'est
+    pas encore disponible.
+  </p>
+  <div class="results-container" *ngIf="notAvailableYet === false">
     <h2>Dimensions :</h2>
     <ul>
       <li
@@ -32,7 +36,7 @@
       </li>
     </ul>
   </div>
-  <div class="graphical-background">
+  <div class="graphical-background" *ngIf="notAvailableYet === false">
     <div class="svg-container" #svg (mousemove)="handleMouseMove($event)">
       <span
         class="area-part"
@@ -104,7 +108,12 @@
 </div>
 <div class="bottom-links-container">
   <a routerLink="./../sollicitation" class="basic-button">Précédent</a>
-  <button type="submit" class="basic-button" (click)="onSubmitForm()">
+  <button
+    type="submit"
+    class="basic-button"
+    [attr.aria-disabled]="notAvailableYet === true ? 'true' : 'false'"
+    (click)="onSubmitForm()"
+  >
     Calculer les propriétés
   </button>
 </div>
