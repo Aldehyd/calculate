@@ -109,6 +109,9 @@
           [geometry]="geometry"
           [point]="point"
           [formGroup]="sectionForm"
+          [sectionForm]="sectionForm"
+          [translateGeometryfromForm]="translateGeometryFromForm"
+          [drawSection]="drawSection"
         ></app-point-form-line>
       </ul>
       <button
@@ -125,7 +128,7 @@
         La section n'est pas un C !
       </p>
       <p class="warning-message" *ngIf="errorOnSubmit === 'min-walls'">
-        La section doit contenir au moins deux parois !
+        La section doit contenir au moins trois parois !
       </p>
       <p class="warning-message" *ngIf="errorOnSubmit === 'pair-walls'">
         La section possède un nombre de parois paire !

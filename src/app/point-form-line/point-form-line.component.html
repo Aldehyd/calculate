@@ -21,9 +21,10 @@
     <span>mm</span>
   </label>
   <button
-    class="basic-button"
+    class="basic-button remove-point-button"
     (click)="removePoint()"
     *ngIf="point.indice !== 0"
+    aria-label="Supprimer le point"
   >
     X
   </button>

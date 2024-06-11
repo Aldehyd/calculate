@@ -178,7 +178,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
   
   submitForm(): void {
-    if(this.geometry.length <=2) {
+    if(this.geometry.length <=3) {
       this.errorOnSubmit = 'min-walls';
     } else if((this.geometry.length-1) % 2 ===0) {
       this.errorOnSubmit = 'pair-walls';
