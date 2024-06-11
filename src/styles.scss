@@ -54,6 +54,12 @@ input {
             -webkit-appearance: none;
         }
     }
+    &[type='radio'] {
+        cursor: pointer;
+    }
+    &[type='checkbox'] {
+        cursor: pointer;
+    }
 }
 fieldset {
     margin-bottom: 1rem;
