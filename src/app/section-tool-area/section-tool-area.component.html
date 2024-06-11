@@ -4,19 +4,45 @@
 </h1>
 <div class="main-content">
   <div class="results-container">
+    <h2>Dimensions :</h2>
     <ul>
-      <li>be1 : {{ sectionArea.topWing.be1 | number : "1.0-2" }} mm</li>
-      <li>be2 : {{ sectionArea.topWing.be2 | number : "1.0-2" }} mm</li>
-      <li>ceff : {{ sectionArea.topWing.ceff | number : "1.0-2" }} mm</li>
+      <li
+        [ngStyle]="{ color: 'blue' }"
+        *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
+      >
+        ceff : {{ sectionArea.topWing.ceff | number : "1.0-2" }} mm
+      </li>
+      <li
+        [ngStyle]="{ color: 'yellow' }"
+        *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
+      >
+        be2 : {{ sectionArea.topWing.be2 | number : "1.0-2" }} mm
+      </li>
+      <li [ngStyle]="{ color: 'pink' }">
+        be1 : {{ sectionArea.topWing.be1 | number : "1.0-2" }} mm
+      </li>
       <li>
         tred : {{ sectionArea.topWing.stiffener.tred | number : "1.0-2" }} mm
       </li>
-      <li>he1 : {{ sectionArea.web.be1 | number : "1.0-2" }} mm</li>
-      <li>he2 : {{ sectionArea.web.be2 | number : "1.0-2" }} mm</li>
+      <li [ngStyle]="{ color: 'brown' }">
+        he1 : {{ sectionArea.web.be1 | number : "1.0-2" }} mm
+      </li>
+      <li [ngStyle]="{ color: 'purple' }">
+        he2 : {{ sectionArea.web.be2 | number : "1.0-2" }} mm
+      </li>
     </ul>
   </div>
   <div class="graphical-background">
-    <div class="svg-container" #svg>
+    <div class="svg-container" #svg (mousemove)="handleMouseMove($event)">
+      <span
+        class="area-part"
+        *ngIf="areaPart.length > 0"
+        [ngStyle]="{
+          left: coordonatesPosition.x + 20 + 'px',
+          top: coordonatesPosition.y + 20 + 'px'
+        }"
+        >{{ areaPart }}</span
+      >
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
         <polyline
           fill="none"
@@ -29,6 +55,8 @@
           [attr.points]="be1SvgCoor"
           stroke-width="8"
           [attr.stroke]="'pink'"
+          (mouseover)="handleAreaPart('be1')"
+          (mouseleave)="handleAreaPart('')"
         />
         <polyline
           fill="none"
@@ -41,6 +69,9 @@
           [attr.points]="be2SvgCoor"
           stroke-width="8"
           [attr.stroke]="'yellow'"
+          *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
+          (mouseover)="handleAreaPart('be2')"
+          (mouseleave)="handleAreaPart('')"
         />
         <polyline
           fill="none"
@@ -48,18 +79,24 @@
           stroke-width="8"
           [attr.stroke]="'blue'"
           *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
+          (mouseover)="handleAreaPart('ceff')"
+          (mouseleave)="handleAreaPart('')"
         />
         <polyline
           fill="none"
           [attr.points]="he1SvgCoor"
           stroke-width="8"
           [attr.stroke]="'brown'"
+          (mouseover)="handleAreaPart('he1')"
+          (mouseleave)="handleAreaPart('')"
         />
         <polyline
           fill="none"
           [attr.points]="he2SvgCoor"
           stroke-width="8"
           [attr.stroke]="'purple'"
+          (mouseover)="handleAreaPart('he2')"
+          (mouseleave)="handleAreaPart('')"
         />
       </svg>
     </div>

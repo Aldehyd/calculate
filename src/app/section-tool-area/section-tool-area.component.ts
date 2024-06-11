@@ -3,7 +3,8 @@ import { sectionToolService } from '../services/section-tool.service';
 import { CommonModule } from '@angular/common';
 import { SectionArea } from '../models/section-area.model';
 import { Router, RouterModule } from '@angular/router';
-
+import { ViewChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
 @Component({
   selector: 'app-section-tool-area',
   standalone: true,
@@ -13,6 +14,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class SectionToolAreaComponent implements OnInit {
 
+  @ViewChild('svg') svg!: ElementRef;
   sectionArea!: SectionArea;
   ceffSvgCoor!: string;
   be1SvgCoor!: string;
@@ -20,6 +22,8 @@ export class SectionToolAreaComponent implements OnInit {
   he1SvgCoor!: string;
   he2SvgCoor!: string;
   otherSvgCoor!: string;
+  areaPart!: string;
+  coordonatesPosition!: {x:number, y:number};
 
   constructor(
     public sectionToolService: sectionToolService,
@@ -27,6 +31,8 @@ export class SectionToolAreaComponent implements OnInit {
   ) {}
 
   ngOnInit():void {
+    this.coordonatesPosition = {x:0,y:0};
+    this.areaPart = '';
     this.sectionArea = {
       gammaM0: 1,
       E: 210000,
@@ -107,7 +113,8 @@ export class SectionToolAreaComponent implements OnInit {
     
     this.sectionArea.topWing.b = this.sectionToolService.analyzedSection.topWing.length;
     this.sectionArea.topWing.bp = this.sectionArea.topWing.b - this.sectionArea.t - 2*this.sectionArea.gr;
-    this.sectionArea.topWing.c = this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].length;
+    if(this.sectionToolService.analyzedSection.topWing.stiffener.walls[0])
+      this.sectionArea.topWing.c = this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].length;
     this.sectionArea.topWing.bpc = this.sectionArea.topWing.c - this.sectionArea.t/2 - this.sectionArea.gr;
 
     //pour bord simple pli uniquement ! Faire la même chose pour double pli !
@@ -272,14 +279,15 @@ export class SectionToolAreaComponent implements OnInit {
     };
   }
 
-  drawSection():void {
+  drawSection():void {//CORRIGER DESSIN QUAND LES BORDS SONT INCLINES
     switch(this.sectionToolService.analyzedSection.wallsNumber) {
       case 3:
-        this.be1SvgCoor = `${this.sectionToolService.analyzedSection.topWing.start.x},${this.sectionToolService.analyzedSection.topWing.start.y} ${this.sectionToolService.analyzedSection.topWing.end.x},${this.sectionToolService.analyzedSection.topWing.end.y}`;
-        // this.be2SvgCoor = string;
-        // this.he1SvgCoor = string;
-        // this.he2SvgCoor = string;
-        this.otherSvgCoor = `${this.sectionToolService.analyzedSection.bottomWing.start.x},${this.sectionToolService.analyzedSection.bottomWing.start.y} ${this.sectionToolService.analyzedSection.bottomWing.end.x},${this.sectionToolService.analyzedSection.bottomWing.end.y}`;
+        this.be1SvgCoor = `${this.sectionToolService.analyzedSection.topWing.start.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.topWing.start.y*300/this.sectionToolService.coorMax} ${(this.sectionToolService.analyzedSection.topWing.start.x-this.sectionArea.topWing.be1)*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.topWing.start.y*300/this.sectionToolService.coorMax}`;
+        this.be2SvgCoor = 'none';
+        this.ceffSvgCoor = 'none';
+        this.he1SvgCoor = `${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.web.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.be1)*300/this.sectionToolService.coorMax}`;
+        this.he2SvgCoor = `${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.hc)*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.hc+this.sectionArea.web.be1)*300/this.sectionToolService.coorMax}`;
+        this.otherSvgCoor = `${this.sectionToolService.analyzedSection.bottomWing.start.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.start.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300 - (this.sectionToolService.analyzedSection.web.end.y - this.sectionArea.web.hc)*300/this.sectionToolService.coorMax}`;
         break;
       case 5:
         this.ceffSvgCoor = `${this.sectionToolService.analyzedSection.topWing.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.topWing.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.topWing.end.x*300/this.sectionToolService.coorMax},${300- (this.sectionToolService.analyzedSection.topWing.end.y - this.sectionArea.topWing.ceff)*300/this.sectionToolService.coorMax}`;
@@ -287,11 +295,23 @@ export class SectionToolAreaComponent implements OnInit {
         this.be1SvgCoor = `${this.sectionToolService.analyzedSection.topWing.start.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.topWing.start.y*300/this.sectionToolService.coorMax} ${(this.sectionToolService.analyzedSection.topWing.start.x-this.sectionArea.topWing.be1)*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.topWing.start.y*300/this.sectionToolService.coorMax}`;
         this.he1SvgCoor = `${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.web.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.be1)*300/this.sectionToolService.coorMax}`;
         this.he2SvgCoor = `${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.hc)*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300-(this.sectionToolService.analyzedSection.web.end.y-this.sectionArea.web.hc+this.sectionArea.web.be1)*300/this.sectionToolService.coorMax}`;
-        this.otherSvgCoor = `${this.sectionToolService.sectionGeometry[this.sectionToolService.analyzedSection.bottomWing.stiffener.walls[0].start].x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.sectionGeometry[this.sectionToolService.analyzedSection.bottomWing.stiffener.walls[0].start].x*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.start.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.start.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300 - (this.sectionToolService.analyzedSection.web.end.y - this.sectionArea.web.hc)*300/this.sectionToolService.coorMax}`;
+        this.otherSvgCoor = `${this.sectionToolService.sectionGeometry[this.sectionToolService.analyzedSection.bottomWing.stiffener.walls[0].start].x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.sectionGeometry[this.sectionToolService.analyzedSection.bottomWing.stiffener.walls[0].start].y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.start.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.start.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.bottomWing.end.x*300/this.sectionToolService.coorMax},${300-this.sectionToolService.analyzedSection.bottomWing.end.y*300/this.sectionToolService.coorMax} ${this.sectionToolService.analyzedSection.web.end.x*300/this.sectionToolService.coorMax},${300 - (this.sectionToolService.analyzedSection.web.end.y - this.sectionArea.web.hc)*300/this.sectionToolService.coorMax}`;
         break;
       default:
         break;
     }
+  }
+
+  handleMouseMove(e: MouseEvent) {
+    if(this.areaPart.length > 0) {
+      this.coordonatesPosition.x = Math.floor(e.clientX - this.svg.nativeElement.getBoundingClientRect().left);
+      this.coordonatesPosition.y = Math.floor(e.clientY - this.svg.nativeElement.getBoundingClientRect().top);
+    };
+  }
+
+  handleAreaPart(name:string):void {
+    console.log(name)
+    this.areaPart = name;
   }
 
   onSubmitForm():void {
