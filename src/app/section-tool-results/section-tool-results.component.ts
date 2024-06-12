@@ -96,214 +96,216 @@ export class SectionToolResultsComponent implements OnInit {
         Iyz: 0
       }
     };
-
-    this.calculateProperties();
+    //ATTENTION ! les résultats sont bons quand on part de la droite vers la gauche mais pas quand on part de la gauche vers la droite
+    this.calculateProperties('brut');
+    this.calculateProperties('net');
   }
 
-  calculateProperties(): void {
-    this.fillCoor();
-    this.fillOmega0n();
-    this.fillOmegan();
-    this.filldAn();
-    this.calculateA();
-    this.fillIomegan();
-    this.calculateIomega();
-    this.fillIomegaomega0n();
-    this.calculateIomegaomega0();
-    this.calculateIomegaomega();
-    this.fillIyomega0n();
-    this.calculateIyomega0();
-    this.fillIzomega0n();
-    this.calculateIzomega0();
-    this.calculateSy0();
-    this.fillSy0n();
-    this.calculateSy0();
-    this.fillSz0n();
-    this.calculateSz0();
-    this.calculateIyomega();
-    this.calculateIzomega();
-    this.fillIyz0n();
-    this.calculateIz0();
-    this.fillIy0n();
-    this.calculateIy0();
-    this.calculateIyz0();
-    this.calculateIyz();
-    this.calculateygc();
-    this.calculatezgc();
-    this.calculateIz();
-    this.calculateIy();
-    this.calculateysc();
-    this.calculatezsc();
-    this.calculateys();
-    this.calculatezs();
+  calculateProperties(sectionType:string): void {
+    this.fillCoor(sectionType);
+    this.fillOmega0n(sectionType);
+    this.fillOmegan(sectionType);
+    this.filldAn(sectionType);
+    this.calculateA(sectionType);
+    this.fillIomegan(sectionType);
+    this.calculateIomega(sectionType);
+    this.fillIomegaomega0n(sectionType);
+    this.calculateIomegaomega0(sectionType);
+    this.calculateIomegaomega(sectionType);
+    this.fillIyomega0n(sectionType);
+    this.calculateIyomega0(sectionType);
+    this.fillIzomega0n(sectionType);
+    this.calculateIzomega0(sectionType);
+    this.calculateSy0(sectionType);
+    this.fillSy0n(sectionType);
+    this.calculateSy0(sectionType);
+    this.fillSz0n(sectionType);
+    this.calculateSz0(sectionType);
+    this.calculateIyomega(sectionType);
+    this.calculateIzomega(sectionType);
+    this.fillIyz0n(sectionType);
+    this.fillIy0n(sectionType);
+    this.fillIz0n(sectionType);
+    this.calculateIy0(sectionType);
+    this.calculateIz0(sectionType);
+    this.calculateIyz0(sectionType);
+    this.calculateIyz(sectionType);
+    this.calculateygc(sectionType);
+    this.calculatezgc(sectionType);
+    this.calculateIz(sectionType);
+    this.calculateIy(sectionType);
+    this.calculateysc(sectionType);
+    this.calculatezsc(sectionType);
+    this.calculateys(sectionType);
+    this.calculatezs(sectionType);
     console.log(this.sectionProperties.brut)
   }
 
-  fillCoor(): void {
+  fillCoor(sectionType:string): void {
     for(let coor of this.sectionToolService.sectionGeometry) {
-      this.sectionProperties.brut.yn.push(coor.x);
-      this.sectionProperties.brut.zn.push(coor.y);
+      this.sectionProperties[sectionType].yn.push(coor.x);
+      this.sectionProperties[sectionType].zn.push(coor.y);
     };
   }
 
-  fillOmega0n(): void {
-    for(let i=0; i<this.sectionProperties.brut.yn.length-1; i++) {
-      this.sectionProperties.brut.omega0n.push(this.sectionProperties.brut.yn[i]*this.sectionProperties.brut.zn[i+1] - this.sectionProperties.brut.yn[i+1]*this.sectionProperties.brut.zn[i]);
+  fillOmega0n(sectionType:string): void {
+    for(let i=0; i<this.sectionProperties[sectionType].yn.length-1; i++) {
+      this.sectionProperties[sectionType].omega0n.push(this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].zn[i+1] - this.sectionProperties[sectionType].yn[i+1]*this.sectionProperties[sectionType].zn[i]);
     };
   }
 
-  fillOmegan():void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.omegan.push(this.sectionProperties.brut.omegan[i-1]+this.sectionProperties.brut.omega0n[i-1]);
+  fillOmegan(sectionType:string):void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].omegan.push(this.sectionProperties[sectionType].omegan[i-1]+this.sectionProperties[sectionType].omega0n[i-1]);
     };
   }
 
-  filldAn(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.dAn.push(this.sectionToolService.analyzedSection.thickness*Math.sqrt(Math.pow(this.sectionProperties.brut.yn[i]-this.sectionProperties.brut.yn[i-1],2) + Math.pow(this.sectionProperties.brut.zn[i]-this.sectionProperties.brut.zn[i-1],2)));
+  filldAn(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].dAn.push(this.sectionToolService.analyzedSection.thickness*Math.sqrt(Math.pow(this.sectionProperties[sectionType].yn[i]-this.sectionProperties[sectionType].yn[i-1],2) + Math.pow(this.sectionProperties[sectionType].zn[i]-this.sectionProperties[sectionType].zn[i-1],2)));
     };
   }
 
-  calculateA(): void {
-    this.sectionProperties.brut.A =this.sectionProperties.brut.dAn.reduce((partialSum, a) => partialSum + a, 0);
+  calculateA(sectionType:string): void {
+    this.sectionProperties[sectionType].A =this.sectionProperties[sectionType].dAn.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillIomegan(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Iomegan.push((this.sectionProperties.brut.omegan[i-1]+this.sectionProperties.brut.omegan[i])*this.sectionProperties.brut.dAn[i-1]/2);
+  fillIomegan(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Iomegan.push((this.sectionProperties[sectionType].omegan[i-1]+this.sectionProperties[sectionType].omegan[i])*this.sectionProperties[sectionType].dAn[i-1]/2);
     };
   }
 
-  calculateIomega(): void {
-    this.sectionProperties.brut.Iomega =this.sectionProperties.brut.Iomegan.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIomega(sectionType:string): void {
+    this.sectionProperties[sectionType].Iomega =this.sectionProperties[sectionType].Iomegan.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillIomegaomega0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Iomegaomega0n.push(Math.pow(this.sectionProperties.brut.omegan[i-1],2)+Math.pow(this.sectionProperties.brut.omegan[i],2)+this.sectionProperties.brut.omegan[i-1]*this.sectionProperties.brut.omegan[i])*this.sectionProperties.brut.dAn[i-1]/3;
+  fillIomegaomega0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Iomegaomega0n.push((Math.pow(this.sectionProperties[sectionType].omegan[i-1],2)+Math.pow(this.sectionProperties[sectionType].omegan[i],2)+this.sectionProperties[sectionType].omegan[i-1]*this.sectionProperties[sectionType].omegan[i])*this.sectionProperties[sectionType].dAn[i-1]/3);
     };
   }
 
-  calculateIomegaomega0(): void {
-    this.sectionProperties.brut.Iomegaomega0 =this.sectionProperties.brut.Iomegaomega0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIomegaomega0(sectionType:string): void {
+    this.sectionProperties[sectionType].Iomegaomega0 =this.sectionProperties[sectionType].Iomegaomega0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  calculateIomegaomega(): void {
-    this.sectionProperties.brut.Iomegaomega = this.sectionProperties.brut.Iomegaomega0 - Math.pow(this.sectionProperties.brut.Iomega,2)/this.sectionProperties.brut.A;
+  calculateIomegaomega(sectionType:string): void {
+    this.sectionProperties[sectionType].Iomegaomega = this.sectionProperties[sectionType].Iomegaomega0 - Math.pow(this.sectionProperties[sectionType].Iomega,2)/this.sectionProperties[sectionType].A;
   }
 
-  fillIyomega0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Iyomega0n.push((2*this.sectionProperties.brut.yn[i-1]*this.sectionProperties.brut.omegan[i-1] + 2*this.sectionProperties.brut.yn[i]*this.sectionProperties.brut.omegan[i] + this.sectionProperties.brut.yn[i-1]*this.sectionProperties.brut.omegan[i] + this.sectionProperties.brut.yn[i]*this.sectionProperties.brut.omegan[i-1])*this.sectionProperties.brut.dAn[i-1]/6);
+  fillIyomega0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Iyomega0n.push((2*this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].omegan[i-1] + 2*this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].omegan[i-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
     };
   }
 
-  calculateIyomega0(): void {
-    this.sectionProperties.brut.Iyomega0 =this.sectionProperties.brut.Iyomega0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIyomega0(sectionType:string): void {
+    this.sectionProperties[sectionType].Iyomega0 =this.sectionProperties[sectionType].Iyomega0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillIzomega0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Izomega0n.push((2*this.sectionProperties.brut.zn[i-1]*this.sectionProperties.brut.omegan[i-1] + 2*this.sectionProperties.brut.zn[i]*this.sectionProperties.brut.omegan[i] + this.sectionProperties.brut.zn[i-1]*this.sectionProperties.brut.omegan[i] + this.sectionProperties.brut.zn[i]*this.sectionProperties.brut.omegan[i-1])*this.sectionProperties.brut.dAn[i-1]/6);
+  fillIzomega0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Izomega0n.push((2*this.sectionProperties[sectionType].zn[i-1]*this.sectionProperties[sectionType].omegan[i-1] + 2*this.sectionProperties[sectionType].zn[i]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].zn[i-1]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].zn[i]*this.sectionProperties[sectionType].omegan[i-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
     };
   }
 
-  calculateIzomega0(): void {
-    this.sectionProperties.brut.Izomega0 = this.sectionProperties.brut.Izomega0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIzomega0(sectionType:string): void {
+    this.sectionProperties[sectionType].Izomega0 = this.sectionProperties[sectionType].Izomega0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillSy0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Sy0n.push((this.sectionProperties.brut.zn[0] + this.sectionProperties.brut.zn[1])*this.sectionProperties.brut.dAn[0]/2);
+  fillSy0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Sy0n.push((this.sectionProperties[sectionType].zn[i-1] + this.sectionProperties[sectionType].zn[i])*this.sectionProperties[sectionType].dAn[i-1]/2);
     };
   }
 
-  calculateSy0(): void {
-    this.sectionProperties.brut.Sy0 = this.sectionProperties.brut.Sy0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateSy0(sectionType:string): void {
+    this.sectionProperties[sectionType].Sy0 = this.sectionProperties[sectionType].Sy0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillSz0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Sz0n.push((this.sectionProperties.brut.yn[0] + this.sectionProperties.brut.yn[1])*this.sectionProperties.brut.dAn[0]/2);
+  fillSz0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Sz0n.push((this.sectionProperties[sectionType].yn[i-1] + this.sectionProperties[sectionType].yn[i])*this.sectionProperties[sectionType].dAn[i-1]/2);
     };
   }
 
-  calculateSz0(): void {
-    this.sectionProperties.brut.Sz0 = this.sectionProperties.brut.Sz0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateSz0(sectionType:string): void {
+    this.sectionProperties[sectionType].Sz0 = this.sectionProperties[sectionType].Sz0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  calculateIyomega(): void {
-    this.sectionProperties.brut.Iyomega = this.sectionProperties.brut.Iyomega0 - this.sectionProperties.brut.Sz0*this.sectionProperties.brut.Iomega/this.sectionProperties.brut.A;
+  calculateIyomega(sectionType:string): void {
+    this.sectionProperties[sectionType].Iyomega = this.sectionProperties[sectionType].Iyomega0 - this.sectionProperties[sectionType].Sz0*this.sectionProperties[sectionType].Iomega/this.sectionProperties[sectionType].A;
   }
 
-  calculateIzomega(): void {
-    this.sectionProperties.brut.Izomega = this.sectionProperties.brut.Izomega0 - this.sectionProperties.brut.Sy0*this.sectionProperties.brut.Iomega/this.sectionProperties.brut.A;
+  calculateIzomega(sectionType:string): void {
+    this.sectionProperties[sectionType].Izomega = this.sectionProperties[sectionType].Izomega0 - this.sectionProperties[sectionType].Sy0*this.sectionProperties[sectionType].Iomega/this.sectionProperties[sectionType].A;
   }
 
-  fillIz0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Iz0n.push((Math.pow(this.sectionProperties.brut.yn[i-1],2) + Math.pow(this.sectionProperties.brut.yn[i],2) + this.sectionProperties.brut.yn[i-1]*this.sectionProperties.brut.yn[i]) * this.sectionProperties.brut.dAn[i-1]/3);
+  fillIz0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Iz0n.push((Math.pow(this.sectionProperties[sectionType].yn[i-1],2) + Math.pow(this.sectionProperties[sectionType].yn[i],2) + this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].yn[i]) * this.sectionProperties[sectionType].dAn[i-1]/3);
     };
   }
 
-  calculateIz0(): void {
-    this.sectionProperties.brut.Iz0 = this.sectionProperties.brut.Iz0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIz0(sectionType:string): void {
+    this.sectionProperties[sectionType].Iz0 = this.sectionProperties[sectionType].Iz0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillIy0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Iy0n.push((Math.pow(this.sectionProperties.brut.zn[i-1],2) + Math.pow(this.sectionProperties.brut.zn[i],2) + this.sectionProperties.brut.zn[i-1]*this.sectionProperties.brut.zn[i]) * this.sectionProperties.brut.dAn[i-1]/3);
+  fillIy0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Iy0n.push((Math.pow(this.sectionProperties[sectionType].zn[i-1],2) + Math.pow(this.sectionProperties[sectionType].zn[i],2) + this.sectionProperties[sectionType].zn[i-1]*this.sectionProperties[sectionType].zn[i]) * this.sectionProperties[sectionType].dAn[i-1]/3);
     };
   }
 
-  calculateIy0(): void {
-    this.sectionProperties.brut.Iy0 = this.sectionProperties.brut.Iy0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIy0(sectionType:string): void {
+    this.sectionProperties[sectionType].Iy0 = this.sectionProperties[sectionType].Iy0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  fillIyz0n(): void {
-    for(let i=1; i<this.sectionProperties.brut.yn.length; i++) {
-      this.sectionProperties.brut.Iyz0n.push((2*this.sectionProperties.brut.yn[i-1]*this.sectionProperties.brut.zn[i-1] + 2*this.sectionProperties.brut.yn[i]*this.sectionProperties.brut.zn[i] + this.sectionProperties.brut.yn[i-1]*this.sectionProperties.brut.zn[i] + this.sectionProperties.brut.yn[i]*this.sectionProperties.brut.zn[i-1])*this.sectionProperties.brut.dAn[i-1]/6);
+  fillIyz0n(sectionType:string): void {
+    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
+      this.sectionProperties[sectionType].Iyz0n.push((2*this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].zn[i-1] + 2*this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].zn[i] + this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].zn[i] + this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].zn[i-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
     };
   }
   
-  calculateIyz0(): void {
-    this.sectionProperties.brut.Iyz0 = this.sectionProperties.brut.Iyz0n.reduce((partialSum, a) => partialSum + a, 0);
+  calculateIyz0(sectionType:string): void {
+    this.sectionProperties[sectionType].Iyz0 = this.sectionProperties[sectionType].Iyz0n.reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  calculateIyz(): void {
-    this.sectionProperties.brut.Iyz = this.sectionProperties.brut.Iyz0 - this.sectionProperties.brut.Sy0*this.sectionProperties.brut.Sz0/this.sectionProperties.brut.A; 
+  calculateIyz(sectionType:string): void {
+    this.sectionProperties[sectionType].Iyz = this.sectionProperties[sectionType].Iyz0 - this.sectionProperties[sectionType].Sy0*this.sectionProperties[sectionType].Sz0/this.sectionProperties[sectionType].A; 
   }
 
-  calculateygc(): void {
-    this.sectionProperties.brut.ygc = this.sectionProperties.brut.Sz0 / this.sectionProperties.brut.A;
+  calculateygc(sectionType:string): void {
+    this.sectionProperties[sectionType].ygc = this.sectionProperties[sectionType].Sz0 / this.sectionProperties[sectionType].A;
   }
 
-  calculatezgc(): void {
-    this.sectionProperties.brut.zgc = this.sectionProperties.brut.Sy0 / this.sectionProperties.brut.A;
+  calculatezgc(sectionType:string): void {
+    this.sectionProperties[sectionType].zgc = this.sectionProperties[sectionType].Sy0 / this.sectionProperties[sectionType].A;
   }
 
-  calculateIz(): void {
-    this.sectionProperties.brut.Iz = this.sectionProperties.brut.Iz0 - this.sectionProperties.brut.A*Math.pow(this.sectionProperties.brut.ygc,2);
+  calculateIz(sectionType:string): void {
+    this.sectionProperties[sectionType].Iz = this.sectionProperties[sectionType].Iz0 - this.sectionProperties[sectionType].A*Math.pow(this.sectionProperties[sectionType].ygc,2);
   }
 
-  calculateIy(): void {
-    this.sectionProperties.brut.Iy = this.sectionProperties.brut.Iy0 - this.sectionProperties.brut.A*Math.pow(this.sectionProperties.brut.zgc,2);
+  calculateIy(sectionType:string): void {
+    this.sectionProperties[sectionType].Iy = this.sectionProperties[sectionType].Iy0 - this.sectionProperties[sectionType].A*Math.pow(this.sectionProperties[sectionType].zgc,2);
   }
 
-  calculateysc(): void {
-    this.sectionProperties.brut.ysc = (this.sectionProperties.brut.Izomega*this.sectionProperties.brut.Iz - this.sectionProperties.brut.Iyomega*this.sectionProperties.brut.Iyz)/(this.sectionProperties.brut.Iy*this.sectionProperties.brut.Iz-Math.pow(this.sectionProperties.brut.Iyz,2));
+  calculateysc(sectionType:string): void {
+    this.sectionProperties[sectionType].ysc = (this.sectionProperties[sectionType].Izomega*this.sectionProperties[sectionType].Iz - this.sectionProperties[sectionType].Iyomega*this.sectionProperties[sectionType].Iyz)/(this.sectionProperties[sectionType].Iy*this.sectionProperties[sectionType].Iz-Math.pow(this.sectionProperties[sectionType].Iyz,2));
   }
 
-  calculatezsc(): void {
-    this.sectionProperties.brut.zsc = (this.sectionProperties.brut.Izomega*this.sectionProperties.brut.Iyz - this.sectionProperties.brut.Iyomega*this.sectionProperties.brut.Iy)/(this.sectionProperties.brut.Iy*this.sectionProperties.brut.Iz-Math.pow(this.sectionProperties.brut.Iyz,2));
+  calculatezsc(sectionType:string): void {
+    this.sectionProperties[sectionType].zsc = (this.sectionProperties[sectionType].Izomega*this.sectionProperties[sectionType].Iyz - this.sectionProperties[sectionType].Iyomega*this.sectionProperties[sectionType].Iy)/(this.sectionProperties[sectionType].Iy*this.sectionProperties[sectionType].Iz-Math.pow(this.sectionProperties[sectionType].Iyz,2));
   }
 
-  calculateys(): void {
-    this.sectionProperties.brut.ys = this.sectionProperties.brut.ysc - this.sectionProperties.brut.ygc;
+  calculateys(sectionType:string): void {
+    this.sectionProperties[sectionType].ys = this.sectionProperties[sectionType].ysc - this.sectionProperties[sectionType].ygc;
   }
 
-  calculatezs(): void {
-    this.sectionProperties.brut.zs = this.sectionProperties.brut.zsc - this.sectionProperties.brut.zgc;
+  calculatezs(sectionType:string): void {
+    this.sectionProperties[sectionType].zs = this.sectionProperties[sectionType].zsc - this.sectionProperties[sectionType].zgc;
   }
 
 }

@@ -6,8 +6,12 @@
     padding: 1rem;
     background: #fff;
 }
+.brut-section {
+    margin-bottom: 2rem;
+}
 .graphical-background {
     padding: 4rem;
+    padding-left: 12rem;
     background: #fff;
 }
 .svg-container {
@@ -20,6 +24,22 @@
         height: 100%;
         stroke: #000;
     }
+}
+.cisaillement-center_point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+}
+.cisaillement-center_text {
+    display: block;
+    position: absolute;
+    right: -1rem;
+    top: 1rem;
+    color: red;
+    transform: translateX(100%);
 }
 ul {
     list-style: none;

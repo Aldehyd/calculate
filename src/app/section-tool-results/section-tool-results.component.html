@@ -12,23 +12,32 @@
         <li>Aire : {{ sectionProperties.brut.A | number : "1.0-0" }} mm²</li>
         <li>Iz : {{ sectionProperties.brut.Iz | number : "1.0-0" }} mm4</li>
         <li>Iy : {{ sectionProperties.brut.Iy | number : "1.0-0" }} mm4</li>
-        <li>ys : {{ sectionProperties.brut.ys | number : "1.0-0" }} mm</li>
-        <li>zs : {{ sectionProperties.brut.zs | number : "1.0-0" }} mm</li>
+        <li>ysc : {{ sectionProperties.brut.ysc | number : "1.0-0" }} mm</li>
+        <li>zsc : {{ sectionProperties.brut.zsc | number : "1.0-0" }} mm</li>
       </ul>
     </div>
     <div class="net-section">
       <h2>Section nette</h2>
       <ul>
-        <li>Aire : mm²</li>
-        <li>Iz : mm4</li>
-        <li>Iy : mm4</li>
-        <li>ys : mm</li>
-        <li>zs : mm</li>
+        <li>Aire : {{ sectionProperties.net.A | number : "1.0-0" }} mm²</li>
+        <li>Iz : {{ sectionProperties.net.Iz | number : "1.0-0" }} mm4</li>
+        <li>Iy : {{ sectionProperties.net.Iy | number : "1.0-0" }} mm4</li>
+        <li>ysc : {{ sectionProperties.net.ysc | number : "1.0-0" }} mm</li>
+        <li>zsc : {{ sectionProperties.net.zsc | number : "1.0-0" }} mm</li>
       </ul>
     </div>
   </div>
   <div class="graphical-background">
     <div class="svg-container" #svg>
+      <div
+        class="cisaillement-center_point"
+        [ngStyle]="{
+          top: 300 - sectionProperties.brut.zsc + 'px',
+          left: sectionProperties.brut.ysc + 'px'
+        }"
+      >
+        <span class="cisaillement-center_text">Centre de cisaillement</span>
+      </div>
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
         <polyline
           fill="none"
