@@ -17,12 +17,12 @@
         ceff : {{ sectionArea.topWing.ceff | number : "1.0-2" }} mm
       </li>
       <li
-        [ngStyle]="{ color: 'yellow' }"
+        [ngStyle]="{ color: 'green' }"
         *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
       >
         be2 : {{ sectionArea.topWing.be2 | number : "1.0-2" }} mm
       </li>
-      <li [ngStyle]="{ color: 'pink' }">
+      <li [ngStyle]="{ color: 'orange' }">
         be1 : {{ sectionArea.topWing.be1 | number : "1.0-2" }} mm
       </li>
       <li>
@@ -58,7 +58,7 @@
           fill="none"
           [attr.points]="be1SvgCoor"
           stroke-width="8"
-          [attr.stroke]="'pink'"
+          [attr.stroke]="'orange'"
           (mouseover)="handleAreaPart('be1')"
           (mouseleave)="handleAreaPart('')"
         />
@@ -66,13 +66,13 @@
           fill="none"
           [attr.points]="otherSvgCoor"
           stroke-width="8"
-          [attr.stroke]="'orange'"
+          [attr.stroke]="'pink'"
         />
         <polyline
           fill="none"
           [attr.points]="be2SvgCoor"
           stroke-width="8"
-          [attr.stroke]="'yellow'"
+          [attr.stroke]="'green'"
           *ngIf="sectionToolService.analyzedSection.wallsNumber >= 5"
           (mouseover)="handleAreaPart('be2')"
           (mouseleave)="handleAreaPart('')"
