@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { ToolComponent } from './tool/tool.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
+import { accountService } from './services/account.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,12 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'calculate';
+
+  constructor(private accountService: accountService) {}
+
+  ngOnInit(): void {
+    this.accountService.connected = false;
+  }
 }
