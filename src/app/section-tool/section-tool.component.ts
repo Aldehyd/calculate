@@ -20,7 +20,7 @@ export class SectionToolComponent {
 
   ngOnInit(): void {
     this.projectForm = this.formBuilder.group({
-      name: [null,[Validators.required]],
+      name: [this.sectionToolService.modifyProject === false ? null : this.sectionToolService.projectName,[Validators.required]],
       sectionShape: [null,[Validators.required]],
     });
   }

@@ -18,7 +18,10 @@ export class sectionToolService implements OnInit {
     sollicitationType!: string;
     elasticLimit!: number;
 
+    modifyProject!: boolean;
+
     ngOnInit(): void {
+        this.modifyProject = false;
         this.sectionThickness = 2;
         this.roundCorner = 4;
         this.sectionGeometry = [];

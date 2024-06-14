@@ -276,6 +276,38 @@ app.post("/app/save_project", async (req, res) => {
   }
 });
 
+app.post("/app/remove_project", async (req, res) => {
+  const uri = process.env.URI;
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    console.log(req.body.mail, req.body.id);
+    await client
+      .db(dbName)
+      .collection("users")
+      .updateOne(
+        { email: req.body.mail },
+        {
+          $pull: {
+            projects: { id: req.body.id },
+          },
+        }
+      );
+    const user = await client
+      .db(dbName)
+      .collection("users")
+      .findOne({ email: req.body.mail });
+    console.log(user);
+    res.status(200).send("ok");
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
 app.listen(port, () => {
   console.log("starting server on port : ", port);
 });
