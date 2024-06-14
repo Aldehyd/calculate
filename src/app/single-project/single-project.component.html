@@ -1,3 +1,3 @@
-<h3>{{ project.name }}</h3>
-<p>Dernière modification : {{ project.date }}</p>
+<h3>{{ project.name | titlecase }}</h3>
+<p>Dernière modification : {{ project.date | date : "dd/MM/yy, à HH:mm" }}</p>
 <span class="project_tool">Outil : {{ project.tool }}</span>

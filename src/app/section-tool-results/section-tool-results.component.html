@@ -51,5 +51,15 @@
 </div>
 <div class="bottom-links-container">
   <a routerLink="./../area" class="basic-button">Précédent</a>
-  <button type="submit" class="basic-button">Enregistrer</button>
+  <button type="submit" class="basic-button" (click)="saveProject()">
+    Enregistrer
+  </button>
+</div>
+<div class="messages">
+  <p class="warning-message" *ngIf="errorOnProjectSave === true">
+    Le projet n'a pas pu être enregistré.
+  </p>
+  <p class="success-message" *ngIf="projectSaved === true">
+    Le projet a été enregistré.
+  </p>
 </div>

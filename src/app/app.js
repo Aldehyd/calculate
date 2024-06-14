@@ -63,28 +63,12 @@ app.post("/app/send_mail", async (req, res) => {
     //create inactive user
     try {
       await client.connect();
-      await client
-        .db(dbName)
-        .collection("users")
-        .insertOne({
-          email: req.body.email,
-          password: req.body.password,
-          active: false,
-          projects: [
-            {
-              id: 0,
-              name: "bla",
-              tool: "section à paroi mince",
-              date: "05/06/24",
-            },
-            {
-              id: 1,
-              name: "bli",
-              tool: "vent",
-              date: "09/06/24",
-            },
-          ],
-        });
+      await client.db(dbName).collection("users").insertOne({
+        email: req.body.email,
+        password: req.body.password,
+        active: false,
+        projects: [],
+      });
       //create confirmation key
       await client.db(dbName).collection("confirm-subscriptions").insertOne({
         email: req.body.email,
@@ -238,6 +222,52 @@ app.get("/app/get_projects", async (req, res) => {
       .collection("users")
       .findOne({ email: req.query.mail });
     res.status(200).send(currentUser.projects);
+  } catch (err) {
+    res.send("non ok");
+    console.log(err);
+  } finally {
+    await client.close();
+  }
+});
+
+app.post("/app/save_project", async (req, res) => {
+  const uri = process.env.URI;
+  const client = new MongoClient(uri);
+  const dbName = "calculate";
+  try {
+    await client.connect();
+    const currentUser = await client
+      .db(dbName)
+      .collection("users")
+      .findOne({ email: req.body.mail });
+    console.log(currentUser);
+    const currentProject = await currentUser.projects.find(
+      (project) => project.name === req.body.project.name
+    );
+    if (currentProject) {
+      console.log(currentProject);
+    } else {
+      await client
+        .db(dbName)
+        .collection("users")
+        .updateOne(
+          { email: req.body.mail },
+          {
+            $set: {
+              projects: [
+                ...currentUser.projects,
+                {
+                  id: currentUser.projects.length,
+                  name: req.body.project.name,
+                  tool: req.body.project.tool,
+                  date: new Date(),
+                },
+              ],
+            },
+          }
+        );
+    }
+    res.status(200).send("ok");
   } catch (err) {
     res.send("non ok");
     console.log(err);

@@ -2,24 +2,34 @@ import { Component, OnInit } from '@angular/core';
 import { sectionToolService } from '../services/section-tool.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { accountService } from '../services/account.service';
 
 @Component({
   selector: 'app-section-tool-results',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,HttpClientModule],
   templateUrl: './section-tool-results.component.html',
   styleUrl: './section-tool-results.component.scss'
 })
 export class SectionToolResultsComponent implements OnInit {
 
   sectionProperties!: any;
+  projectSaved!: boolean;
+  errorOnProjectSave!: boolean;
+  saveProject$!: Observable<any>;
 
   constructor(
     public sectionToolService:sectionToolService,
-    private router: Router
+    private accountService: accountService,
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
+    this.projectSaved = false;
+    this.errorOnProjectSave = false;
     this.sectionProperties = {
       brut: {
         yn: [],
@@ -308,4 +318,34 @@ export class SectionToolResultsComponent implements OnInit {
     this.sectionProperties[sectionType].zs = this.sectionProperties[sectionType].zsc - this.sectionProperties[sectionType].zgc;
   }
 
+  saveProject(): void {
+    this.saveProject$ = this.http.post('http://localhost:4000/app/save_project',{
+      mail: this.accountService.userEmail,
+      project: {
+        name: this.sectionToolService.projectName,
+        tool: 'Section à parois minces',
+        projectDetails: {
+          shape: this.sectionToolService.projectShape,
+          sectionGeometry: this.sectionToolService.sectionGeometry,
+          sectionThickness: this.sectionToolService.sectionThickness,
+          roundCorner: this.sectionToolService.roundCorner,
+          coorMax: this.sectionToolService.coorMax,
+          pointsSvgAttribute: this.sectionToolService.pointsSvgAttribute,
+          analyzedSection: this.sectionToolService.analyzedSection,
+          sectionArea: this.sectionToolService.sectionArea,
+          sollicitationType: this.sectionToolService.sollicitationType,
+          elasticLimit: this.sectionToolService.elasticLimit
+        }
+      }
+    },{responseType: 'text'}).pipe(
+      tap(res => {
+        if(res === 'ok') {
+          this.projectSaved = true;
+        } else {
+          this.errorOnProjectSave = true;
+        };
+      })
+    );
+    this.saveProject$.subscribe();
+  }
 }
