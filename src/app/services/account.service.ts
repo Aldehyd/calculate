@@ -6,6 +6,7 @@ import { Injectable, OnInit } from "@angular/core";
 export class accountService implements OnInit {
     connected!: boolean;
     userEmail!: string;
+    projects!: any[];
 
     ngOnInit(): void {
         this.connected = false;

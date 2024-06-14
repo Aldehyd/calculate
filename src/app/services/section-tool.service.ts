@@ -21,7 +21,6 @@ export class sectionToolService implements OnInit {
     modifyProject!: boolean;
 
     ngOnInit(): void {
-        this.modifyProject = false;
         this.sectionThickness = 2;
         this.roundCorner = 4;
         this.sectionGeometry = [];

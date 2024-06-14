@@ -34,6 +34,7 @@ export class ProjectsListComponent implements OnInit {
           } else {
             this.error = false;
             this.projects = res;
+            this.accountService.projects = res;
             this.isLoading = false;
           };
         }),

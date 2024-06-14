@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { Form, FormGroup, FormsModule, NgForm, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { sectionToolService } from '../services/section-tool.service';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-section-tool',
   standalone: true,
-  imports: [RouterModule,FormsModule,ReactiveFormsModule],
+  imports: [RouterModule,FormsModule,ReactiveFormsModule,CommonModule],
   templateUrl: './section-tool.component.html',
   styleUrl: './section-tool.component.scss'
 })
@@ -14,14 +15,15 @@ export class SectionToolComponent {
 
   constructor(
     private router: Router, 
-    private sectionToolService: sectionToolService,
+    public sectionToolService: sectionToolService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    console.log(this.sectionToolService.modifyProject)
     this.projectForm = this.formBuilder.group({
       name: [this.sectionToolService.modifyProject === false ? null : this.sectionToolService.projectName,[Validators.required]],
-      sectionShape: [null,[Validators.required]],
+      sectionShape: [this.sectionToolService.modifyProject === false ? null : this.sectionToolService.projectShape,[Validators.required]],
     });
   }
 

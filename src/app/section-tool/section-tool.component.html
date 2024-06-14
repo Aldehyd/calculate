@@ -18,7 +18,12 @@
     </label>
   </fieldset>
   <div class="bottom-links-container">
-    <a routerLink="">Retour aux outils</a>
+    <a routerLink="" *ngIf="sectionToolService.modifyProject === false"
+      >Retour aux outils</a
+    >
+    <a routerLink="/projects" *ngIf="sectionToolService.modifyProject === true"
+      >Retour aux projets</a
+    >
     <button
       type="submit"
       class="basic-button"
@@ -30,7 +35,11 @@
           : 'true'
       "
     >
-      Démarrer la création
+      {{
+        sectionToolService.modifyProject === true
+          ? "Suivant"
+          : "Démarrer la création"
+      }}
     </button>
   </div>
 </form>

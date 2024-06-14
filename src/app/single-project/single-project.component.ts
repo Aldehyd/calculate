@@ -18,6 +18,7 @@ export class SingleProjectComponent {
   @Input() project !:any;
 
   removeProject$!: Observable<any>;
+  modifyProject$!: Observable<any>;
 
   constructor(private http: HttpClient,
     private sectionToolService: sectionToolService,
@@ -31,8 +32,11 @@ export class SingleProjectComponent {
   }
 
   modifyProject(): void {
+
+    const projectToModify = this.accountService.projects.find(project => project.id === this.project.id);
     this.sectionToolService.modifyProject = true;
-    this.sectionToolService.projectName = 'bliblou';
+    this.sectionToolService.projectName = projectToModify.name;
+    this.sectionToolService.projectShape = projectToModify.projectShape;
     this.router.navigateByUrl('section-tool');
   }
   
