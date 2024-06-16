@@ -16,6 +16,7 @@ import { sectionToolService } from '../services/section-tool.service';
 export class SingleProjectComponent {
 
   @Input() project !:any;
+  @Input() getProjects$!: Observable<any>;
 
   removeProject$!: Observable<any>;
   modifyProject$!: Observable<any>;
@@ -26,14 +27,17 @@ export class SingleProjectComponent {
     private router: Router
   ) {}
 
-  removeProject(): void {
-    this.removeProject$ = this.http.post('http://localhost:4000/app/remove_project',{mail: this.accountService.userEmail, id: this.project.id}, {responseType: 'text'});
+  removeProject(id: number): void {
+    this.removeProject$ = this.http.post('http://localhost:4000/app/remove_project',{mail: this.accountService.userEmail, id: id},{responseType: 'text'}).pipe(
+      tap(()=> {
+        this.getProjects$ = this.accountService.getProjects(this.accountService.userEmail);
+      })
+    );
     this.removeProject$.subscribe();
   }
 
-  modifyProject(): void {
-
-    const projectToModify = this.accountService.projects.find(project => project.id === this.project.id);
+  modifyProject(id: number): void {
+    const projectToModify = this.accountService.projects.find(project => project.id === id);
     this.sectionToolService.modifyProject = true;
     this.sectionToolService.projectName = projectToModify.name;
     this.sectionToolService.projectShape = projectToModify.projectShape;

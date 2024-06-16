@@ -282,7 +282,6 @@ app.post("/app/remove_project", async (req, res) => {
   const dbName = "calculate";
   try {
     await client.connect();
-    console.log(req.body.mail, req.body.id);
     await client
       .db(dbName)
       .collection("users")
@@ -294,11 +293,6 @@ app.post("/app/remove_project", async (req, res) => {
           },
         }
       );
-    const user = await client
-      .db(dbName)
-      .collection("users")
-      .findOne({ email: req.body.mail });
-    console.log(user);
     res.status(200).send("ok");
   } catch (err) {
     res.send("non ok");

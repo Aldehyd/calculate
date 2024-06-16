@@ -1,6 +1,8 @@
 <div class="main-container">
   <h3>
-    <a [routerLink]="tool.url" class="main-container_title">{{ tool.title }}</a>
+    <button class="main-container_open-button" (click)="openNewProject()">
+      {{ tool.title }}
+    </button>
   </h3>
   <button
     class="main-container_details-button"

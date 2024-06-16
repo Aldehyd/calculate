@@ -1,8 +1,15 @@
+<p *ngIf="getProjects$ | async as projects">
+  {{
+    projects.length === 0
+      ? "Vous n'avez aucun projet sauvegardé."
+      : "Vous avez " + projects.length + " projet(s) sauvegardé(s)."
+  }}
+</p>
 <app-single-project
   class="project"
-  *ngFor="let project of projects"
+  *ngFor="let project of getProjects$ | async"
   [project]="project"
+  [getProjects$]="getProjects$"
 ></app-single-project>
 <p class="warning-message" *ngIf="error === true">Une erreur est survenue.</p>
 <app-loader *ngIf="isLoading === true"></app-loader>
-<p *ngIf="projects === null">Vous n'avez aucun projet sauvegardé.</p>

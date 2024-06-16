@@ -5,9 +5,10 @@
     max-width: 75%;
     padding: 20px;
     background-color: #fff;
-    &_title {
-        color: #000;
-        text-decoration: none;
+    &_open-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
     }
     &_details-button {
         display: flex;

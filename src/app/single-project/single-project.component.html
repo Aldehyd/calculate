@@ -2,6 +2,10 @@
 <p>Dernière modification : {{ project.date | date : "dd/MM/yy, à HH:mm" }}</p>
 <span class="project_tool">Outil : {{ project.tool }}</span>
 <div class="buttons-container">
-  <button class="basic-button" (click)="modifyProject()">Modifier</button>
-  <button class="basic-button" (click)="removeProject()">Supprimer</button>
+  <button class="basic-button" (click)="modifyProject(project.id)">
+    Modifier
+  </button>
+  <button class="basic-button" (click)="removeProject(project.id)">
+    Supprimer
+  </button>
 </div>

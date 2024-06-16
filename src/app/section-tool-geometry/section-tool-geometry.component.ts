@@ -51,16 +51,23 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.currentPoint = {index: 0, x:0, y:0};
     this.errorOnSubmit = '';
     this.projectName = this.sectionToolService.projectName;
-    this.geometry = [
-      {
-          indice: 0,
-          x: 0,
-          y: 0,
-          angle: 0
-      }
-  ]
+    // this.geometry = [];
+    if(this.sectionToolService.modifyProject === true) {
+      this.geometry = this.sectionToolService.sectionGeometry;
+      this.drawSection(this.geometry);
+      this.sectionForm = this.formBuilder.group(this.geometry);
+    } else {
+      this.geometry = [
+        {
+            indice: 0,
+            x: 0,
+            y: 0,
+            angle: 0
+        }
+      ];
+      this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
+    };
     // this.geometry = this.sectionToolService.sectionGeometry;
-    this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
   }
 
   ngAfterViewInit(): void {
@@ -74,6 +81,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
 
   drawSection(formValues:any): void {
+    console.log(formValues)
     this.sectionThickness = formValues.thickness;
     this.roundCorner = formValues.roundCorner;
     this.coorMax = 0;
@@ -190,6 +198,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
       this.sectionToolService.sectionThickness = this.sectionThickness;
       this.sectionToolService.roundCorner = this.roundCorner;
       this.sectionToolService.pointsSvgAttribute = this.pointsSvgAttribute;
+      this.sectionToolService.modifyProject = true;
       this.rooter.navigateByUrl('/section-tool/analysis');
     }
   }

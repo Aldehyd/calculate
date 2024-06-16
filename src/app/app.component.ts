@@ -5,7 +5,6 @@ import { ToolComponent } from './tool/tool.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { accountService } from './services/account.service';
 import { sectionToolService } from './services/section-tool.service';
-
 @Component({
   selector: 'app-root',
   standalone: true,
