@@ -1,7 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { accountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
 @Component({
@@ -19,7 +19,7 @@ export class DeleteAccountComponent {
   removeAccountForm!: FormGroup;
   isFormInvalid!: boolean;
   isProjectsLossWarningChecked!: boolean;
-  checkFormValidity$: Observable<Object>
+  checkFormValidity$: Observable<Object>;
 
   constructor(
     private http: HttpClient, 
@@ -59,14 +59,17 @@ export class DeleteAccountComponent {
     this.checkPassword$ = this.http.get(`http://localhost:4000/app/check_password?mail=${this.accountService.userEmail}&password=${this.removeAccountForm.value.userPassword}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
-          this.isPasswordCorrect = true;
           this.removeAccount();
+        };
+      }),
+      map(res => {
+        if(res === 'ok') {
+          return ''
         } else {
-          this.isPasswordCorrect = false;
-        }; 
+          return 'Le mot de passe est incorrect.'
+        };
       })
     );
-    this.checkPassword$.subscribe();
   }
 
   removeAccount(): void {
@@ -74,13 +77,16 @@ export class DeleteAccountComponent {
       tap(res => {
         if(res === 'ok') {
           this.isAccountRemoved = true;
+        };
+      }),
+      map(res => {
+        if(res === 'ok') {
+          return 'Le compte a été supprimé.'
         } else {
-          this.isAccountRemoved = false;
+          return ''
         }; 
       })
     );
-    this.removeAccount$.subscribe();
-    console.log(this.isAccountRemoved)
     this.accountService.connected = false;
   }
 

@@ -188,6 +188,7 @@ app.get("/app/check_password", async (req, res) => {
       .db(dbName)
       .collection("users")
       .findOne({ email: req.query.mail });
+    console.log(req.query.password, user.password);
     const arePasswordsSimilar = await bcrypt.compare(
       req.query.password,
       user.password
@@ -211,23 +212,11 @@ app.get("/app/remove_account", async (req, res) => {
   const dbName = "calculate";
   try {
     await client.connect();
-    const user = await client
+    await client
       .db(dbName)
       .collection("users")
-      .findOne({ email: req.query.mail });
-    const arePasswordsSimilar = await bcrypt.compare(
-      req.query.password,
-      user.password
-    );
-    if (arePasswordsSimilar) {
-      await client
-        .db(dbName)
-        .collection("users")
-        .findOneAndDelete({ email: req.query.mail });
-      res.status(200).send("ok");
-    } else {
-      res.send("invalid password");
-    }
+      .findOneAndDelete({ email: req.query.mail });
+    res.status(200).send("ok");
   } catch (err) {
     res.send("non ok");
     console.log(err);

@@ -88,6 +88,7 @@ export class ConnexionComponent implements OnInit {
       tap(res => {
         if(res === 'ok') {
           this.isAccountInactive = false;
+          console.log('active account')
           this.checkPassword();
         } else {
           this.isAccountInactive = true;
@@ -107,6 +108,7 @@ export class ConnexionComponent implements OnInit {
           this.accountService.userEmail = this.connexionForm.value.userEmail;
           this.router.navigateByUrl('/');
         } else {
+          console.log('invalid password')
           this.isPasswordCorrect = false;
         }; 
       })

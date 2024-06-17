@@ -1,5 +1,5 @@
 <h1>Suppression du compte</h1>
-<p>
+<p *ngIf="isAccountRemoved === false">
   Afin de procéder à la suppression de votre compte, veuillez entrer votre mot
   de passe.
 </p>
@@ -17,7 +17,9 @@
       formControlName="userPassword"
     />
   </p>
-  <p class="warning-message">Le mot de passe est incorrect.</p>
+  <p class="warning-message" *ngIf="checkPassword$ | async as result">
+    {{ result }}
+  </p>
   <label>
     <input
       type="checkbox"
@@ -34,6 +36,6 @@
     Supprimer le compte
   </button>
 </form>
-<div class="account-form" *ngIf="isAccountRemoved === true">
-  <p>Le compte a été supprimé.</p>
+<div class="account-form" *ngIf="removeAccount$ | async as result">
+  <p>{{ result }}</p>
 </div>
