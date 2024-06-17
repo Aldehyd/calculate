@@ -136,7 +136,12 @@
     </div>
     <div class="bottom-links-container">
       <a routerLink="./.." class="basic-button">Précédent</a>
-      <button type="submit" class="basic-button" (click)="submitForm()">
+      <button
+        type="submit"
+        class="basic-button"
+        (click)="submitForm()"
+        [attr.aria-disabled]="isFormValid === true ? 'false' : 'true'"
+      >
         Analyser la section
       </button>
     </div>

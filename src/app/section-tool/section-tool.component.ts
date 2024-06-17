@@ -21,10 +21,9 @@ export class SectionToolComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.sectionToolService.modifyProject)
     this.projectForm = this.formBuilder.group({
-      name: [this.sectionToolService.modifyProject === false ? null : this.sectionToolService.projectName,[Validators.required]],
-      sectionShape: [this.sectionToolService.modifyProject === false ? null : this.sectionToolService.projectShape,[Validators.required]],
+      name: [this.sectionToolService.projectName,[Validators.required]],
+      sectionShape: [this.sectionToolService.projectShape,[Validators.required]],
     });
   }
 
@@ -32,7 +31,6 @@ export class SectionToolComponent {
     if(this.projectForm.value.name !== null && this.projectForm.value.name.length > 0 && this.projectForm.value.sectionShape) {
       this.sectionToolService.projectName = this.projectForm.value.name;
       this.sectionToolService.projectShape= this.projectForm.value.sectionShape;
-      this.sectionToolService.modifyProject = true;
       this.router.navigateByUrl("section-tool/geometry");
     };
   }

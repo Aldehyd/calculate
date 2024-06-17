@@ -28,6 +28,18 @@ export class ToolComponent implements OnInit {
 
   openNewProject(): void {
     this.sectionToolService.modifyProject = false;
+    this.sectionToolService.projectName = null;
+    this.sectionToolService.projectShape = null;
+    this.sectionToolService.sectionGeometry = [
+      {
+          indice: 0,
+          x: 0,
+          y: 0,
+          angle: 0
+      }
+    ];
+    this.sectionToolService.sectionThickness = null;
+    this.sectionToolService.roundCorner = null;
     this.router.navigateByUrl(this.tool.url);
   }
 

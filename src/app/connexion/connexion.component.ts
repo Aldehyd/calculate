@@ -14,12 +14,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class ConnexionComponent implements OnInit {
   connexionForm!: FormGroup;
-  isPasswordCorrect!: boolean;
   isPasswordVisible!: boolean;
-  isAccountInactive!: boolean;
   isFormInvalid!: boolean;
   checkFormValidity$!: Observable<any>;
-  isExistingMail!: boolean;
   noExistingMailError!: boolean;
   checkExistingMail$!: Observable<any>;
   checkPassword$!: Observable<Object>;
@@ -33,11 +30,8 @@ export class ConnexionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isPasswordCorrect = true;
-    this.noExistingMailError = false;
     this.isPasswordVisible = false;
     this.isFormInvalid = true;
-    this.isAccountInactive = false;
     this.connexionForm = this.formBuilder.group({
       userEmail: [null,[Validators.required,Validators.email]],
       userPassword: [null]
@@ -66,54 +60,33 @@ export class ConnexionComponent implements OnInit {
   checkExistingMail():void {
     this.checkExistingMail$ = this.http.get(`http://localhost:4000/app/check_existing_mail?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
-        console.log(res)
         if(res === 'yes') {
-          this.isExistingMail = true;
-        } else {
-          this.isExistingMail = false;
-        }; 
+          this.checkAccountActive();
+        };
       })
     );
-    this.checkExistingMail$.subscribe();
-    
-    if(this.isExistingMail === true) {
-      this.checkAccountActive();
-    } else {
-      this.noExistingMailError = true;
-    };
   }
 
   checkAccountActive(): void {
     this.checkAccountActive$ = this.http.get(`http://localhost:4000/app/check_account_active?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
-          this.isAccountInactive = false;
-          console.log('active account')
           this.checkPassword();
-        } else {
-          this.isAccountInactive = true;
-        }; 
+        };
       })
     );
-    this.checkAccountActive$.subscribe();
   }
 
   checkPassword(): void {
     this.checkPassword$ = this.http.get(`http://localhost:4000/app/check_password?mail=${this.connexionForm.value.userEmail}&password=${this.connexionForm.value.userPassword}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
-          console.log('connect')
-          this.isPasswordCorrect = true;
           this.accountService.connected = true;
           this.accountService.userEmail = this.connexionForm.value.userEmail;
           this.router.navigateByUrl('/');
-        } else {
-          console.log('invalid password')
-          this.isPasswordCorrect = false;
-        }; 
+        };
       })
     );
-    this.checkPassword$.subscribe();
   }
 
   onSubmitForm() {

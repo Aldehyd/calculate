@@ -18,6 +18,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
 
   @ViewChild('svg') svg!: ElementRef;
   projectName!: string;
+  updateProperties$!: Observable<any>;
   updateSection$!: Observable<any>;
   sectionForm!: FormGroup;
   geometry!: Point[];
@@ -33,6 +34,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   mouseOverPoint!: boolean;
   mouseDownOnPoint!: boolean;
 
+  isFormValid!: boolean;
   errorOnSubmit!: string;
 
   constructor(
@@ -47,43 +49,38 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.coorMax = 300;
     this.sectionThickness = this.sectionToolService.sectionThickness;
     this.roundCorner = this.sectionToolService.roundCorner;
+    console.log(this.sectionThickness,this.roundCorner)
+    if(this.sectionThickness !== null && this.sectionThickness > 0 && this.roundCorner !== null && this.roundCorner > 0) {
+      this.isFormValid = true;
+    } else {
+      this.isFormValid = false;
+    };
     this.coordonatesPosition = {x:0, y:0};
     this.currentPoint = {index: 0, x:0, y:0};
     this.errorOnSubmit = '';
     this.projectName = this.sectionToolService.projectName;
-    // this.geometry = [];
-    if(this.sectionToolService.modifyProject === true) {
-      this.geometry = this.sectionToolService.sectionGeometry;
-      this.drawSection(this.geometry);
-      this.sectionForm = this.formBuilder.group(this.geometry);
-    } else {
-      this.geometry = [
-        {
-            indice: 0,
-            x: 0,
-            y: 0,
-            angle: 0
-        }
-      ];
-      this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
-    };
-    // this.geometry = this.sectionToolService.sectionGeometry;
+    this.geometry = this.sectionToolService.sectionGeometry;
+    this.drawSection(this.geometry);
+    this.sectionForm = this.formBuilder.group(this.translateGeometryToForm(this.geometry));
   }
 
   ngAfterViewInit(): void {
     this.updateSection$ = this.sectionForm.valueChanges.pipe(
       tap(formValues => {
-        // this.sectionToolService.setGeometry(geometry);
+        this.sectionThickness = formValues.thickness;
+        this.roundCorner = formValues.roundCorner;
         this.drawSection(this.translateGeometryFromForm(formValues));
+        if(formValues.thickness !== null && formValues.thickness > 0 && formValues.roundCorner !== null && formValues.roundCorner > 0) {
+          this.isFormValid = true;
+        } else {
+          this.isFormValid = false;
+        };
       })
     );
     this.updateSection$.subscribe();
   }
 
   drawSection(formValues:any): void {
-    console.log(formValues)
-    this.sectionThickness = formValues.thickness;
-    this.roundCorner = formValues.roundCorner;
     this.coorMax = 0;
     for(let formValue in formValues) {
       if(formValue !== "thickness" && formValue !== "roundCorner") {
@@ -186,20 +183,21 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
   
   submitForm(): void {
-    if(this.geometry.length <=3) {
-      this.errorOnSubmit = 'min-walls';
-    } else if((this.geometry.length-1) % 2 ===0) {
-      this.errorOnSubmit = 'pair-walls';
-    } else if(this.geometry[0].x === this.geometry[this.geometry.length-1].x && this.geometry[0].y === this.geometry[this.geometry.length-1].y) {
-      this.errorOnSubmit = 'closed';
-    } else {
-      this.sectionToolService.coorMax = this.coorMax;
-      this.sectionToolService.sectionGeometry = this.geometry;
-      this.sectionToolService.sectionThickness = this.sectionThickness;
-      this.sectionToolService.roundCorner = this.roundCorner;
-      this.sectionToolService.pointsSvgAttribute = this.pointsSvgAttribute;
-      this.sectionToolService.modifyProject = true;
-      this.rooter.navigateByUrl('/section-tool/analysis');
-    }
+    if(this.isFormValid)
+      if(this.geometry.length <=3) {
+        this.errorOnSubmit = 'min-walls';
+      } else if((this.geometry.length-1) % 2 ===0) {
+        this.errorOnSubmit = 'pair-walls';
+      } else if(this.geometry[0].x === this.geometry[this.geometry.length-1].x && this.geometry[0].y === this.geometry[this.geometry.length-1].y) {
+        this.errorOnSubmit = 'closed';
+      } else {
+        this.sectionToolService.coorMax = this.coorMax;
+        this.sectionToolService.sectionGeometry = this.geometry;
+        this.sectionToolService.sectionThickness = this.sectionThickness;
+        this.sectionToolService.roundCorner = this.roundCorner;
+        this.sectionToolService.pointsSvgAttribute = this.pointsSvgAttribute;
+        this.sectionToolService.modifyProject = true;
+        this.rooter.navigateByUrl('/section-tool/analysis');
+      }
   }
 }

@@ -100,7 +100,7 @@ export class SectionToolAnalysisComponent implements OnInit {
     this.detectGeometry();
     this.drawSection();
     this.analyzeCompliance();
-    console.log(this.analyzedSection)
+    
   }
 
   detectGeometry() {
