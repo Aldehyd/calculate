@@ -8,6 +8,9 @@ const nodemailer = require("nodemailer");
 
 const { MongoClient } = require("mongodb");
 
+const bcrypt = require("bcrypt");
+const BCRYPT_SALT_ROUND = 12;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -63,9 +66,13 @@ app.post("/app/send_mail", async (req, res) => {
     //create inactive user
     try {
       await client.connect();
+      const cryptedPassword = await bcrypt.hash(
+        req.body.password,
+        BCRYPT_SALT_ROUND
+      );
       await client.db(dbName).collection("users").insertOne({
         email: req.body.email,
-        password: req.body.password,
+        password: cryptedPassword,
         active: false,
         projects: [],
       });
@@ -174,13 +181,18 @@ app.get("/app/check_password", async (req, res) => {
   const uri = process.env.URI;
   const client = new MongoClient(uri);
   const dbName = "calculate";
+
   try {
     await client.connect();
     const user = await client
       .db(dbName)
       .collection("users")
       .findOne({ email: req.query.mail });
-    if (user.password === req.query.password) {
+    const arePasswordsSimilar = await bcrypt.compare(
+      req.query.password,
+      user.password
+    );
+    if (arePasswordsSimilar) {
       res.status(200).send("ok");
     } else {
       res.send("non ok");
@@ -202,7 +214,20 @@ app.get("/app/remove_account", async (req, res) => {
     const user = await client
       .db(dbName)
       .collection("users")
-      .findOneAndDelete({ email: req.query.mail });
+      .findOne({ email: req.query.mail });
+    const arePasswordsSimilar = await bcrypt.compare(
+      req.query.password,
+      user.password
+    );
+    if (arePasswordsSimilar) {
+      await client
+        .db(dbName)
+        .collection("users")
+        .findOneAndDelete({ email: req.query.mail });
+      res.status(200).send("ok");
+    } else {
+      res.send("invalid password");
+    }
   } catch (err) {
     res.send("non ok");
     console.log(err);
