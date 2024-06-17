@@ -25,10 +25,9 @@ export class SectionToolSollicitationComponent implements OnInit {
   ) {}
 
   ngOnInit():void {
-    this.isFormInvalid = true;
     this.sollicitationForm = this.formBuilder.group({
-      elasticLimit: [null,[Validators.required]],
-      sollicitationType: [null]
+      elasticLimit: [this.sectionToolService.elasticLimit,[Validators.required]],
+      sollicitationType: [this.sectionToolService.sollicitationType]
     });
     this.checkFormValidity$ = this.sollicitationForm.valueChanges.pipe(
       tap(value => {
@@ -37,6 +36,11 @@ export class SectionToolSollicitationComponent implements OnInit {
       })
     );
     this.checkFormValidity$.subscribe();
+    if(this.sectionToolService.sollicitationType !== null && this.sectionToolService.elasticLimit !== null && this.sectionToolService.elasticLimit > 0) {
+      this.isFormInvalid = false;
+    } else {
+      this.isFormInvalid = true;
+    };
   }
 
   onSubmitForm(): void {
