@@ -14,6 +14,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class SectionToolAnalysisComponent implements OnInit {
 
+  projectName!: string;
   geometry!: Point[];
 
   xPoints!: number[];
@@ -33,6 +34,7 @@ export class SectionToolAnalysisComponent implements OnInit {
   constructor(public sectionToolService: sectionToolService, private router:Router) {}
 
   ngOnInit():void {
+    this.projectName = this.sectionToolService.projectName;
     this.xPoints = [];
     this.yPoints = []
     this.geometry = this.sectionToolService.sectionGeometry;

@@ -15,6 +15,7 @@ import { ElementRef } from '@angular/core';
 export class SectionToolAreaComponent implements OnInit {
 
   @ViewChild('svg') svg!: ElementRef;
+  projectName!: string;
   sectionArea!: SectionArea;
   ceffSvgCoor!: string;
   be1SvgCoor!: string;
@@ -32,6 +33,7 @@ export class SectionToolAreaComponent implements OnInit {
   ) {}
 
   ngOnInit():void {
+    this.projectName = this.sectionToolService.projectName;
     this.notAvailableYet = false;
     this.coordonatesPosition = {x:0,y:0};
     this.areaPart = '';

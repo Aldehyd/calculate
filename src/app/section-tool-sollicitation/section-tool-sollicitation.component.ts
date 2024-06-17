@@ -14,6 +14,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class SectionToolSollicitationComponent implements OnInit {
 
+  projectName!: string;
   sollicitationForm!: FormGroup;
   isFormInvalid!: boolean;
   checkFormValidity$!: Observable<Object>;
@@ -25,6 +26,7 @@ export class SectionToolSollicitationComponent implements OnInit {
   ) {}
 
   ngOnInit():void {
+    this.projectName = this.sectionToolService.projectName;
     this.sollicitationForm = this.formBuilder.group({
       elasticLimit: [this.sectionToolService.elasticLimit,[Validators.required]],
       sollicitationType: [this.sectionToolService.sollicitationType]

@@ -15,6 +15,7 @@ import { accountService } from '../services/account.service';
 })
 export class SectionToolResultsComponent implements OnInit {
 
+  projectName!: string;
   sectionProperties!: any;
   projectSaved!: boolean;
   errorOnProjectSave!: boolean;
@@ -28,6 +29,7 @@ export class SectionToolResultsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.projectName = this.sectionToolService.projectName;
     this.projectSaved = false;
     this.errorOnProjectSave = false;
     this.sectionProperties = {
