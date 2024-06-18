@@ -14,9 +14,9 @@ const BCRYPT_SALT_ROUND = 12;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// const path = require("path");
-// const public_path = path.join(__dirname,'/dist');
-// app.use('/',express.static(public_path));
+const path = require("path");
+const public_path = path.join(__dirname, "/dist");
+app.use("/", express.static(public_path));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
