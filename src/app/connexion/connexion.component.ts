@@ -68,7 +68,7 @@ export class ConnexionComponent implements OnInit {
   }
 
   checkAccountActive(): void {
-    this.checkAccountActive$ = this.http.get(`https://calculs-structures.fr/app/check_account_active?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+    this.checkAccountActive$ = this.http.get(`https://calculs-structure.fr/app/check_account_active?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
           this.checkPassword();
