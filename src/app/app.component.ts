@@ -5,10 +5,11 @@ import { ToolComponent } from './tool/tool.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { accountService } from './services/account.service';
 import { sectionToolService } from './services/section-tool.service';
+import { TemporaryMessageComponent } from './temporary-message/temporary-message.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,HeaderComponent,ToolComponent,MainMenuComponent],
+  imports: [RouterOutlet,HeaderComponent,ToolComponent,MainMenuComponent,TemporaryMessageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
