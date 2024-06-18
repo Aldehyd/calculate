@@ -56,7 +56,7 @@ export class DeleteAccountComponent {
   }
 
   checkPassword(): void {
-    this.checkPassword$ = this.http.get(`http://localhost:4000/app/check_password?mail=${this.accountService.userEmail}&password=${this.removeAccountForm.value.userPassword}`,{responseType: 'text'}).pipe(
+    this.checkPassword$ = this.http.get(`https://calculs-structure.fr/app/check_password?mail=${this.accountService.userEmail}&password=${this.removeAccountForm.value.userPassword}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
           this.removeAccount();
@@ -73,7 +73,7 @@ export class DeleteAccountComponent {
   }
 
   removeAccount(): void {
-    this.removeAccount$ = this.http.get(`http://localhost:4000/app/remove_account?mail=${this.accountService.userEmail}`,{responseType: 'text'}).pipe(
+    this.removeAccount$ = this.http.get(`https://calculs-structure.fr/app/remove_account?mail=${this.accountService.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
           this.isAccountRemoved = true;

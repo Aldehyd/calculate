@@ -58,7 +58,7 @@ export class ConnexionComponent implements OnInit {
   }
 
   checkExistingMail():void {
-    this.checkExistingMail$ = this.http.get(`http://localhost:4000/app/check_existing_mail?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+    this.checkExistingMail$ = this.http.get(`https://calculs-structure.fr/app/check_existing_mail?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'yes') {
           this.checkAccountActive();
@@ -68,7 +68,7 @@ export class ConnexionComponent implements OnInit {
   }
 
   checkAccountActive(): void {
-    this.checkAccountActive$ = this.http.get(`http://localhost:4000/app/check_account_active?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+    this.checkAccountActive$ = this.http.get(`https://calculs-structures.fr/app/check_account_active?mail=${this.connexionForm.value.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
           this.checkPassword();
@@ -78,7 +78,7 @@ export class ConnexionComponent implements OnInit {
   }
 
   checkPassword(): void {
-    this.checkPassword$ = this.http.get(`http://localhost:4000/app/check_password?mail=${this.connexionForm.value.userEmail}&password=${this.connexionForm.value.userPassword}`,{responseType: 'text'}).pipe(
+    this.checkPassword$ = this.http.get(`https://calculs-structure.fr/app/check_password?mail=${this.connexionForm.value.userEmail}&password=${this.connexionForm.value.userPassword}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res === 'ok') {
           this.accountService.connected = true;

@@ -158,7 +158,7 @@ export class SubscriptionComponent {
   }
 
   checkExistingMail():void {
-    this.checkExistingMail$ = this.http.get(`http://localhost:4000/app/check_existing_mail?mail=${this.subscriptionForm.value.userEmail}`,{responseType: 'text'}).pipe(
+    this.checkExistingMail$ = this.http.get(`https://calculs-structure.fr/app/check_existing_mail?mail=${this.subscriptionForm.value.userEmail}`,{responseType: 'text'}).pipe(
       tap(res => {
         console.log(res)
         if(res === 'yes') {
