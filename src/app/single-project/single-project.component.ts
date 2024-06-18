@@ -28,7 +28,7 @@ export class SingleProjectComponent {
   ) {}
 
   removeProject(id: number): void {
-    this.removeProject$ = this.http.post('http://localhost:4000/app/remove_project',{mail: this.accountService.userEmail, id: id},{responseType: 'text'}).pipe(
+    this.removeProject$ = this.http.post('https://calculs-structure/app/remove_project',{mail: this.accountService.userEmail, id: id},{responseType: 'text'}).pipe(
       tap(()=> {
         this.getProjects$ = this.accountService.getProjects(this.accountService.userEmail);
       })

@@ -321,7 +321,7 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   saveProject(): void {
-    this.saveProject$ = this.http.post('http://localhost:4000/app/save_project',{
+    this.saveProject$ = this.http.post('https://calculs-structure.fr/app/save_project',{
       mail: this.accountService.userEmail,
       project: {
         name: this.sectionToolService.projectName,

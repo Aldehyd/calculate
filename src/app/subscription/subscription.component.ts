@@ -173,7 +173,7 @@ export class SubscriptionComponent {
   }
 
   sendConfirmationMail(): void {
-    this.sendConfirmationMail$ = this.http.post('http://localhost:4000/app/send_mail',{email: this.subscriptionForm.value.userEmail, password: this.subscriptionForm.value.userPassword},{responseType: 'text'}).pipe(
+    this.sendConfirmationMail$ = this.http.post('https://calculs-structure.fr/app/send_mail',{email: this.subscriptionForm.value.userEmail, password: this.subscriptionForm.value.userPassword},{responseType: 'text'}).pipe(
       tap(res => {
         if(res !== null && res === 'ok') {
           this.confirmationMailSend = true;

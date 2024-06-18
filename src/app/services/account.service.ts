@@ -18,7 +18,7 @@ export class accountService implements OnInit {
     }
 
     getProjects(mail: string): Observable<any[]> {
-        return this.http.get<any[]>(`http://localhost:4000/app/get_projects?mail=${mail}`,{responseType: 'json'});
+        return this.http.get<any[]>(`https://calculs-structure.fr/app/get_projects?mail=${mail}`,{responseType: 'json'});
     }
 
 }
