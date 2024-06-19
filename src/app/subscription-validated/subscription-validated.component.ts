@@ -22,7 +22,10 @@ export class SubscriptionValidatedComponent implements OnInit {
     private http:HttpClient) {}
 
   ngOnInit(): void {
-    this.validateSubscription$ = this.http.get(`https://calculs-structure.fr/app/validate_subscription?key=${this.route.snapshot.queryParams['key']}`,{responseType: 'text'}).pipe(
+    this.route.params.subscribe(params => {
+      this.key = params['key'];
+   });
+    this.validateSubscription$ = this.http.get(`https://calculs-structure.fr/app/validate_subscription?key=${this.key}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res !== null && res === 'ok') {
           this.isAccountActive = true;

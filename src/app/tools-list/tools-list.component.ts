@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Tool } from '../models/tool.model';
 import { ToolComponent } from '../tool/tool.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tools-list',
@@ -13,7 +14,16 @@ import { ToolComponent } from '../tool/tool.component';
 export class ToolsListComponent implements OnInit{
   tools!: Tool[];
 
+  constructor(
+    private route:ActivatedRoute,
+    private router:Router
+  ) {}
+
   ngOnInit(): void {
+    if(this.route.snapshot.queryParams['validate-subscription']) {
+      this.router.navigate(['/subscription-validated',this.route.snapshot.queryParams['validate-subscription']]);
+    };
+
     this.tools = [
       {
         id: 0,

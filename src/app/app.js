@@ -109,7 +109,7 @@ app.post("/app/send_mail", async (req, res) => {
     from: "contact@dyskredy-art.com",
     to: req.body.email,
     subject: `Calculate: terminez votre inscription`,
-    html: `Cliquez sur ce lien afin de terminer votre inscription : <a href="https://calculs-structure.fr/subscription-validated?key=${userKey}">lien</a>`,
+    html: `Cliquez sur ce lien afin de terminer votre inscription : <a href="https://calculs-structure.fr/?validate_subscription='ok'&key=${userKey}">lien</a>`,
   };
 
   transporter
