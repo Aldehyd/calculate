@@ -21,7 +21,7 @@ export class ToolsListComponent implements OnInit{
 
   ngOnInit(): void {
     if(this.route.snapshot.queryParams['validate-subscription']) {
-      this.router.navigate(['/subscription-validated',this.route.snapshot.queryParams['validate-subscription']]);
+      this.router.navigate(['/subscription-validated',this.route.snapshot.queryParams['key']]);
     };
 
     this.tools = [
