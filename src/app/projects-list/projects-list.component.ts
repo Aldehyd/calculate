@@ -31,7 +31,6 @@ export class ProjectsListComponent implements OnInit {
             this.isLoading = false;
           } else {
             this.error = false;
-            // this.projects = res;
             this.accountService.projects = res;
             this.isLoading = false;
           };

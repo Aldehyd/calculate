@@ -38,10 +38,23 @@ export class SingleProjectComponent {
 
   modifyProject(id: number): void {
     const projectToModify = this.accountService.projects.find(project => project.id === id);
-    this.sectionToolService.modifyProject = true;
-    this.sectionToolService.projectName = projectToModify.name;
-    this.sectionToolService.projectShape = projectToModify.projectShape;
-    this.router.navigateByUrl('section-tool');
+    switch(projectToModify.tool) {
+      case 'Section à parois minces':
+        this.sectionToolService.modifyProject = true;
+        this.sectionToolService.projectName = projectToModify.name;
+        this.sectionToolService.projectShape = projectToModify.projectShape;
+        this.sectionToolService.sectionThickness = projectToModify.sectionThickness;
+        this.sectionToolService.roundCorner = projectToModify.roundCorner;
+        this.sectionToolService.coorMax = projectToModify.coorMax;
+        this.sectionToolService.pointsSvgAttribute = projectToModify.pointsSvgAttribute;
+        this.sectionToolService.analyzedSection = projectToModify.analyzedSection;
+        this.sectionToolService.sollicitationType = projectToModify.sollicitationType;
+        this.sectionToolService.elasticLimit = projectToModify.elasticLimit;
+        this.router.navigateByUrl('section-tool');
+        break;
+      default:
+        break;
+    };
   }
   
 }

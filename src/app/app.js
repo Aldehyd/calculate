@@ -275,6 +275,7 @@ app.post("/app/save_project", async (req, res) => {
                   name: req.body.project.name,
                   tool: req.body.project.tool,
                   date: new Date(),
+                  details: req.body.project.projectDetails,
                 },
               ],
             },
