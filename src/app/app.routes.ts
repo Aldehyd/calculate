@@ -17,7 +17,7 @@ export const routes: Routes = [
     {path: 'projects', component: ProjetcsComponent},
     {path: 'connexion', component: ConnexionComponent},
     {path: 'subscription', component: SubscriptionComponent},
-    {path: 'subscription-validated', component: SubscriptionValidatedComponent},
+    {path: 'subscription-validated/:key', component: SubscriptionValidatedComponent},
     {path: 'delete-account', component: DeleteAccountComponent},
     {path: 'section-tool', component: SectionToolComponent},
     {path: 'section-tool/geometry', component: SectionToolGeometryComponent},
