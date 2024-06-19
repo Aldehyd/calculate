@@ -25,6 +25,7 @@ export class SubscriptionValidatedComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.key = params['key'];
    });
+   console.log(this.route.params,this.key)
     this.validateSubscription$ = this.http.get(`https://calculs-structure.fr/app/validate_subscription?key=${this.key}`,{responseType: 'text'}).pipe(
       tap(res => {
         if(res !== null && res === 'ok') {
