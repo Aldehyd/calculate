@@ -91,7 +91,7 @@ app.post("/app/send_mail", async (req, res) => {
   createUser(req);
 
   let config = {
-    host: "node197-eu.n0c.com",
+    host: "node205-eu.n0c.com",
     port: 587,
     secure: false,
     auth: {
@@ -106,7 +106,7 @@ app.post("/app/send_mail", async (req, res) => {
   let transporter = nodemailer.createTransport(config);
 
   const mailOptions = {
-    from: "contact@dyskredy-art.com",
+    from: "contact@calculs-structure.fr",
     to: req.body.email,
     subject: `Calculate: terminez votre inscription`,
     html: `Cliquez sur ce lien afin de terminer votre inscription : <a href="https://calculs-structure.fr/?validate-subscription='ok'&key=${userKey}">lien</a>`,
