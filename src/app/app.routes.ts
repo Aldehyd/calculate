@@ -24,5 +24,6 @@ export const routes: Routes = [
     {path: 'section-tool/analysis', component: SectionToolAnalysisComponent},
     {path: 'section-tool/sollicitation', component: SectionToolSollicitationComponent},
     {path: 'section-tool/area', component: SectionToolAreaComponent},
-    {path: 'section-tool/results', component: SectionToolResultsComponent}
+    {path: 'section-tool/results', component: SectionToolResultsComponent},
+    {path: '**', redirectTo: ''}
 ];
