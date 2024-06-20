@@ -337,10 +337,10 @@ export class SectionToolAnalysisComponent implements OnInit {
       default:
         break;
     };
-
+    console.log(this.analyzedSection.bottomWing.angle)
     if(this.analyzedSection.web.length / this.analyzedSection.thickness <= 500)
-      if(this.analyzedSection.bottomWing.angle <= 135 && this.analyzedSection.bottomWing.angle >= 90)
-        if(this.analyzedSection.topWing.angle <= 135 && this.analyzedSection.topWing.angle >= 90)
+      if(this.analyzedSection.bottomWing.angle <= 135 && this.analyzedSection.bottomWing.angle >= 89)
+        if(this.analyzedSection.topWing.angle <= 135 && this.analyzedSection.topWing.angle >= 89)
           if(this.analyzedSection.web.length * Math.cos(this.analyzedSection.bottomWing.angle-90) / this.analyzedSection.thickness <= 500 * Math.sin(180-this.analyzedSection.bottomWing.angle))
             if(this.analyzedSection.web.length * Math.cos(this.analyzedSection.topWing.angle-90) / this.analyzedSection.thickness <= 500 * Math.sin(180-this.analyzedSection.topWing.angle))
               this.analyzedSection.web.compliant = true;

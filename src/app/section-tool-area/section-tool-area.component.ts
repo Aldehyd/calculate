@@ -286,16 +286,13 @@ export class SectionToolAreaComponent implements OnInit {
     if(this.sectionArea.topWing.lambdad <= 0.65) {
       return 1;
     } else if(this.sectionArea.topWing.lambdad <= 1.38) {
-      console.log(1.47-0.723*this.sectionArea.topWing.lambdad)
       return 1.47-0.723*this.sectionArea.topWing.lambdad;
     } else {
-      console.log(0.66/this.sectionArea.topWing.lambdad)
       return 0.66/this.sectionArea.topWing.lambdad;
     };
   }
 
   drawSection():void {//CORRIGER DESSIN QUAND LES BORDS SONT INCLINES
-    console.log(this.sectionToolService.analyzedSection)
     switch(this.sectionToolService.analyzedSection.wallsNumber) {
       case 3:
         if(this.sectionToolService.analyzedSection.bottomWing.start.x < this.sectionToolService.analyzedSection.bottomWing.end.x) {
