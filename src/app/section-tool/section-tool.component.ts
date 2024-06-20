@@ -17,6 +17,7 @@ export class SectionToolComponent {
   constructor(
     private router: Router, 
     public sectionToolService: sectionToolService,
+    public accountService: accountService,
     private formBuilder: FormBuilder
   ) {}
 

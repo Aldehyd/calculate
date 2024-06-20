@@ -43,3 +43,7 @@
     </button>
   </div>
 </form>
+<p class="warning-message" *ngIf="accountService.connected === false">
+  Attention, vous n'êtes pas connecté et ne pourrez donc pas enregistrer votre
+  projet.
+</p>
