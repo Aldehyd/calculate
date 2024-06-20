@@ -49,7 +49,6 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
     this.coorMax = 300;
     this.sectionThickness = this.sectionToolService.sectionThickness;
     this.roundCorner = this.sectionToolService.roundCorner;
-    console.log(this.sectionThickness,this.roundCorner)
     if(this.sectionThickness !== null && this.sectionThickness > 0 && this.roundCorner !== null && this.roundCorner > 0) {
       this.isFormValid = true;
     } else {
@@ -87,6 +86,7 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
         this.coorMax = Math.max(this.coorMax,formValues[formValue].x,formValues[formValue].y);
       };
     };
+
     let points = "";
     for(let formValue in formValues) {
       if(formValue !== "thickness" && formValue!== "roundCorner" && this.coorMax !== 0) {
@@ -97,8 +97,8 @@ export class SectionToolGeometryComponent implements AfterViewInit, OnInit {
   }
 
   translateGeometryToForm(geometry: PointLineForm[]): any {
-    let translatedGeometry = {thickness: 2};
-    let translatedRoundCorner = {roundCorner: 4};
+    let translatedGeometry = {thickness: this.sectionToolService.sectionThickness};
+    let translatedRoundCorner = {roundCorner: this.sectionToolService.roundCorner};
     for(let point of geometry) {
       translatedGeometry = {...translatedGeometry, ...translatedRoundCorner, ...{['point'+ point.indice +'X']: point.x}}
       translatedGeometry = {...translatedGeometry, ...translatedRoundCorner, ...{['point'+ point.indice +'Y']: point.y}}
