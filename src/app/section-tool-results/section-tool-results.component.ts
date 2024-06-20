@@ -23,7 +23,7 @@ export class SectionToolResultsComponent implements OnInit {
 
   constructor(
     public sectionToolService:sectionToolService,
-    private accountService: accountService,
+    public accountService: accountService,
     private router: Router,
     private http: HttpClient
   ) {}
@@ -321,33 +321,35 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   saveProject(): void {
-    this.saveProject$ = this.http.post('https://calculs-structure.fr/app/save_project',{
-      mail: this.accountService.userEmail,
-      project: {
-        name: this.sectionToolService.projectName,
-        tool: 'Section à parois minces',
-        projectDetails: {
-          shape: this.sectionToolService.projectShape,
-          sectionGeometry: this.sectionToolService.sectionGeometry,
-          sectionThickness: this.sectionToolService.sectionThickness,
-          roundCorner: this.sectionToolService.roundCorner,
-          coorMax: this.sectionToolService.coorMax,
-          pointsSvgAttribute: this.sectionToolService.pointsSvgAttribute,
-          analyzedSection: this.sectionToolService.analyzedSection,
-          sectionArea: this.sectionToolService.sectionArea,
-          sollicitationType: this.sectionToolService.sollicitationType,
-          elasticLimit: this.sectionToolService.elasticLimit
+    if(this.accountService.connected === true) {
+      this.saveProject$ = this.http.post('https://calculs-structure.fr/app/save_project',{
+        mail: this.accountService.userEmail,
+        project: {
+          name: this.sectionToolService.projectName,
+          tool: 'Section à parois minces',
+          projectDetails: {
+            shape: this.sectionToolService.projectShape,
+            sectionGeometry: this.sectionToolService.sectionGeometry,
+            sectionThickness: this.sectionToolService.sectionThickness,
+            roundCorner: this.sectionToolService.roundCorner,
+            coorMax: this.sectionToolService.coorMax,
+            pointsSvgAttribute: this.sectionToolService.pointsSvgAttribute,
+            analyzedSection: this.sectionToolService.analyzedSection,
+            sectionArea: this.sectionToolService.sectionArea,
+            sollicitationType: this.sectionToolService.sollicitationType,
+            elasticLimit: this.sectionToolService.elasticLimit
+          }
         }
-      }
-    },{responseType: 'text'}).pipe(
-      tap(res => {
-        if(res === 'ok') {
-          this.projectSaved = true;
-        } else {
-          this.errorOnProjectSave = true;
-        };
-      })
-    );
-    this.saveProject$.subscribe();
+      },{responseType: 'text'}).pipe(
+        tap(res => {
+          if(res === 'ok') {
+            this.projectSaved = true;
+          } else {
+            this.errorOnProjectSave = true;
+          };
+        })
+      );
+      this.saveProject$.subscribe();
+    }
   }
 }
