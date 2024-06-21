@@ -137,3 +137,10 @@ fieldset {
 .projects {
     width: 100%;
 }
+.switch {
+    margin: 0 auto 2rem auto;
+    width: fit-content;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}

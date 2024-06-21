@@ -4,9 +4,13 @@
   }}</span>
   : Calcul de section à parois minces - Résultats
 </h1>
+<app-switch
+  class="switch"
+  (activeSectionType)="switchActiveSectionType($event)"
+></app-switch>
 <div class="main-content">
   <div class="results-container">
-    <div class="brut-section">
+    <div class="brut-section" *ngIf="activeSectionType === 'brut'">
       <h2>Section brute</h2>
       <ul>
         <li>Aire : {{ sectionProperties.brut.A | number : "1.0-0" }} mm²</li>
@@ -16,7 +20,7 @@
         <li>zsc : {{ sectionProperties.brut.zsc | number : "1.0-0" }} mm</li>
       </ul>
     </div>
-    <div class="net-section">
+    <div class="net-section" *ngIf="activeSectionType === 'net'">
       <h2>Section nette</h2>
       <ul>
         <li>Aire : {{ sectionProperties.net.A | number : "1.0-0" }} mm²</li>
@@ -30,6 +34,7 @@
   <div class="graphical-background">
     <div class="svg-container" #svg>
       <div
+        *ngIf="activeSectionType === 'brut'"
         class="cisaillement-center_point"
         [ngStyle]="{
           top: 300 - sectionProperties.brut.zsc + 'px',
@@ -38,10 +43,21 @@
       >
         <span class="cisaillement-center_text">Centre de cisaillement</span>
       </div>
+      <div
+        *ngIf="activeSectionType === 'net'"
+        class="cisaillement-center_point"
+        [ngStyle]="{
+          top: 300 - sectionProperties.net.zsc + 'px',
+          left: sectionProperties.net.ysc + 'px'
+        }"
+      >
+        <span class="cisaillement-center_text">Centre de cisaillement</span>
+      </div>
       <span class="indicator indicator--y">Y</span>
       <span class="indicator indicator--z">Z</span>
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
         <polyline
+          *ngIf="activeSectionType === 'brut'"
           fill="none"
           [attr.points]="sectionToolService.pointsSvgAttribute"
           stroke-width="4"

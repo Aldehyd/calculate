@@ -340,6 +340,7 @@ export class SectionToolAreaComponent implements OnInit {
 
   onSubmitForm():void {
     if(this.notAvailableYet === false)
+      this.sectionToolService.sectionArea = this.sectionArea;
       this.router.navigateByUrl('/section-tool/results');
   }
 

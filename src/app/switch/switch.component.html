@@ -1,0 +1,23 @@
+<span class="section-word">Section : </span>
+<div class="tab-list">
+  <button
+    class="tab tab--brut"
+    [ngClass]="{ active: localActiveSectionType === 'brut' }"
+    (click)="onBrutClick()"
+  >
+    Brute
+  </button>
+  <button
+    class="tab tab--net"
+    [ngClass]="{ active: localActiveSectionType === 'net' }"
+    (click)="onNetClick()"
+  >
+    Nette
+  </button>
+  <span
+    class="background"
+    [ngStyle]="
+      localActiveSectionType === 'net' ? { left: '7rem' } : { left: 0 }
+    "
+  ></span>
+</div>

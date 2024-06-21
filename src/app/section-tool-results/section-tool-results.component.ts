@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { sectionToolService } from '../services/section-tool.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { accountService } from '../services/account.service';
+import { SwitchComponent } from '../switch/switch.component';
 
 @Component({
   selector: 'app-section-tool-results',
   standalone: true,
-  imports: [CommonModule,RouterModule,HttpClientModule],
+  imports: [CommonModule,RouterModule,HttpClientModule,SwitchComponent],
   templateUrl: './section-tool-results.component.html',
   styleUrl: './section-tool-results.component.scss'
 })
 export class SectionToolResultsComponent implements OnInit {
-
+  
+  activeSectionType!: string;
   projectName!: string;
   sectionProperties!: any;
   projectSaved!: boolean;
@@ -111,6 +113,7 @@ export class SectionToolResultsComponent implements OnInit {
     //ATTENTION ! les résultats sont bons quand on part de la droite vers la gauche mais pas quand on part de la gauche vers la droite
     this.calculateProperties('brut');
     this.calculateProperties('net');
+    console.log(this.sectionProperties)
   }
 
   calculateProperties(sectionType:string): void {
@@ -150,13 +153,77 @@ export class SectionToolResultsComponent implements OnInit {
     this.calculatezsc(sectionType);
     this.calculateys(sectionType);
     this.calculatezs(sectionType);
-    console.log(this.sectionProperties.brut)
   }
 
-  fillCoor(sectionType:string): void {
-    for(let coor of this.sectionToolService.sectionGeometry) {
-      this.sectionProperties[sectionType].yn.push(coor.x);
-      this.sectionProperties[sectionType].zn.push(coor.y);
+  fillCoor(sectionType:string): void { 
+    if(sectionType === 'brut') {
+      for(let coor of this.sectionToolService.sectionGeometry) {
+        this.sectionProperties[sectionType].yn.push(coor.x);
+        this.sectionProperties[sectionType].zn.push(coor.y);
+      };
+    } else {
+      switch(this.sectionToolService.analyzedSection.wallsNumber) {
+        case 3:
+          for(let coor of this.sectionToolService.sectionGeometry) {
+            const index = this.sectionToolService.sectionGeometry.indexOf(coor);
+            if(index === 2) {
+              //he1 start
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.hc);
+              //he1 end
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.hc + this.sectionToolService.sectionArea.web.be1);
+              //he2 start
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.be2);
+              //he2 end
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y);
+            } else if(index === this.sectionToolService.sectionGeometry.length-1) {
+              //be1 end
+              this.sectionProperties[sectionType].yn.push(this.sectionToolService.sectionGeometry[index-1].x + this.sectionToolService.sectionArea.topWing.be1*Math.pow(Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180),2));
+              this.sectionProperties[sectionType].zn.push(this.sectionToolService.sectionGeometry[index-1].y + this.sectionToolService.sectionArea.topWing.be1*Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180)*Math.sin((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180));
+            } else {
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y);
+            };
+          };
+          break;
+        case 5:
+          for(let coor of this.sectionToolService.sectionGeometry) {
+            const index = this.sectionToolService.sectionGeometry.indexOf(coor);
+            if(index === 2) {
+              //he1 start
+
+              //he1 end
+
+              //he2 start
+
+              //he2 end
+
+            } else if(index === this.sectionToolService.sectionGeometry.length-2) {
+              //be1 end
+              this.sectionProperties[sectionType].yn.push(this.sectionToolService.sectionGeometry[index-1].x + this.sectionToolService.sectionArea.topWing.be1*Math.pow(Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180),2));
+              this.sectionProperties[sectionType].zn.push(this.sectionToolService.sectionGeometry[index-1].y + this.sectionToolService.sectionArea.topWing.be1*Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180)*Math.sin((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180));
+              //be2 start
+              this.sectionProperties[sectionType].yn.push(coor.x - this.sectionToolService.sectionArea.topWing.be2*Math.pow(Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180),2));
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.topWing.be2*Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180)*Math.sin((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180));
+              //be2 end
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y);
+            } else if(index === this.sectionToolService.sectionGeometry.length-1) {
+              //ceff end
+              this.sectionProperties[sectionType].yn.push(coor.x -this.sectionToolService.sectionArea.topWing.ceff*Math.cos((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180)*Math.sin((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180));
+              this.sectionProperties[sectionType].zn.push(coor.y + this.sectionToolService.sectionArea.topWing.ceff*Math.pow(Math.cos((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180),2));
+            } else {
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y);
+            };
+          };
+          break;
+        default:
+          break;
+      };
     };
   }
 
@@ -337,7 +404,8 @@ export class SectionToolResultsComponent implements OnInit {
             analyzedSection: this.sectionToolService.analyzedSection,
             sectionArea: this.sectionToolService.sectionArea,
             sollicitationType: this.sectionToolService.sollicitationType,
-            elasticLimit: this.sectionToolService.elasticLimit
+            elasticLimit: this.sectionToolService.elasticLimit,
+            sectionProperties: this.sectionProperties
           }
         }
       },{responseType: 'text'}).pipe(
@@ -352,4 +420,9 @@ export class SectionToolResultsComponent implements OnInit {
       this.saveProject$.subscribe();
     }
   }
+
+  switchActiveSectionType(sectionType: string) {
+    this.activeSectionType = sectionType;
+  }
+
 }
