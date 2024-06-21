@@ -38,12 +38,20 @@
       >
         <span class="cisaillement-center_text">Centre de cisaillement</span>
       </div>
+      <span class="indicator indicator--y">Y</span>
+      <span class="indicator indicator--z">Z</span>
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
         <polyline
           fill="none"
           [attr.points]="sectionToolService.pointsSvgAttribute"
           stroke-width="4"
           [attr.stroke]="'black'"
+        />
+        <polyline
+          fill="none"
+          [attr.points]="'0,240 0,300 60,300'"
+          stroke-width="10"
+          [attr.stroke]="'green'"
         />
       </svg>
     </div>
