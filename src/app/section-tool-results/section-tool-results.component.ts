@@ -15,7 +15,7 @@ import { SwitchComponent } from '../switch/switch.component';
   styleUrl: './section-tool-results.component.scss'
 })
 export class SectionToolResultsComponent implements OnInit {
-  
+
   activeSectionType!: string;
   projectName!: string;
   sectionProperties!: any;
@@ -76,7 +76,7 @@ export class SectionToolResultsComponent implements OnInit {
         yn: [],
         zn: [],
         omega0n: [],
-        omegan: [],
+        omegan: [0],
         dAn: [],
         A: 0,
         Iomegan: [],
@@ -167,16 +167,13 @@ export class SectionToolResultsComponent implements OnInit {
           for(let coor of this.sectionToolService.sectionGeometry) {
             const index = this.sectionToolService.sectionGeometry.indexOf(coor);
             if(index === 2) {
+              //he2 end
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.hc + this.sectionToolService.sectionArea.web.be2);
               //he1 start
               this.sectionProperties[sectionType].yn.push(coor.x);
-              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.hc);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.be1);
               //he1 end
-              this.sectionProperties[sectionType].yn.push(coor.x);
-              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.hc + this.sectionToolService.sectionArea.web.be1);
-              //he2 start
-              this.sectionProperties[sectionType].yn.push(coor.x);
-              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.be2);
-              //he2 end
               this.sectionProperties[sectionType].yn.push(coor.x);
               this.sectionProperties[sectionType].zn.push(coor.y);
             } else if(index === this.sectionToolService.sectionGeometry.length-1) {
@@ -192,15 +189,16 @@ export class SectionToolResultsComponent implements OnInit {
         case 5:
           for(let coor of this.sectionToolService.sectionGeometry) {
             const index = this.sectionToolService.sectionGeometry.indexOf(coor);
-            if(index === 2) {
-              //he1 start
-
-              //he1 end
-
-              //he2 start
-
+            if(index === 3) {
               //he2 end
-
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.hc + this.sectionToolService.sectionArea.web.be2);
+              //he1 start
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y - this.sectionToolService.sectionArea.web.be1);
+              //he1 end
+              this.sectionProperties[sectionType].yn.push(coor.x);
+              this.sectionProperties[sectionType].zn.push(coor.y);
             } else if(index === this.sectionToolService.sectionGeometry.length-2) {
               //be1 end
               this.sectionProperties[sectionType].yn.push(this.sectionToolService.sectionGeometry[index-1].x + this.sectionToolService.sectionArea.topWing.be1*Math.pow(Math.cos((this.sectionToolService.analyzedSection.topWing.angle-90)*Math.PI/180),2));
@@ -213,8 +211,9 @@ export class SectionToolResultsComponent implements OnInit {
               this.sectionProperties[sectionType].zn.push(coor.y);
             } else if(index === this.sectionToolService.sectionGeometry.length-1) {
               //ceff end
-              this.sectionProperties[sectionType].yn.push(coor.x -this.sectionToolService.sectionArea.topWing.ceff*Math.cos((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180)*Math.sin((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180));
-              this.sectionProperties[sectionType].zn.push(coor.y + this.sectionToolService.sectionArea.topWing.ceff*Math.pow(Math.cos((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180),2));
+              this.sectionProperties[sectionType].yn.push(coor.x - (this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].length-this.sectionToolService.sectionArea.topWing.ceff)*Math.sin((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180));
+              this.sectionProperties[sectionType].zn.push(coor.y - (this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].length-this.sectionToolService.sectionArea.topWing.ceff)*Math.cos((this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle-90)*Math.PI/180));
+              console.log(coor.y,this.sectionToolService.analyzedSection.topWing.stiffener.walls[0].angle)
             } else {
               this.sectionProperties[sectionType].yn.push(coor.x);
               this.sectionProperties[sectionType].zn.push(coor.y);
@@ -240,8 +239,21 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   filldAn(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].dAn.push(this.sectionToolService.analyzedSection.thickness*Math.sqrt(Math.pow(this.sectionProperties[sectionType].yn[i]-this.sectionProperties[sectionType].yn[i-1],2) + Math.pow(this.sectionProperties[sectionType].zn[i]-this.sectionProperties[sectionType].zn[i-1],2)));
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i< maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      let thickness = this.sectionToolService.analyzedSection.thickness;
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i > 5))
+        thickness = this.sectionToolService.sectionArea.topWing.stiffener.tred;
+
+      this.sectionProperties[sectionType].dAn.push(thickness*Math.sqrt(Math.pow(this.sectionProperties[sectionType].yn[j]-this.sectionProperties[sectionType].yn[j-1],2) + Math.pow(this.sectionProperties[sectionType].zn[j]-this.sectionProperties[sectionType].zn[j-1],2)));
+      j++;
     };
   }
 
@@ -250,8 +262,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIomegan(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Iomegan.push((this.sectionProperties[sectionType].omegan[i-1]+this.sectionProperties[sectionType].omegan[i])*this.sectionProperties[sectionType].dAn[i-1]/2);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Iomegan.push((this.sectionProperties[sectionType].omegan[j-1]+this.sectionProperties[sectionType].omegan[j])*this.sectionProperties[sectionType].dAn[i-1]/2);
+      j++;
     };
   }
 
@@ -260,8 +281,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIomegaomega0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Iomegaomega0n.push((Math.pow(this.sectionProperties[sectionType].omegan[i-1],2)+Math.pow(this.sectionProperties[sectionType].omegan[i],2)+this.sectionProperties[sectionType].omegan[i-1]*this.sectionProperties[sectionType].omegan[i])*this.sectionProperties[sectionType].dAn[i-1]/3);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Iomegaomega0n.push((Math.pow(this.sectionProperties[sectionType].omegan[j-1],2)+Math.pow(this.sectionProperties[sectionType].omegan[j],2)+this.sectionProperties[sectionType].omegan[j-1]*this.sectionProperties[sectionType].omegan[j])*this.sectionProperties[sectionType].dAn[i-1]/3);
+      j++;
     };
   }
 
@@ -274,8 +304,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIyomega0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Iyomega0n.push((2*this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].omegan[i-1] + 2*this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].omegan[i-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Iyomega0n.push((2*this.sectionProperties[sectionType].yn[j-1]*this.sectionProperties[sectionType].omegan[j-1] + 2*this.sectionProperties[sectionType].yn[j]*this.sectionProperties[sectionType].omegan[j] + this.sectionProperties[sectionType].yn[j-1]*this.sectionProperties[sectionType].omegan[j] + this.sectionProperties[sectionType].yn[j]*this.sectionProperties[sectionType].omegan[j-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
+      j++;
     };
   }
 
@@ -284,8 +323,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIzomega0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Izomega0n.push((2*this.sectionProperties[sectionType].zn[i-1]*this.sectionProperties[sectionType].omegan[i-1] + 2*this.sectionProperties[sectionType].zn[i]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].zn[i-1]*this.sectionProperties[sectionType].omegan[i] + this.sectionProperties[sectionType].zn[i]*this.sectionProperties[sectionType].omegan[i-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Izomega0n.push((2*this.sectionProperties[sectionType].zn[j-1]*this.sectionProperties[sectionType].omegan[j-1] + 2*this.sectionProperties[sectionType].zn[j]*this.sectionProperties[sectionType].omegan[j] + this.sectionProperties[sectionType].zn[j-1]*this.sectionProperties[sectionType].omegan[j] + this.sectionProperties[sectionType].zn[j]*this.sectionProperties[sectionType].omegan[j-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
+      j++;
     };
   }
 
@@ -294,8 +342,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillSy0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Sy0n.push((this.sectionProperties[sectionType].zn[i-1] + this.sectionProperties[sectionType].zn[i])*this.sectionProperties[sectionType].dAn[i-1]/2);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Sy0n.push((this.sectionProperties[sectionType].zn[j-1] + this.sectionProperties[sectionType].zn[j])*this.sectionProperties[sectionType].dAn[i-1]/2);
+      j++;
     };
   }
 
@@ -304,8 +361,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillSz0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Sz0n.push((this.sectionProperties[sectionType].yn[i-1] + this.sectionProperties[sectionType].yn[i])*this.sectionProperties[sectionType].dAn[i-1]/2);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Sz0n.push((this.sectionProperties[sectionType].yn[j-1] + this.sectionProperties[sectionType].yn[j])*this.sectionProperties[sectionType].dAn[i-1]/2);
+      j++;
     };
   }
 
@@ -322,8 +388,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIz0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Iz0n.push((Math.pow(this.sectionProperties[sectionType].yn[i-1],2) + Math.pow(this.sectionProperties[sectionType].yn[i],2) + this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].yn[i]) * this.sectionProperties[sectionType].dAn[i-1]/3);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Iz0n.push((Math.pow(this.sectionProperties[sectionType].yn[j-1],2) + Math.pow(this.sectionProperties[sectionType].yn[j],2) + this.sectionProperties[sectionType].yn[j-1]*this.sectionProperties[sectionType].yn[j]) * this.sectionProperties[sectionType].dAn[i-1]/3);
+      j++;
     };
   }
 
@@ -332,8 +407,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIy0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Iy0n.push((Math.pow(this.sectionProperties[sectionType].zn[i-1],2) + Math.pow(this.sectionProperties[sectionType].zn[i],2) + this.sectionProperties[sectionType].zn[i-1]*this.sectionProperties[sectionType].zn[i]) * this.sectionProperties[sectionType].dAn[i-1]/3);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Iy0n.push((Math.pow(this.sectionProperties[sectionType].zn[j-1],2) + Math.pow(this.sectionProperties[sectionType].zn[j],2) + this.sectionProperties[sectionType].zn[j-1]*this.sectionProperties[sectionType].zn[j]) * this.sectionProperties[sectionType].dAn[i-1]/3);
+      j++;
     };
   }
 
@@ -342,8 +426,17 @@ export class SectionToolResultsComponent implements OnInit {
   }
 
   fillIyz0n(sectionType:string): void {
-    for(let i=1; i<this.sectionProperties[sectionType].yn.length; i++) {
-      this.sectionProperties[sectionType].Iyz0n.push((2*this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].zn[i-1] + 2*this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].zn[i] + this.sectionProperties[sectionType].yn[i-1]*this.sectionProperties[sectionType].zn[i] + this.sectionProperties[sectionType].yn[i]*this.sectionProperties[sectionType].zn[i-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
+    let j = 1;
+    let maxIteration = this.sectionProperties[sectionType].yn.length;
+    if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net') {
+      maxIteration = this.sectionProperties[sectionType].yn.length-2;
+    };
+    for(let i=1; i<maxIteration; i++) {
+      if(this.sectionToolService.analyzedSection.wallsNumber > 3 && sectionType === 'net' && (i === 4 || i === 6)) {
+        j++;
+      };
+      this.sectionProperties[sectionType].Iyz0n.push((2*this.sectionProperties[sectionType].yn[j-1]*this.sectionProperties[sectionType].zn[j-1] + 2*this.sectionProperties[sectionType].yn[j]*this.sectionProperties[sectionType].zn[j] + this.sectionProperties[sectionType].yn[j-1]*this.sectionProperties[sectionType].zn[j] + this.sectionProperties[sectionType].yn[j]*this.sectionProperties[sectionType].zn[j-1])*this.sectionProperties[sectionType].dAn[i-1]/6);
+      j++;
     };
   }
   

@@ -341,6 +341,14 @@ export class SectionToolAreaComponent implements OnInit {
   onSubmitForm():void {
     if(this.notAvailableYet === false)
       this.sectionToolService.sectionArea = this.sectionArea;
+      this.sectionToolService.netSectionSvgCoor = {
+        be1: this.be1SvgCoor,
+        be2: this.be2SvgCoor,
+        ceff: this.ceffSvgCoor,
+        he1: this.he1SvgCoor,
+        he2: this.he2SvgCoor,
+        other: this.otherSvgCoor
+      };
       this.router.navigateByUrl('/section-tool/results');
   }
 

@@ -57,6 +57,54 @@
       <span class="indicator indicator--z">Z</span>
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
         <polyline
+          *ngIf="
+            activeSectionType === 'net' &&
+            sectionToolService.analyzedSection.wallsNumber > 3
+          "
+          fill="none"
+          [attr.points]="sectionToolService.netSectionSvgCoor.ceff"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
+          *ngIf="
+            activeSectionType === 'net' &&
+            sectionToolService.analyzedSection.wallsNumber > 3
+          "
+          fill="none"
+          [attr.points]="sectionToolService.netSectionSvgCoor.be2"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
+          *ngIf="activeSectionType === 'net'"
+          fill="none"
+          [attr.points]="sectionToolService.netSectionSvgCoor.be1"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
+          *ngIf="activeSectionType === 'net'"
+          fill="none"
+          [attr.points]="sectionToolService.netSectionSvgCoor.he1"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
+          *ngIf="activeSectionType === 'net'"
+          fill="none"
+          [attr.points]="sectionToolService.netSectionSvgCoor.he2"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
+          *ngIf="activeSectionType === 'net'"
+          fill="none"
+          [attr.points]="sectionToolService.netSectionSvgCoor.other"
+          stroke-width="4"
+          [attr.stroke]="'black'"
+        />
+        <polyline
           *ngIf="activeSectionType === 'brut'"
           fill="none"
           [attr.points]="sectionToolService.pointsSvgAttribute"
