@@ -1,6 +1,9 @@
 <div class="main-container">
   <h3>
-    <button class="main-container_open-button" (click)="openNewProject()">
+    <button
+      class="main-container_open-button"
+      (click)="openNewProject(tool.id)"
+    >
       {{ tool.title }}
     </button>
   </h3>
