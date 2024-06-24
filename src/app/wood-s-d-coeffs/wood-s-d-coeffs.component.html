@@ -1,0 +1,157 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span>
+  Détermination des coefficients de résistance et déformation des éléments bois
+  - Coefficients
+</h1>
+<div class="main-content">
+  <form [formGroup]="woodForm">
+    <p>
+      <label>
+        Matériau :
+        <select name="" id="" formControlName="materiau">
+          <option value="massif">Bois massif</option>
+          <option value="lamelleColle">Bois lamellé-collé</option>
+          <option value="lvl">LVL</option>
+          <option value="contreplaque">Contreplaqué</option>
+          <option value="osb">OSB</option>
+          <option value="particules">Panneau de particules</option>
+          <option value="fibresDur">Panneau de fibres, dur</option>
+          <option value="fibresSemiDur">Panneau de fibres, semi-dur</option>
+          <option value="mdf">MDF</option>
+        </select>
+      </label>
+    </p>
+    <div *ngIf="updateForm$ | async as value">
+      <p>
+        <label
+          *ngIf="
+            value.materiau !== 'massif' &&
+            value.materiau !== 'lamelleColle' &&
+            value.materiau !== 'lvl'
+          "
+        >
+          Type :
+          <select
+            name=""
+            id=""
+            formControlName="type"
+            *ngIf="value.materiau === 'contreplaque'"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          <select
+            name=""
+            id=""
+            formControlName="type"
+            *ngIf="value.materiau === 'osb'"
+          >
+            <option value="2">OSB 2</option>
+            <option value="3">OSB 3</option>
+            <option value="4">OSB 4</option>
+          </select>
+          <select
+            name=""
+            id=""
+            formControlName="type"
+            *ngIf="value.materiau === 'particules'"
+          >
+            <option value="4">P4</option>
+            <option value="5">P5</option>
+            <option value="6">P6</option>
+            <option value="7">P7</option>
+          </select>
+          <select
+            name=""
+            id=""
+            formControlName="type"
+            *ngIf="value.materiau === 'fibresDur'"
+          >
+            <option value="LA">LA</option>
+            <option value="HLA1">HLA1</option>
+            <option value="HLA2">HLA2</option>
+          </select>
+          <select
+            name=""
+            id=""
+            formControlName="type"
+            *ngIf="value.materiau === 'fibresSemiDur'"
+          >
+            <option value="LA1">LA1</option>
+            <option value="LA2">LA2</option>
+            <option value="HLA1">HLS1</option>
+            <option value="HLA2">HLS2</option>
+          </select>
+          <select
+            name=""
+            id=""
+            formControlName="type"
+            *ngIf="value.materiau === 'mdf'"
+          >
+            <option value="LA">LA</option>
+            <option value="HLS">HLS</option>
+          </select>
+        </label>
+      </p>
+      <p
+        *ngIf="
+          value.type !== null ||
+          value.materiau === 'massif' ||
+          value.materiau === 'lamelleColle' ||
+          value.materiau === 'lvl'
+        "
+      >
+        <label>
+          Classe de service :
+          <select name="" id="" formControlName="classeService">
+            <option value="1" *ngIf="availableClassesService['1'] === true">
+              1
+            </option>
+            <option value="2" *ngIf="availableClassesService['2'] === true">
+              2
+            </option>
+            <option value="3" *ngIf="availableClassesService['3'] === true">
+              3
+            </option>
+          </select>
+        </label>
+        <span *ngIf="value.classeService !== null">{{
+          value.classeService === "1"
+            ? "Humidité relative de l'air environnant ne dépassant 65% que quelques
+                semaines par an"
+            : value.classeService === "2"
+            ? "Humidité relative de l'air environnant ne dépassant 85% que quelques
+                semaines par an"
+            : "Humidité relative de l'air environnant dépassant 85% davantage que quelques
+                semaines par an"
+        }}</span>
+      </p>
+      <p>
+        <label *ngIf="value.classeService !== null">
+          Action :
+          <select name="" id="" formControlName="action">
+            <option value="0">Permanente</option>
+            <option value="1">Long terme</option>
+            <option value="2">Moyen terme</option>
+            <option value="3">Court terme</option>
+            <option value="4">Instantannée</option>
+          </select>
+        </label>
+        <span *ngIf="value.action !== null">{{
+          value.action === "0"
+            ? "Plus de dix ans"
+            : value.action === "1"
+            ? "Entre six mois et dix ans"
+            : value.action === "2"
+            ? "Entre une semaine et six mois"
+            : value.action === "3"
+            ? "Moins d'une semaine"
+            : ""
+        }}</span>
+      </p>
+      <p *ngIf="value.action !== null">kmod = <span></span></p>
+      <p *ngIf="value.action !== null">kdef = {{ kdef }}</p>
+    </div>
+  </form>
+</div>

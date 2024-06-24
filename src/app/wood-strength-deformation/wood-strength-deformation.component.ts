@@ -32,7 +32,7 @@ export class WoodStrengthDeformationComponent implements OnInit {
   onSubmitForm() {
     if(this.projectForm.value.name !== null && this.projectForm.value.name.length > 0) {
       this.woodStrengthDeformationService.projectName = this.projectForm.value.name;
-      this.router.navigateByUrl('wood-strength-deformation/');
+      this.router.navigateByUrl('wood-strength-deformation/coeffs');
     };
   }
 

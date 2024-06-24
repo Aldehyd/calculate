@@ -1,4 +1,6 @@
-<h1>Calcul des résistance et déformation des éléments bois</h1>
+<h1>
+  Détermination des coefficients de résistance et déformation des éléments bois
+</h1>
 <form class="tool-form" [formGroup]="projectForm" (ngSubmit)="onSubmitForm()">
   <p>
     <label for="emailInput">Nom du projet : </label>
@@ -26,6 +28,8 @@
       class="basic-button"
       [attr.aria-disabled]="
         projectForm.value.name !== null && projectForm.value.name.length > 0
+          ? 'false'
+          : 'true'
       "
     >
       {{
