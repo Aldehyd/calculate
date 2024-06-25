@@ -22,6 +22,50 @@
       </label>
     </p>
     <div *ngIf="updateForm$ | async as value">
+      <p *ngIf="value.materiau !== null">
+        <img
+          src="../../assets/img/bois-massif.jpg"
+          alt=""
+          *ngIf="value.materiau === 'massif'"
+        />
+        <img
+          src="../../assets/img/bois-lamelle.jpg"
+          alt=""
+          *ngIf="value.materiau === 'lamelleColle'"
+        />
+        <img
+          src="../../assets/img/bois-lvl.jpg"
+          alt=""
+          *ngIf="value.materiau === 'lvl'"
+        />
+        <img
+          src="../../assets/img/bois-contreplaque.jpg"
+          alt=""
+          *ngIf="value.materiau === 'contreplaque'"
+        />
+        <img
+          src="../../assets/img/bois-osb.jpg"
+          alt=""
+          *ngIf="value.materiau === 'osb'"
+        />
+        <img
+          src="../../assets/img/bois-particules.jpg"
+          alt=""
+          *ngIf="value.materiau === 'particules'"
+        />
+        <img
+          src="../../assets/img/bois-fibres.jpg"
+          alt=""
+          *ngIf="
+            value.materiau === 'fibresDur' || value.materiau === 'fibresSemiDur'
+          "
+        />
+        <img
+          src="../../assets/img/bois-mdf.jpg"
+          alt=""
+          *ngIf="value.materiau === 'mdf'"
+        />
+      </p>
       <p>
         <label
           *ngIf="
@@ -116,7 +160,7 @@
             </option>
           </select>
         </label>
-        <span *ngIf="value.classeService !== null">{{
+        <span *ngIf="value.classeService !== null" class="details">{{
           value.classeService === "1"
             ? "Humidité relative de l'air environnant ne dépassant 65% que quelques
                 semaines par an"
@@ -138,7 +182,7 @@
             <option value="4">Instantannée</option>
           </select>
         </label>
-        <span *ngIf="value.action !== null">{{
+        <span *ngIf="value.action !== null" class="details">{{
           value.action === "0"
             ? "Plus de dix ans"
             : value.action === "1"
@@ -150,8 +194,29 @@
             : ""
         }}</span>
       </p>
-      <p *ngIf="value.action !== null">kmod = <span></span></p>
-      <p *ngIf="value.action !== null">kdef = {{ kdef }}</p>
+      <div class="results-container" *ngIf="value.action !== null">
+        <p>kmod = {{ kmod }}</p>
+        <p>kdef = {{ kdef }}</p>
+      </div>
     </div>
   </form>
+</div>
+<div class="bottom-links-container">
+  <a routerLink="./../area" class="basic-button">Précédent</a>
+  <button
+    type="submit"
+    class="basic-button"
+    (click)="saveProject()"
+    [attr.aria-disabled]="accountService.connected === true ? 'false' : 'true'"
+  >
+    Enregistrer
+  </button>
+</div>
+<div class="messages">
+  <p class="warning-message" *ngIf="errorOnProjectSave === true">
+    Le projet n'a pas pu être enregistré.
+  </p>
+  <p class="success-message" *ngIf="projectSaved === true">
+    Le projet a été enregistré.
+  </p>
 </div>

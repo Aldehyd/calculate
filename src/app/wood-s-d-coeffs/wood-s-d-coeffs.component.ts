@@ -3,11 +3,13 @@ import { woodStrengthDeformationService } from '../services/wood-strength-deform
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
+import { accountService } from '../services/account.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-wood-s-d-coeffs',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,HttpClientModule],
   templateUrl: './wood-s-d-coeffs.component.html',
   styleUrl: './wood-s-d-coeffs.component.scss'
 })
@@ -22,10 +24,16 @@ export class WoodSDCoeffsComponent implements OnInit {
   updateForm$!: Observable<any>;
 
   availableClassesService!: any;
+  projectSaved!: boolean;
+  errorOnProjectSave!: boolean;
+
+  saveProject$: Observable<any>;
 
   constructor(
     private woodStrengthDeformationService: woodStrengthDeformationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public accountService: accountService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -37,14 +45,13 @@ export class WoodSDCoeffsComponent implements OnInit {
       classeService: null,
       action: null
     });
-    this.action = ['permanente','longue','moyenne','courte','instantannée'];
     this.kmodDetermine = {
       massif: {
         1: [0.6,0.7,0.8,0.9,1.1],
         2: [0.6,0.7,0.8,0.9,1.1],
         3: [0.5,0.55,0.65,0.7,0.9]
       },
-      lameleColle: {
+      lamelleColle: {
         1: [0.6,0.7,0.8,0.9,1.1],
         2: [0.6,0.7,0.8,0.9,1.1],
         3: [0.5,0.55,0.65,0.7,0.9]
@@ -231,14 +238,18 @@ export class WoodSDCoeffsComponent implements OnInit {
         }
       }
     };
+    this.projectSaved = false;
+    this.errorOnProjectSave = false;
   }
 
   ngAfterViewInit(): void {
     this.updateForm$ = this.woodForm.valueChanges.pipe(
       tap(formValues => {
         this.updateAvailableClassesService();
-        if(formValues.classeService !== null)
+        if(formValues.classeService !== null) {
           this.determineKdef();
+          this.determineKmod();
+        };
       })
     );
     // this.updateForm$.subscribe();
@@ -264,7 +275,6 @@ export class WoodSDCoeffsComponent implements OnInit {
       if(this.kdefDetermine[this.woodForm.value.materiau][this.woodForm.value.type]['3'])
         this.availableClassesService['3'] = true;
     };
-    console.log(this.availableClassesService)
   }
 
   determineKdef() {
@@ -274,5 +284,41 @@ export class WoodSDCoeffsComponent implements OnInit {
       this.kdef = this.kdefDetermine[this.woodForm.value.materiau][this.woodForm.value.type][this.woodForm.value.classeService];
     };
   }
+
+  determineKmod() {
+    if(this.woodForm.value.materiau === 'massif' || this.woodForm.value.materiau === 'lamelleColle' || this.woodForm.value.materiau === 'lvl') {
+      this.kmod = this.kmodDetermine[this.woodForm.value.materiau][this.woodForm.value.classeService][+this.woodForm.value.action];
+    } else {
+      this.kmod = this.kmodDetermine[this.woodForm.value.materiau][this.woodForm.value.type][this.woodForm.value.classeService][+this.woodForm.value.action];
+    };
+  }
+
+  saveProject(): void {
+    if(this.accountService.connected === true) {
+      this.saveProject$ = this.http.post('https://calculs-structure.fr/app/save_project',{
+        mail: this.accountService.userEmail,
+        project: {
+          name: this.woodStrengthDeformationService.projectName,
+          tool: 'Résistance et déformation des éléments bois',
+          projectDetails: {
+            materiau: this.woodForm.value.materiau,
+            type: this.woodForm.value.type,
+            classeService: this.woodForm.value.type,
+            action: this.woodForm.value.type
+          }
+        }
+      },{responseType: 'text'}).pipe(
+        tap(res => {
+          if(res === 'ok') {
+            this.projectSaved = true;
+          } else {
+            this.errorOnProjectSave = true;
+          };
+        })
+      );
+      this.saveProject$.subscribe();
+    }
+  }
+
 
 }

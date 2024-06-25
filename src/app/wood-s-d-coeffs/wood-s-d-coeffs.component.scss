@@ -1,0 +1,26 @@
+form, div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+p {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.details {
+    display: block;
+    color: #268D75;
+    font-weight: bold;
+}
+.results-container {
+    width: fit-content;
+    padding: 1rem;
+    border: solid 0.2rem #268D75;
+}
+img {
+    height: 200px;
+    width: 300px;
+}
