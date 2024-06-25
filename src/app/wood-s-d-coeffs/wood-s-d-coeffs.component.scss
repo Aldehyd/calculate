@@ -1,8 +1,12 @@
-form, div {
+form, div:not(.bottom-links-container) {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+}
+.bottom-links-container {
+    width: fit-content;
+    margin: 2rem auto 0 auto;
 }
 p {
     width: fit-content;

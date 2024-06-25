@@ -5,11 +5,12 @@ import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
 import { accountService } from '../services/account.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-wood-s-d-coeffs',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule,HttpClientModule],
+  imports: [CommonModule,ReactiveFormsModule,HttpClientModule,RouterModule],
   templateUrl: './wood-s-d-coeffs.component.html',
   styleUrl: './wood-s-d-coeffs.component.scss'
 })
