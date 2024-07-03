@@ -37,7 +37,7 @@ export class ToolsListComponent implements OnInit{
         title: "Résistance et déformation des éléments bois",
         url: "wood-strength-deformation",
         description: "Détermination des coefficients de résistance et déformation des éléments bois en fonction de la classe de service.",
-        norm: "Norme: EN NF 1195 1-1"
+        norm: "Norme: EN NF 1995 1-1"
       }
     ]
   }
