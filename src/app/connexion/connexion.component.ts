@@ -90,6 +90,7 @@ export class ConnexionComponent implements OnInit {
   }
 
   onSubmitForm() {
+    console.log('submit')
     if(this.isFormInvalid === false)
       this.checkExistingMail();
   }
