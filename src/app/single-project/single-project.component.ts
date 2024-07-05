@@ -38,6 +38,7 @@ export class SingleProjectComponent {
 
   modifyProject(id: number): void {
     const projectToModify = this.accountService.projects.find(project => project.id === id);
+    console.log(projectToModify)
     switch(projectToModify.tool) {
       case 'Section à parois minces':
         this.sectionToolService.modifyProject = true;
@@ -51,6 +52,9 @@ export class SingleProjectComponent {
         this.sectionToolService.sollicitationType = projectToModify.sollicitationType;
         this.sectionToolService.elasticLimit = projectToModify.elasticLimit;
         this.router.navigateByUrl('section-tool');
+        break;
+      case 'Résistance et déformation des éléments bois':
+        this.router.navigateByUrl('wood-strength-deformation');
         break;
       default:
         break;
