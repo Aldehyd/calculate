@@ -261,6 +261,11 @@ app.post("/app/save_project", async (req, res) => {
     if (currentProject) {
       console.log(currentProject);
     } else {
+      let newProjectId = 0;
+      for (project of currentUser.projects) {
+        if (project.id > newProjectId) newProjectId = project.id;
+      }
+      newProjectId++;
       await client
         .db(dbName)
         .collection("users")
@@ -271,7 +276,7 @@ app.post("/app/save_project", async (req, res) => {
               projects: [
                 ...currentUser.projects,
                 {
-                  id: currentUser.projects.length,
+                  id: newProjectId,
                   name: req.body.project.name,
                   tool: req.body.project.tool,
                   date: new Date(),
