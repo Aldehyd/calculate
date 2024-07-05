@@ -43,7 +43,7 @@ export class ToolsListComponent implements OnInit{
         id: 2,
         title: "Armatures pied de poteau en béton armé",
         url: "column-tool",
-        description: "Calcul des armatures longitudinales en pied de poteau en béton armé, encatré en tête dans une structure contreventée.",
+        description: "Calcul des armatures longitudinales en pied de poteau en béton armé, encastré en tête dans une structure contreventée.",
         norm: "Norme: EN NF 1992 1-1"
       }
     ]
