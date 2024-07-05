@@ -52,6 +52,11 @@ export class ToolComponent implements OnInit {
         this.woodStrengthDeformationService.projectName = null;
         this.router.navigateByUrl(this.tool.url);
         break;
+      case 2 : 
+        // this.woodStrengthDeformationService.modifyProject = false;
+        // this.woodStrengthDeformationService.projectName = null;
+        this.router.navigateByUrl(this.tool.url);
+        break;
       default:
         break;
     };

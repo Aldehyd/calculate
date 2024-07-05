@@ -38,6 +38,13 @@ export class ToolsListComponent implements OnInit{
         url: "wood-strength-deformation",
         description: "Détermination des coefficients de résistance et déformation des éléments bois en fonction de la classe de service.",
         norm: "Norme: EN NF 1995 1-1"
+      },
+      {
+        id: 2,
+        title: "Armatures pied de poteau en béton armé",
+        url: "column-tool",
+        description: "Calcul des armatures longitudinales en pied de poteau en béton armé, encatré en tête dans une structure contreventée.",
+        norm: "Norme: EN NF 1992 1-1"
       }
     ]
   }

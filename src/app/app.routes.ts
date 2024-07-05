@@ -13,6 +13,7 @@ import { SectionToolResultsComponent } from './section-tool-results/section-tool
 import { SubscriptionValidatedComponent } from './subscription-validated/subscription-validated.component';
 import { WoodStrengthDeformationComponent } from './wood-strength-deformation/wood-strength-deformation.component';
 import { WoodSDCoeffsComponent } from './wood-s-d-coeffs/wood-s-d-coeffs.component';
+import { ColumnToolComponent } from './column-tool/column-tool.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
@@ -29,5 +30,6 @@ export const routes: Routes = [
     {path: 'section-tool/results', component: SectionToolResultsComponent},
     {path: 'wood-strength-deformation', component: WoodStrengthDeformationComponent},
     {path: 'wood-strength-deformation/coeffs', component: WoodSDCoeffsComponent},
+    {path: 'column-tool',component: ColumnToolComponent},
     {path: '**', redirectTo: ''}
 ];
