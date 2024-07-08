@@ -96,6 +96,7 @@ export class ColumnToolStrengthsComponent implements OnInit {
   }
 
   onNextButtonClick(): void {
+    this.columnService.strengths = this.strengths;
     this.router.navigateByUrl('/column-tool/sollicitations');
   }
 

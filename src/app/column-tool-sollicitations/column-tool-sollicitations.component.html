@@ -1,0 +1,23 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Armatures
+  pied de poteau en béton armé - Sollicitations
+</h1>
+<div class="main-content">
+  <h2>Sollicitations de calcul</h2>
+  <p>
+    Somme des moments : 1,35.Mg + 1.5.Mq =
+    {{ momentsSum | number : "1.0-2" }} kN.m
+  </p>
+  <p>
+    Somme des efforts normaux : 1,35.Ng + 1.5.Nq =
+    {{ normalSum | number : "1.0-2" }} kN
+  </p>
+  <p>Excentrement : e1 = {{ e1 | number : "1.0-3" }} m</p>
+  <h2>Sollicitations ultimes corrigées</h2>
+  <p>
+    Longueur de flambement : l0 = l.racine(2)/2 = {{ l0 | number : "1.0-2" }} m
+  </p>
+  <p>A = {{ A | number : "1.0-1" }}</p>
+  <p>B = {{ B | number : "1.0-1" }}</p>
+  <p>C = {{ C | number : "1.0-2" }}</p>
+</div>
