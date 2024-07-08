@@ -71,8 +71,21 @@ export class ColumnToolPropertiesComponent implements OnInit {
   }
 
   submitForm(): void {
-    if(this.isFormValid)
-      this.rooter.navigateByUrl('/column-tool/');
-
+    if(this.isFormValid) {
+      this.rooter.navigateByUrl('/column-tool/strengths');
+      this.columnService.properties = {
+        Ng: this.columnForm.value.Ng,
+        Mg: this.columnForm.value.Mg,
+        Nq: this.columnForm.value.Nq,
+        Mq: this.columnForm.value.Mq,
+        M01M02: this.columnForm.value.M01M02,
+        expoClass: this.columnForm.value.expoClass,
+        fck: this.columnForm.value.fck,
+        steel: this.columnForm.value.steel,
+        length: this.columnForm.value.length,
+        sectionLength: this.columnForm.value.sectionLength,
+        sectionWidth: this.columnForm.value.sectionWidth
+      };
+    };
   }
 }

@@ -1,10 +1,26 @@
 import { Injectable, OnInit } from "@angular/core";
 
-interface projectDetailsInterface {
-    materiau: string,
-    type: string | null,
-    classeService: string,
-    action: string
+interface propertiesInterface {
+    Ng: number,
+    Mg: number,
+    Nq: number,
+    Mq: number,
+    M01M02: number,
+    expoClass: string,
+    fck: number,
+    steel: string,
+    length: number,
+    sectionLength: number,
+    sectionWidth: number,
+}
+
+interface strengthsInterface {
+    fcd: number,
+    fcu: number,
+    fctm: number,
+    sigmac: number,
+    fyd: number,
+    sigmas: number
 }
 @Injectable({
     providedIn: 'root'
@@ -12,7 +28,8 @@ interface projectDetailsInterface {
 export class columnService implements OnInit {
     projectName!: string;
     modifyProject!: boolean;
-    projectDetails!: projectDetailsInterface;
+    properties!: propertiesInterface;
+    strengths!: strengthsInterface;
 
     ngOnInit(): void {
     }

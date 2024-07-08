@@ -1,0 +1,20 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Armatures
+  pied de poteau en béton armé - Résistances
+</h1>
+<div class="main-content">
+  <h2>Béton</h2>
+  <p>fcd = {{ strengths.fcd | number : "1.0-2" }} MPa</p>
+  <p>fcu = {{ strengths.fcu | number : "1.0-2" }} MPa</p>
+  <p>fctm = {{ strengths.fctm | number : "1.0-2" }} MPa</p>
+  <p>sigma c = {{ strengths.sigmac | number : "1.0-2" }} MPa</p>
+  <h2>Aciers</h2>
+  <p>fyd = {{ strengths.fyd | number : "1.0-2" }} MPa</p>
+  <p>sigma s = {{ strengths.sigmas | number : "1.0-2" }} MPa</p>
+  <div class="bottom-links-container">
+    <a routerLink="./.." class="basic-button">Précédent</a>
+    <button type="submit" class="basic-button" (click)="onNextButtonClick()">
+      Calculer les sollicitations
+    </button>
+  </div>
+</div>
