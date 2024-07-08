@@ -27,11 +27,13 @@
               *ngIf="showN !== false"
               class="N"
               d="M160 220 v100 h-10 l10 20 l10 -20 h-10 v-100"
+              [ngStyle]="{ fill: NColor, stroke: NColor }"
             />
             <path
               *ngIf="showM !== false"
               class="M"
-              d="M120 200 A50 50 0 0 1 200 200 l10 -10 l10 30 l-30 -10 l10 -10"
+              d="M120 200 A50 50 0 0 1 200 200 l10 -10 l10 30 l-30 -10 l10 -10 A50 50 0 0 0 120 200"
+              [ngStyle]="{ fill: MColor, stroke: MColor }"
             />
             <rect x="90" y="500" width="140" height="100" />
             <path
@@ -43,6 +45,10 @@
               d="M100 610 l-10 10 l10 10 l-10 -10 h140 l-10 -10 l10 10 l-10 10"
             />
           </svg>
+          <span class="NLegend NLegend--Ng" *ngIf="showN === 'g'">Ng</span>
+          <span class="NLegend NLegend--Nq" *ngIf="showN === 'q'">Nq</span>
+          <span class="MLegend MLegend--Mg" *ngIf="showM === 'g'">Mg</span>
+          <span class="MLegend MLegend--Mq" *ngIf="showM === 'q'">Mq</span>
           <span class="A A--left">A</span>
           <span class="A A--right">A</span>
           <span class="length-input">
@@ -77,6 +83,8 @@
                   type="number"
                   formControlName="Ng"
                   class="thickness-field"
+                  (focus)="handleNView('g')"
+                  (blur)="handleNView(false)"
                 /><span> kN</span>
               </label>
             </p>
@@ -87,6 +95,8 @@
                   type="number"
                   formControlName="Mg"
                   class="thickness-field"
+                  (focus)="handleMView('g')"
+                  (blur)="handleMView(false)"
                 /><span> kN.m</span>
               </label>
             </p>
@@ -100,6 +110,8 @@
                   type="number"
                   formControlName="Nq"
                   class="thickness-field"
+                  (focus)="handleNView('q')"
+                  (blur)="handleNView(false)"
                 /><span> kN</span>
               </label>
             </p>
@@ -110,6 +122,8 @@
                   type="number"
                   formControlName="Mq"
                   class="thickness-field"
+                  (focus)="handleMView('q')"
+                  (blur)="handleMView(false)"
                 /><span> kN.m</span>
               </label>
             </p>

@@ -45,6 +45,30 @@ svg {
         fill: transparent;
     }
 }
+.NLegend {
+    position: absolute;
+    top: 380px;
+    left: 50%;
+    font-size: 2rem;
+    &--Ng {
+        color: blue;
+    }
+    &--Nq {
+        color: green;
+    }
+}
+.MLegend {
+    position: absolute;
+    top: 190px;
+    right: 20%;
+    font-size: 2rem;
+    &--Mg {
+        color: blue;
+    }
+    &--Mq {
+        color: green;
+    }
+}
 .A {
     position: absolute;
     top: 310px;
