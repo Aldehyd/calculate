@@ -5,17 +5,27 @@
 <div class="main-content">
   <h2>Sollicitations de calcul</h2>
   <p>
-    Somme des moments : 1,35.Mg + 1.5.Mq =
-    {{ momentsSum | number : "1.0-2" }} kN.m
+    Somme des moments : 1,35.M<span class="indice">g</span> + 1.5.M<span
+      class="indice"
+      >q</span
+    >
+    = {{ momentsSum | number : "1.0-2" }} kN.m
   </p>
   <p>
-    Somme des efforts normaux : 1,35.Ng + 1.5.Nq =
-    {{ normalSum | number : "1.0-2" }} kN
+    Somme des efforts normaux : 1,35.N<span class="indice">g</span> + 1.5.N<span
+      class="indice"
+      >q</span
+    >
+    = {{ normalSum | number : "1.0-2" }} kN
   </p>
-  <p>Excentrement : e1 = {{ e1 | number : "1.0-3" }} m</p>
+  <p>
+    Excentrement : e<span class="indice">1</span> =
+    {{ e1 | number : "1.0-3" }} m
+  </p>
   <h2>Sollicitations ultimes corrigées</h2>
   <p>
-    Longueur de flambement : l0 = l.racine(2)/2 = {{ l0 | number : "1.0-2" }} m
+    Longueur de flambement : l<span class="indice">0</span> = l.racine(2)/2 =
+    {{ l0 | number : "1.0-2" }} m
   </p>
   <p>A = {{ A | number : "1.0-1" }}</p>
   <p>B = {{ B | number : "1.0-1" }}</p>

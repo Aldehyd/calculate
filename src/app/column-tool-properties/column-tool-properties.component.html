@@ -45,10 +45,18 @@
               d="M100 610 l-10 10 l10 10 l-10 -10 h140 l-10 -10 l10 10 l-10 10"
             />
           </svg>
-          <span class="NLegend NLegend--Ng" *ngIf="showN === 'g'">Ng</span>
-          <span class="NLegend NLegend--Nq" *ngIf="showN === 'q'">Nq</span>
-          <span class="MLegend MLegend--Mg" *ngIf="showM === 'g'">Mg</span>
-          <span class="MLegend MLegend--Mq" *ngIf="showM === 'q'">Mq</span>
+          <span class="NLegend NLegend--Ng" *ngIf="showN === 'g'"
+            >N<span class="indice">g</span></span
+          >
+          <span class="NLegend NLegend--Nq" *ngIf="showN === 'q'"
+            >N<span class="indice">q</span></span
+          >
+          <span class="MLegend MLegend--Mg" *ngIf="showM === 'g'"
+            >M<span class="indice">g</span></span
+          >
+          <span class="MLegend MLegend--Mq" *ngIf="showM === 'q'"
+            >M<span class="indice">q</span></span
+          >
           <span class="A A--left">A</span>
           <span class="A A--right">A</span>
           <span class="length-input">
@@ -78,7 +86,7 @@
             <legend>permanentes</legend>
             <p>
               <label>
-                Ng :
+                N<span class="indice">g</span> :
                 <input
                   type="number"
                   formControlName="Ng"
@@ -90,7 +98,7 @@
             </p>
             <p>
               <label>
-                Mg :
+                M<span class="indice">g</span> :
                 <input
                   type="number"
                   formControlName="Mg"
@@ -105,7 +113,7 @@
             <legend>variables</legend>
             <p>
               <label>
-                Nq :
+                N<span class="indice">q</span> :
                 <input
                   type="number"
                   formControlName="Nq"
@@ -117,7 +125,7 @@
             </p>
             <p>
               <label>
-                Mq :
+                M<span class="indice">q</span> :
                 <input
                   type="number"
                   formControlName="Mq"
@@ -129,7 +137,10 @@
             </p>
           </fieldset>
           <label>
-            Rapport des moments |M01/M02| :
+            Rapport des moments |M<span class="indice">01</span>/M<span
+              class="indice"
+              >02</span
+            >| :
             <input
               type="number"
               formControlName="M01M02"
@@ -176,7 +187,7 @@
           <legend>Matériaux</legend>
           <p>
             <label>
-              fck :
+              f<span class="indice">ck</span> :
               <input
                 type="number"
                 formControlName="fck"
