@@ -1,0 +1,22 @@
+.container {
+    position: relative;
+    &:hover .message {
+        display: inline;
+    }
+}
+.interrogation-point {
+    padding: 0 0.5rem;
+    font-weight: bold;
+    border: solid 0.2rem black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.message {
+    display: none;
+    position: absolute;
+    right: 0;
+    transform: translateX(100%);
+    min-width: 20rem;
+    padding: 0.8rem;
+    background-color: #51E950;
+}

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { sectionToolService } from '../services/section-tool.service';
-import { Form, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { AsyncPipe, CommonModule,NgStyle } from '@angular/common';
 import { PointFormLineComponent } from '../point-form-line/point-form-line.component';

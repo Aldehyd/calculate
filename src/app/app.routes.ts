@@ -14,6 +14,7 @@ import { SubscriptionValidatedComponent } from './subscription-validated/subscri
 import { WoodStrengthDeformationComponent } from './wood-strength-deformation/wood-strength-deformation.component';
 import { WoodSDCoeffsComponent } from './wood-s-d-coeffs/wood-s-d-coeffs.component';
 import { ColumnToolComponent } from './column-tool/column-tool.component';
+import { ColumnToolPropertiesComponent } from './column-tool-properties/column-tool-properties.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
@@ -31,5 +32,6 @@ export const routes: Routes = [
     {path: 'wood-strength-deformation', component: WoodStrengthDeformationComponent},
     {path: 'wood-strength-deformation/coeffs', component: WoodSDCoeffsComponent},
     {path: 'column-tool',component: ColumnToolComponent},
+    {path: 'column-tool/properties', component: ColumnToolPropertiesComponent},
     {path: '**', redirectTo: ''}
 ];

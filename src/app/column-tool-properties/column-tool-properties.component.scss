@@ -1,0 +1,88 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+.columns-container {
+    display: flex;
+    gap: 4rem;
+}
+select {
+    width: 10rem;
+}
+input {
+    width: 8rem;
+}
+.svg-container {
+    position: relative;
+    width: fit-content;
+}
+svg {
+    padding: 2rem;
+    height: 700px;
+    width: 350px;
+    background-color: white;
+    & path {
+        stroke: black;
+        stroke-width: 0.2rem;
+        fill: transparent;
+        &.length {
+            stroke-width: 0.1rem;
+        }
+        &.arrow {
+            stroke-width: 0.1rem;
+            fill: black;
+        }
+        &.N {
+            stroke-width: 0.2rem;
+        }
+    }
+    & rect {
+        stroke: black;
+        stroke-width: 0.2rem;
+        fill: transparent;
+    }
+}
+.A {
+    position: absolute;
+    top: 310px;
+    font-size: 3rem;
+    &--left {
+        left: 25%;
+    }
+    &--right {
+        right: 23%;
+    }
+}
+.length-input {
+    position: absolute;
+    top: 220px;
+    left: 2px;
+    & input {
+        width: 3rem;
+    }
+}
+.view-title {
+    position: absolute;
+    top: 480px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.4rem;
+    text-decoration: underline;
+}
+.section-dim {
+    position: absolute;
+    & input {
+        width: 4rem;
+    }
+    &--width {
+        top: 560px;
+        right: 2%;
+    }
+    &--length {
+        top: 650px;
+        left: 45%;
+    }
+}

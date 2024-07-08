@@ -1,0 +1,197 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Armatures
+  pied de poteau en béton armé - Données d'entrée
+</h1>
+<div class="main-content">
+  <form [formGroup]="columnForm">
+    <div class="columns-container">
+      <div>
+        <div class="svg-container">
+          <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M40 60 h100 v-40 l40 -10 v50 h100 l-10 40 h-90 v250 l60 20 v60 h-160 v-60 l60 -20 v-250 h-110 l10 -40"
+            />
+            <path
+              class="length"
+              d="M30 120 l10 -10 l10 10 l-10 -10 v230 l10 -10 l-10 10 l-10 -10"
+            />
+            <path
+              class="arrow"
+              d="M130 260 h-40 v20 h-10 l10 20 l10 -20 h-10 v-20 h40"
+            />
+            <path
+              class="arrow"
+              d="M190 260 h40 v20 h-10 l10 20 l10 -20 h-10 v-20 h-40"
+            />
+            <path
+              *ngIf="showN !== false"
+              class="N"
+              d="M160 220 v100 h-10 l10 20 l10 -20 h-10 v-100"
+            />
+            <path
+              *ngIf="showM !== false"
+              class="M"
+              d="M120 200 A50 50 0 0 1 200 200 l10 -10 l10 30 l-30 -10 l10 -10"
+            />
+            <rect x="90" y="500" width="140" height="100" />
+            <path
+              class="length"
+              d="M240 510 l10 -10 l10 10 l-10 -10 v100 l10 -10 l-10 10 l-10 -10"
+            />
+            <path
+              class="length"
+              d="M100 610 l-10 10 l10 10 l-10 -10 h140 l-10 -10 l10 10 l-10 10"
+            />
+          </svg>
+          <span class="A A--left">A</span>
+          <span class="A A--right">A</span>
+          <span class="length-input">
+            <input type="number" formControlName="length" />
+            <span> m</span>
+          </span>
+          <span class="view-title">COUPE A-A</span>
+          <span class="section-dim section-dim--width">
+            <input type="number" formControlName="sectionWidth" />
+            <span> cm</span>
+          </span>
+          <span class="section-dim section-dim--length">
+            <input type="number" formControlName="sectionLength" />
+            <span> cm</span>
+          </span>
+        </div>
+      </div>
+      <div>
+        <fieldset>
+          <legend>
+            Sollicitations
+            <app-tip
+              message="ramenées au centre de gravité du béton seul"
+            ></app-tip>
+          </legend>
+          <fieldset>
+            <legend>permanentes</legend>
+            <p>
+              <label>
+                Ng :
+                <input
+                  type="number"
+                  formControlName="Ng"
+                  class="thickness-field"
+                /><span> kN</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                Mg :
+                <input
+                  type="number"
+                  formControlName="Mg"
+                  class="thickness-field"
+                /><span> kN.m</span>
+              </label>
+            </p>
+          </fieldset>
+          <fieldset>
+            <legend>variables</legend>
+            <p>
+              <label>
+                Nq :
+                <input
+                  type="number"
+                  formControlName="Nq"
+                  class="thickness-field"
+                /><span> kN</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                Mq :
+                <input
+                  type="number"
+                  formControlName="Mq"
+                  class="thickness-field"
+                /><span> kN.m</span>
+              </label>
+            </p>
+          </fieldset>
+          <label>
+            Rapport des moments |M01/M02| :
+            <input
+              type="number"
+              formControlName="M01M02"
+              class="thickness-field"
+            />
+          </label>
+        </fieldset>
+        <p>
+          <label>
+            Classe d'exposition :
+            <select name="" id="" formControlName="expoClass">
+              <option value="X0">X0</option>
+              <optgroup label="XC">
+                <option value="XC1">XC1</option>
+                <option value="XC2">XC2</option>
+                <option value="XC3">XC3</option>
+                <option value="XC4">XC4</option>
+              </optgroup>
+              <optgroup label="XD">
+                <option value="XD1">XD1</option>
+                <option value="XD2">XD2</option>
+                <option value="XD3">XD3</option>
+              </optgroup>
+              <optgroup label="XS">
+                <option value="XS1">XS1</option>
+                <option value="XS2">XS2</option>
+                <option value="XS3">XS3</option>
+              </optgroup>
+              <optgroup label="XF">
+                <option value="XF1">XF1</option>
+                <option value="XF2">XF2</option>
+                <option value="XF3">XF3</option>
+                <option value="XF4">XF4</option>
+              </optgroup>
+              <optgroup label="XA">
+                <option value="XA1">XA1</option>
+                <option value="XA2">XA2</option>
+                <option value="XA3">XA3</option>
+              </optgroup>
+            </select>
+          </label>
+        </p>
+        <fieldset>
+          <legend>Matériaux</legend>
+          <p>
+            <label>
+              fck :
+              <input
+                type="number"
+                formControlName="fck"
+                class="thickness-field"
+              /><span> MPa</span>
+            </label>
+          </p>
+          <p>
+            <label>
+              aciers :
+              <select name="" id="" formControlName="steel">
+                <option value="S400">S400</option>
+                <option value="S500">S500</option>
+              </select>
+            </label>
+          </p>
+        </fieldset>
+      </div>
+    </div>
+    <div class="bottom-links-container">
+      <a routerLink="./.." class="basic-button">Précédent</a>
+      <button
+        type="submit"
+        class="basic-button"
+        (click)="submitForm()"
+        [attr.aria-disabled]="isFormValid === true ? 'false' : 'true'"
+      >
+        Suivant
+      </button>
+    </div>
+  </form>
+</div>
