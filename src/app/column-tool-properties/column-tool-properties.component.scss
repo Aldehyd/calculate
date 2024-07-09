@@ -12,7 +12,7 @@ form {
 select {
     width: 10rem;
 }
-input {
+input:not([type="checkbox"]) {
     width: 8rem;
 }
 .svg-container {

@@ -30,7 +30,11 @@ export class ColumnToolSollicitationsComponent implements OnInit {
     this.l0 = this.columnService.properties.length * Math.sqrt(2)/2;
     this.A = 0.7;
     this.B = 1.1;
-    this.C = 1.7 - this.columnService.properties.M01M02;
+    if(this.columnService.properties.isM01M02Unknown === true) {
+      this.C = 0.7;
+    } else {
+      this.C = 1.7 - this.columnService.properties.M01M02;
+    };
   }
 
 }

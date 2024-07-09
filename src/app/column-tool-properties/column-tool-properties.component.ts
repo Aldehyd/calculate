@@ -33,7 +33,7 @@ export class ColumnToolPropertiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectName = this.columnService.projectName;
-    this.columnForm = this.formBuilder.group({Ng: [null], Mg: [null], Nq: [null], Mq: [null], M01M02: [null], expoClass: [null], fck: [null], steel: [null], length: [null], sectionLength: [null], sectionWidth: [null]});
+    this.columnForm = this.formBuilder.group({Ng: [null], Mg: [null], Nq: [null], Mq: [null], M01M02: [null], isM01M02Unknown: [false], expoClass: [null], fck: [null], steel: [null], length: [null], sectionLength: [null], sectionWidth: [null]});
     this.showN = false;
     this.showM = false;
     this.isFormValid = false;
@@ -42,7 +42,7 @@ export class ColumnToolPropertiesComponent implements OnInit {
   ngAfterViewInit(): void {
     this.updateProperties$ = this.columnForm.valueChanges.pipe(
       tap(formValues => {
-        if(formValues.length !== null && formValues.length > 0 && formValues.sectionLength !== null && formValues.sectionLength > 0 && formValues.sectionWidth !== null && formValues.sectionWidth > 0 && formValues.Ng !== null && formValues.Ng > 0 && formValues.Mg !== null && formValues.Mg > 0 && formValues.Nq !== null && formValues.Nq > 0 && formValues.Mq !== null && formValues.Mq > 0 && formValues.expoClass !== null && formValues.M01M02!== null && formValues.M01M02 > 0 && formValues.fck !== null && formValues.fck > 0 && formValues.steel !== null) {
+        if(formValues.length !== null && formValues.length > 0 && formValues.sectionLength !== null && formValues.sectionLength > 0 && formValues.sectionWidth !== null && formValues.sectionWidth > 0 && formValues.Ng !== null && formValues.Ng > 0 && formValues.Mg !== null && formValues.Mg > 0 && formValues.Nq !== null && formValues.Nq > 0 && formValues.Mq !== null && formValues.Mq > 0 && formValues.expoClass !== null && ((formValues.M01M02!== null && formValues.M01M02 > 0) || formValues.isM01M02Unknown === true) && formValues.fck !== null && formValues.fck > 0 && formValues.steel !== null) {
           this.isFormValid = true;
         } else {
           this.isFormValid = false;
@@ -79,6 +79,7 @@ export class ColumnToolPropertiesComponent implements OnInit {
         Nq: this.columnForm.value.Nq,
         Mq: this.columnForm.value.Mq,
         M01M02: this.columnForm.value.M01M02,
+        isM01M02Unknown: this.columnForm.value.isM01M02Unknown,
         expoClass: this.columnForm.value.expoClass,
         fck: this.columnForm.value.fck,
         steel: this.columnForm.value.steel,

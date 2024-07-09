@@ -6,6 +6,7 @@ interface propertiesInterface {
     Nq: number,
     Mq: number,
     M01M02: number,
+    isM01M02Unknown: boolean,
     expoClass: string,
     fck: number,
     steel: string,

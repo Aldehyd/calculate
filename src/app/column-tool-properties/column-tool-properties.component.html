@@ -142,10 +142,15 @@
               >02</span
             >| :
             <input
+              *ngIf="columnForm.value.isM01M02Unknown === false"
               type="number"
               formControlName="M01M02"
               class="thickness-field"
             />
+          </label>
+          <label>
+            Le rapport est inconnu
+            <input type="checkbox" formControlName="isM01M02Unknown" />
           </label>
         </fieldset>
         <p>
