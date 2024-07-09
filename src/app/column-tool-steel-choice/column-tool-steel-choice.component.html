@@ -1,0 +1,116 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Armatures
+  pied de poteau en béton armé - Choix du ferraillage
+</h1>
+<div class="main-content">
+  <div class="up-container">
+    <div class="svg-container">
+      <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="100" height="160" />
+      </svg>
+      <span
+        *ngFor="let steel of compressedSteels"
+        class="single-steel"
+        [ngStyle]="{
+          top: steel.y + 'px',
+          left: steel.x + 'px',
+          width: steel.d + 'px',
+          height: steel.d + 'px'
+        }"
+      ></span>
+    </div>
+    <div>
+      <form [formGroup]="compressedSteelsForm">
+        <fieldset>
+          <legend>Aciers comprimés</legend>
+          <p>
+            <label
+              >Nombre de file(s) verticale(s) :
+              <input
+                type="number"
+                formControlName="compressedSteelsColumnsNumber"
+            /></label>
+          </p>
+          <p>
+            <label
+              >Diamètre des barres :
+              <select formControlName="compressedSteelsDiameter">
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="20">20</option>
+              </select>
+              mm</label
+            >
+          </p>
+          <p>
+            Section actuelle :
+            <span
+              class="bold"
+              [ngStyle]="{
+                color: isCompressedSteelsEnough === true ? 'green' : 'red'
+              }"
+              >{{ updateCompressedSteels$ | async | number : "1.0-2" }}</span
+            >
+            cm²
+            <span class="bold">{{
+              isCompressedSteelsEnough === true ? ">" : "<"
+            }}</span>
+            Section recquise :
+            <span class="bold">{{ requiredCompressedSteelsSection }}</span> cm²
+          </p>
+        </fieldset>
+      </form>
+      <form [formGroup]="tensionedSteelsForm">
+        <fieldset>
+          <legend>Aciers tendus</legend>
+          <p>
+            <label
+              >Nombre de file(s) horizontale(s) :
+              <input type="number" formControlName="tensionedSteelsRowsNumber"
+            /></label>
+          </p>
+          <p>
+            <label
+              >Nombre de file(s) verticale(s) :
+              <input
+                type="number"
+                formControlName="tensionedSteelsColumnsNumber"
+            /></label>
+          </p>
+          <p>
+            <label>
+              Diamètre des barres :
+              <select formControlName="tensionedSteelsDiameter">
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="14">14</option>
+                <option value="16">16</option>
+                <option value="20">20</option>
+              </select>
+              mm
+            </label>
+          </p>
+          <p>
+            Section actuelle :
+            <span
+              class="bold"
+              [ngStyle]="{
+                color: isTensionedSteelsEnough === true ? 'green' : 'red'
+              }"
+              >{{ updateTensionedSteels$ | async | number : "1.0-2" }}</span
+            >
+            cm²
+            <span class="bold">{{
+              isTensionedSteelsEnough === true ? ">" : "<"
+            }}</span>
+            Section recquise : <span class="bold">10.32</span> cm²
+          </p>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

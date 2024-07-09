@@ -1,0 +1,25 @@
+.up-container {
+    display: flex;
+    gap: 4rem;
+}
+.bold {
+    font-weight: bold;
+}
+.svg-container {
+    position: relative;
+}
+svg {
+    height: 200px;
+    width: 140px;
+    background-color: white;
+    & rect {
+        stroke: black;
+        stroke-width: 0.2rem;
+        fill: transparent;
+    }
+}
+.single-steel {
+    position: absolute;
+    background-color: black;
+    border-radius: 50%;
+}
