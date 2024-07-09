@@ -17,6 +17,7 @@ import { ColumnToolComponent } from './column-tool/column-tool.component';
 import { ColumnToolPropertiesComponent } from './column-tool-properties/column-tool-properties.component';
 import { ColumnToolStrengthsComponent } from './column-tool-strengths/column-tool-strengths.component';
 import { ColumnToolSollicitationsComponent } from './column-tool-sollicitations/column-tool-sollicitations.component';
+import { ColumnToolSteelsComponent } from './column-tool-steels/column-tool-steels.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
@@ -37,5 +38,6 @@ export const routes: Routes = [
     {path: 'column-tool/properties', component: ColumnToolPropertiesComponent},
     {path: 'column-tool/strengths', component: ColumnToolStrengthsComponent},
     {path: 'column-tool/sollicitations', component: ColumnToolSollicitationsComponent},
+    {path: 'column-tool/steels', component: ColumnToolSteelsComponent},
     {path: '**', redirectTo: ''}
 ];
