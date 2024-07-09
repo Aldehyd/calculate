@@ -3,11 +3,52 @@
   pied de poteau en béton armé - Armatures
 </h1>
 <div class="main-content">
-  <p>Moment réduit de référence à l'ELU :</p>
-  <p>Moment réduit agissant :</p>
-  <p>=> Section partiellement tendue</p>
+  <p>
+    Moment réduit de référence à l'ELU : μ<span class="indice">BC</span> =
+    λ.h/d.(1-λ/2.h/d) =
+  </p>
+  <p>
+    Moment réduit agissant : μ<span class="indice">cu</span> = M<span
+      class="indice"
+      >EdA</span
+    >/(b<span class="indice">w</span>.d².f<span class="indice">cu</span>) =
+  </p>
+  <p>
+    μ<span class="indice">cu</span> {{ muCu > muBc ? ">" : "<" }} μ<span
+      class="indice"
+      >BC</span
+    >
+    => Section partiellement tendue
+  </p>
   <h2>Nécessité d'aciers comprimés</h2>
-  <p></p>
+  <p>
+    ϒ<span class="indice">M</span> = M<span class="indice">EdA</span>/M<span
+      class="indice"
+      >serA</span
+    >
+    =
+  </p>
+  <p>
+    ϒ<span class="indice">N</span> = N<span class="indice">Ed</span>/N<span
+      class="indice"
+      >ser</span
+    >
+    =
+  </p>
+  <p>
+    ν<span class="indice">u</span> = N<span class="indice">Ed</span>/(b<span
+      class="indice"
+      >w</span
+    >.d.f<span class="indice">cu</span>) =
+  </p>
+  <p>μ<span class="indice">lu</span> =</p>
+  <p>
+    μ<span class="indice">cu</span> {{ muCu > muLu ? ">" : "<" }} μ<span
+      class="indice"
+      >lu</span
+    >
+    => aciers comprimés nécessaires
+  </p>
   <div class="bottom-links-container">
     <a routerLink="./.." class="basic-button">Précédent</a>
     <button type="submit" class="basic-button" (click)="onNextButtonClick()">
