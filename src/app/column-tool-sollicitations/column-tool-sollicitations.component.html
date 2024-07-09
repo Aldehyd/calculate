@@ -30,4 +30,77 @@
   <p>A = {{ A | number : "1.0-1" }}</p>
   <p>B = {{ B | number : "1.0-1" }}</p>
   <p>C = {{ C | number : "1.0-2" }}</p>
+  <p>
+    Effort normal réduit : n = N<span class="indice">Ed</span>/(A<span
+      class="indice"
+      >c</span
+    >.f<span class="indice">cd</span>) = {{ n | number : "1.0-3" }}
+  </p>
+  <h3>Plan de forte inertie</h3>
+  <p>
+    i<span class="indice">min</span> = h/racine(12) =
+    {{ iMinY | number : "1.0-3" }} m
+  </p>
+  <p>λ = l<span class="indice">0</span>/i = {{ lambdaY | number : "1.0-2" }}</p>
+  <p>
+    λ<span class="indice">lim</span> = 20.A.B.C/racine(n) =
+    {{ lambdaLim | number : "1.0-2" }}
+  </p>
+  <p>
+    λ
+    {{ lambdaY < lambdaLim ? "<" : ">" }} λ<span class="indice">lim</span>
+  </p>
+  <p>=> Calcul en {{ yCalculationType }}</p>
+  <h3>Plan de faible inertie</h3>
+  <p>
+    i<span class="indice">min</span> = h/racine(12) =
+    {{ iMinZ | number : "1.0-3" }} m
+  </p>
+  <p>λ = l<span class="indice">0</span>/i = {{ lambdaZ | number : "1.0-2" }}</p>
+  <p>
+    λ<span class="indice">lim</span> = 20.A.B.C/racine(n) =
+    {{ lambdaLim | number : "1.0-2" }}
+  </p>
+  <p>
+    λ
+    {{ lambdaZ < lambdaLim ? "<" : ">" }} λ<span class="indice">lim</span>
+  </p>
+  <p>=> Calcul en {{ zCalculationType }}</p>
+  <div *ngIf="yCalculationType === 'flexion composée'">
+    <h3>Sollicitations corrigées pour le calcul en flexion composée</h3>
+    <p>
+      Poteau isolé d'une structure contreventée : e<span class="indice">i</span>
+      = l<span class="indice">0</span>/400 = {{ ei | number : "1.0-4" }} m
+    </p>
+    <p>
+      M<span class="indice">EdG0</span> = N<span class="indice">Ed</span
+      >.(e<span class="indice">1</span>+e<span class="indice">i</span>) =
+      {{ mEdG0 | number : "1.0-2" }} kN.m
+    </p>
+    <p>
+      e<span class="indice">0</span> = e<span class="indice">1</span> + e<span
+        class="indice"
+        >i</span
+      >
+      = {{ e0 | number : "1.0-3" }} m
+    </p>
+    <h3>Sollicitations ramenées au centre de gravité des aciers tendus</h3>
+    <p>
+      e<span class="indice">A</span> = e<span class="indice">0</span> + (d-h/2)
+      = {{ eA | number : "1.0-3" }} m
+    </p>
+    <p>
+      M<span class="indice">EdA</span> = N<span class="indice">Ed</span>.e<span
+        class="indice"
+        >A</span
+      >
+      = {{ mEdA | number : "1.0-2" }} kN.m
+    </p>
+  </div>
+  <div class="bottom-links-container">
+    <a routerLink="./.." class="basic-button">Précédent</a>
+    <button type="submit" class="basic-button" (click)="onNextButtonClick()">
+      Calculer les armatures
+    </button>
+  </div>
 </div>

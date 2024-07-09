@@ -23,6 +23,30 @@ interface strengthsInterface {
     fyd: number,
     sigmas: number
 }
+
+interface sollicitationsInterface {
+    momentsSum: number,
+    normalSum: number,
+    e1: number,
+    l0: number,
+    A: number,
+    B: number,
+    C: number,
+    n: number,
+    iMinY: number,
+    iMinZ: number,
+    lambdaY: number,
+    lambdaZ: number,
+    lambdaLim: number,
+    ei: number,
+    yCalculationType: 'flexion composée' | 'compression simple',
+    zCalculationType: 'flexion composée' | 'compression simple',
+    mEdG0: number,
+    e0: number,
+    d: number,
+    eA: number,
+    mEdA: number,
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -31,6 +55,7 @@ export class columnService implements OnInit {
     modifyProject!: boolean;
     properties!: propertiesInterface;
     strengths!: strengthsInterface;
+    sollicitations!: sollicitationsInterface;
 
     ngOnInit(): void {
     }
