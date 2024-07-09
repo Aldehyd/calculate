@@ -97,6 +97,37 @@
       = {{ mEdA | number : "1.0-2" }} kN.m
     </p>
   </div>
+  <h2>ELS</h2>
+  <p>
+    N<span class="indice">ser</span> = N<span class="indice">g</span> + N<span
+      class="indice"
+      >q</span
+    >
+    = {{ nSer | number : "1.0-2" }} kN
+  </p>
+  <p>
+    M<span class="indice">serG0</span> = M<span class="indice">g</span> + M<span
+      class="indice"
+      >q</span
+    >
+    = {{ mSerG0 | number : "1.0-2" }} kN.m
+  </p>
+  <p>
+    e<span class="indice">0ser</span> = M<span class="indice">serG0</span
+    >/N<span class="indice">ser</span> = {{ e0Ser | number : "1.0-3" }} m
+  </p>
+  <h3>Sollicitations ramenées au centre de gravité des aciers tendus</h3>
+  <p>
+    e<span class="indice">serA</span> = e<span class="indice">0ser</span> + (d -
+    h/2) = {{ eSerA | number : "1.0-2" }} m
+  </p>
+  <p>
+    M<span class="indice">serA</span> = N<span class="indice">ser</span>.e<span
+      class="indice"
+      >A</span
+    >
+    = {{ mSerA | number : "1.0-2" }} kN.m
+  </p>
   <div class="bottom-links-container">
     <a routerLink="./.." class="basic-button">Précédent</a>
     <button type="submit" class="basic-button" (click)="onNextButtonClick()">

@@ -46,6 +46,11 @@ interface sollicitationsInterface {
     d: number,
     eA: number,
     mEdA: number,
+    nSer: number,
+    mSerG0: number,
+    e0Ser: number,
+    eSerA: number,
+    mSerA: number
 }
 @Injectable({
     providedIn: 'root'

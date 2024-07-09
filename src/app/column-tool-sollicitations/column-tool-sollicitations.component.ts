@@ -34,6 +34,11 @@ export class ColumnToolSollicitationsComponent implements OnInit {
   d!: number;
   eA!: number;
   mEdA!: number;
+  nSer!: number;
+  mSerG0!: number;
+  e0Ser!: number;
+  eSerA!: number;
+  mSerA!: number;
 
   constructor(private columnService: columnService,
     private router:Router
@@ -60,6 +65,11 @@ export class ColumnToolSollicitationsComponent implements OnInit {
     this.d = this.columnService.properties.sectionLength - 0.05; //d'où vient cette valeur ??
     this.eA = this.e0 + ((this.d-this.columnService.properties.sectionLength/2)/100);
     this.mEdA = this.normalSum*this.eA;
+    this.nSer = this.columnService.properties.Ng + this.columnService.properties.Nq;
+    this.mSerG0 = this.columnService.properties.Mg + this.columnService.properties.Mq;
+    this.e0Ser = this.mSerG0/this.nSer; 
+    this.eSerA = this.e0Ser + (this.d - this.columnService.properties.sectionLength/2)/100;
+    this.mSerA = this.nSer * this.eSerA;
   }
 
   determineCalculationTypes() {
@@ -102,7 +112,12 @@ export class ColumnToolSollicitationsComponent implements OnInit {
       e0: this.e0,
       d: this.d,
       eA: this.eA,
-      mEdA: this.mEdA
+      mEdA: this.mEdA,
+      nSer: this.nSer,
+      mSerG0: this.mSerG0,
+      e0Ser: this.e0Ser,
+      eSerA: this.eSerA,
+      mSerA: this.mSerA
     };
     this.router.navigateByUrl('/column-tool/steels');
   }
