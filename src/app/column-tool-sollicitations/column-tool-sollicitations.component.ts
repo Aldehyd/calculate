@@ -65,7 +65,7 @@ export class ColumnToolSollicitationsComponent implements OnInit {
     this.ei = this.l0/400;
     this.mEdG0 = this.normalSum * (this.ei + this.e1);
     this.e0 = this.e1 + this.ei;
-    this.d = this.columnService.properties.sectionLength - 5; //d'où vient cette valeur ??
+    this.d = this.columnService.properties.sectionLength - 5;
     this.eA = this.e0 + ((this.d-this.columnService.properties.sectionLength/2)/100);
     this.mEdA = this.normalSum*this.eA;
     this.nSer = this.columnService.properties.Ng + this.columnService.properties.Nq;

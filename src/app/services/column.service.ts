@@ -16,6 +16,10 @@ interface propertiesInterface {
 }
 
 interface strengthsInterface {
+    lambda: number,
+    nu: number,
+    gammac: number,
+    alphacc: number,
     fcd: number,
     fcu: number,
     fctm: number,
@@ -53,6 +57,11 @@ interface sollicitationsInterface {
     eSerA: number,
     mSerA: number
 }
+
+interface requiredSteelsSectionsInterface {
+    compressed: number,
+    tensioned: number
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -62,6 +71,7 @@ export class columnService implements OnInit {
     properties!: propertiesInterface;
     strengths!: strengthsInterface;
     sollicitations!: sollicitationsInterface;
+    requiredSteelsSections!: requiredSteelsSectionsInterface;
 
     ngOnInit(): void {
     }

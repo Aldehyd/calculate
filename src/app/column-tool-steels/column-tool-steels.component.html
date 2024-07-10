@@ -5,50 +5,67 @@
 <div class="main-content">
   <p>
     Moment réduit de référence à l'ELU : μ<span class="indice">BC</span> =
-    λ.h/d.(1-λ/2.h/d) =
+    λ.h/d.(1-λ/2.h/d) = {{ muBc | number : "1.0-4" }}
   </p>
   <p>
     Moment réduit agissant : μ<span class="indice">cu</span> = M<span
       class="indice"
       >EdA</span
     >/(b<span class="indice">w</span>.d².f<span class="indice">cu</span>) =
+    {{ muCu | number : "1.0-4" }}
   </p>
   <p>
     μ<span class="indice">cu</span> {{ muCu > muBc ? ">" : "<" }} μ<span
       class="indice"
       >BC</span
     >
-    => Section partiellement tendue
+    {{ muCu < muBc ? "=> Section partiellement tendue" : "" }}
   </p>
-  <h2>Nécessité d'aciers comprimés</h2>
+  <h2>Armatures en flexion simple</h2>
+  <h3>Nécessité d'aciers comprimés</h3>
   <p>
     ϒ<span class="indice">M</span> = M<span class="indice">EdA</span>/M<span
       class="indice"
       >serA</span
     >
-    =
+    = {{ gammaM | number : "1.0-4" }}
   </p>
   <p>
     ϒ<span class="indice">N</span> = N<span class="indice">Ed</span>/N<span
       class="indice"
       >ser</span
     >
-    =
+    = {{ gammaN | number : "1.0-4" }}
   </p>
   <p>
     ν<span class="indice">u</span> = N<span class="indice">Ed</span>/(b<span
       class="indice"
       >w</span
-    >.d.f<span class="indice">cu</span>) =
+    >.d.f<span class="indice">cu</span>) = {{ vU | number : "1.0-4" }}
   </p>
-  <p>μ<span class="indice">lu</span> =</p>
+  <p>μ<span class="indice">lu</span> = {{ muLu | number : "1.0-4" }}</p>
   <p>
     μ<span class="indice">cu</span> {{ muCu > muLu ? ">" : "<" }} μ<span
       class="indice"
       >lu</span
     >
-    => aciers comprimés nécessaires
+    =>
+    {{
+      areCompressedSteelsNecessaries === true
+        ? "aciers comprimés nécessaires"
+        : "aciers comprimés non nécessaires"
+    }}
   </p>
+  <div *ngIf="areCompressedSteelsNecessaries === true">
+    <h3>Section d'aciers comprimés</h3>
+    <p>M<span class="indice">lu</span> = {{ mLu | number : "1.0-4" }} MN.m</p>
+    <p>A<span class="indice">s2</span> = {{ aS2 | number : "1.0-2" }} cm²</p>
+  </div>
+  <h3>Section d'aciers tendus</h3>
+  <p>Dans la section fictive sans aciers comprimés :</p>
+  <p>α<span class="indice">u</span> = {{ alphaU | number : "1.0-3" }}</p>
+  <p>z<span class="indice">c</span> = {{ zC | number : "1.0-3" }} m</p>
+  <p>A<span class="indice">s1</span> = {{ aS1 | number : "1.0-2" }} cm²</p>
   <div class="bottom-links-container">
     <a routerLink="/column-tool/sollicitations" class="basic-button"
       >Précédent</a

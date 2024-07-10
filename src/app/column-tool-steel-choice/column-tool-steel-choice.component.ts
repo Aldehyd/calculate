@@ -51,8 +51,8 @@ export class ColumnToolSteelChoiceComponent implements OnInit {
       y: 0
     };
     this.drawFrame();
-    this.requiredCompressedSteelsSection = 5.75;
-    this.requiredTensionedSteelsSection = 10.32;
+    this.requiredCompressedSteelsSection = this.columnService.requiredSteelsSections.compressed;
+    this.requiredTensionedSteelsSection = this.columnService.requiredSteelsSections.tensioned;
     this.compressedSteels = [];
     this.compressedSteelsForm = this.formBuilder.group({
       compressedSteelsColumnsNumber: [null],

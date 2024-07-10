@@ -101,7 +101,10 @@
               isCompressedSteelsEnough === true ? ">" : "<"
             }}</span>
             Section recquise :
-            <span class="bold">{{ requiredCompressedSteelsSection }}</span> cm²
+            <span class="bold">{{
+              requiredCompressedSteelsSection | number : "1.0-2"
+            }}</span>
+            cm²
           </p>
         </fieldset>
       </form>
@@ -149,7 +152,11 @@
             <span class="bold">{{
               isTensionedSteelsEnough === true ? ">" : "<"
             }}</span>
-            Section recquise : <span class="bold">10.32</span> cm²
+            Section recquise :
+            <span class="bold">{{
+              requiredTensionedSteelsSection | number : "1.0-2"
+            }}</span>
+            cm²
           </p>
           <h2>Maîtrise de la fissuration non requise</h2>
           <p>

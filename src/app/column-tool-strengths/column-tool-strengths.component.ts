@@ -4,6 +4,10 @@ import { columnService } from '../services/column.service';
 import { Router, RouterModule } from '@angular/router';
 
 interface strengthsInterface {
+  lambda: number,
+  nu: number,
+  gammac: number,
+  alphacc: number,
   fcd: number,
   fcu: number,
   fctm: number,
@@ -41,6 +45,10 @@ export class ColumnToolStrengthsComponent implements OnInit {
   ngOnInit(): void {
     this.projectName = this.columnService.projectName;
     this.strengths = {
+      lambda: 0,
+      nu: 0,
+      gammac: 1.5,
+      alphacc: 1,
       fcd: 0,
       fcu: 0,
       fctm: 0,
@@ -70,14 +78,14 @@ export class ColumnToolStrengthsComponent implements OnInit {
   }
 
   calculateConcreteCompressionStrengths(fck: number): void {
-    this.alphacc = 1; 
+    this.strengths.alphacc = 1; 
     this.gammac = 1.5; 
     if(fck < 50) {
-      this.lambda = 0.8;
-      this.nu = 1;
+      this.strengths.lambda = 0.8;
+      this.strengths.nu = 1;
     };
-    this.strengths.fcd = this.alphacc * fck / this.gammac;
-    this.strengths.fcu = this.nu * fck / this.gammac;
+    this.strengths.fcd = this.strengths.alphacc * fck / this.gammac;
+    this.strengths.fcu = this.strengths.nu * fck / this.gammac;
   }
 
   calculateConcreteTractionStrengths(fck: number): void {
