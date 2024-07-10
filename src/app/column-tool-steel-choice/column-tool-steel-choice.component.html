@@ -6,7 +6,12 @@
   <div class="up-container">
     <div class="svg-container">
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="20" width="100" height="160" />
+        <rect
+          x="20"
+          y="20"
+          [attr.width]="svgFrame.x"
+          [attr.height]="svgFrame.y"
+        />
       </svg>
       <span
         *ngFor="let steel of compressedSteels"
@@ -15,9 +20,46 @@
           top: steel.y + 'px',
           left: steel.x + 'px',
           width: steel.d + 'px',
-          height: steel.d + 'px'
+          height: steel.d + 'px',
+          backgroundColor: isCompressedSteelsEnough === true ? 'green' : 'red'
         }"
       ></span>
+      <span
+        *ngFor="let steel of tensionedSteels"
+        class="single-steel"
+        [ngStyle]="{
+          top: steel.y + 'px',
+          left: steel.x + 'px',
+          width: steel.d + 'px',
+          height: steel.d + 'px',
+          backgroundColor:
+            isTensionedSteelsEnough === true &&
+            isRequiredCrackingEnough === true &&
+            isNonRequiredCrackingEnough === true
+              ? 'green'
+              : 'red'
+        }"
+      ></span>
+      <span
+        *ngIf="updateCompressedSteels$ | async"
+        class="steels-indicator"
+        [ngStyle]="{ top: compressedSteels[0].y + 'px' }"
+      >
+        {{ compressedSteelsForm.value.compressedSteelsColumnsNumber }} HA{{
+          compressedSteelsForm.value.compressedSteelsDiameter
+        }}
+      </span>
+      <span
+        *ngIf="updateTensionedSteels$ | async"
+        class="steels-indicator"
+        [ngStyle]="{ top: tensionedSteels[0].y + 'px' }"
+      >
+        {{
+          tensionedSteelsForm.value.tensionedSteelsColumnsNumber *
+            tensionedSteelsForm.value.tensionedSteelsRowsNumber
+        }}
+        HA{{ tensionedSteelsForm.value.tensionedSteelsDiameter }}
+      </span>
     </div>
     <div>
       <form [formGroup]="compressedSteelsForm">
@@ -108,6 +150,46 @@
               isTensionedSteelsEnough === true ? ">" : "<"
             }}</span>
             Section recquise : <span class="bold">10.32</span> cm²
+          </p>
+          <h2>Maîtrise de la fissuration non requise</h2>
+          <p>
+            Section actuelle :
+            <span
+              class="bold"
+              [ngStyle]="{
+                color: isNonRequiredCrackingEnough === true ? 'green' : 'red'
+              }"
+              >{{ updateTensionedSteels$ | async | number : "1.0-2" }}</span
+            >
+            cm²
+            <span class="bold">{{
+              isNonRequiredCrackingEnough === true ? ">" : "<"
+            }}</span>
+            Section minimale :
+            <span class="bold">{{
+              nonRequiredCrackingMinimalSection | number : "1.0-2"
+            }}</span>
+            cm²
+          </p>
+          <h2>Maîtrise de la fissuration requise</h2>
+          <p>
+            Section actuelle :
+            <span
+              class="bold"
+              [ngStyle]="{
+                color: isRequiredCrackingEnough === true ? 'green' : 'red'
+              }"
+              >{{ updateTensionedSteels$ | async | number : "1.0-2" }}</span
+            >
+            cm²
+            <span class="bold">{{
+              isRequiredCrackingEnough === true ? ">" : "<"
+            }}</span>
+            Section minimale :
+            <span class="bold">{{
+              requiredCrackingMinimalSection | number : "1.0-2"
+            }}</span>
+            cm²
           </p>
         </fieldset>
       </form>

@@ -8,6 +8,7 @@ interface strengthsInterface {
   fcu: number,
   fctm: number,
   sigmac: number,
+  fyk: number,
   fyd: number,
   sigmas: number
 }
@@ -43,6 +44,7 @@ export class ColumnToolStrengthsComponent implements OnInit {
       fcu: 0,
       fctm: 0,
       sigmac: 0,
+      fyk: 0,
       fyd: 0,
       sigmas: 0
     };
@@ -50,12 +52,12 @@ export class ColumnToolStrengthsComponent implements OnInit {
     this.calculateConcreteTractionStrengths(this.columnService.properties.fck);
     this.calculateConcreteELSLimit(this.columnService.properties.fck);
     if(this.columnService.properties.steel === 'S400') {
-      this.fyk = 400;
+      this.strengths.fyk = 400;
     } else {
-      this.fyk = 500;
+      this.strengths.fyk = 500;
     };
-    this.calculateSteelStrengths(this.fyk);
-    this.calculateSteelELSLimit(this.fyk);
+    this.calculateSteelStrengths(this.strengths.fyk);
+    this.calculateSteelELSLimit(this.strengths.fyk);
   }
 
   calculateConcreteCompressionStrengths(fck: number): void {

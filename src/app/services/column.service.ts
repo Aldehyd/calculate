@@ -20,6 +20,7 @@ interface strengthsInterface {
     fcu: number,
     fctm: number,
     sigmac: number,
+    fyk: number,
     fyd: number,
     sigmas: number
 }
