@@ -16,7 +16,7 @@
     Résistance à la traction : f<span class="indice">ctm</span> =
     {{ strengths.fctm | number : "1.0-2" }} MPa
   </p>
-  <p>
+  <p *ngIf="isELSStressLimited === true">
     Contrainte limite à l'ELS : σ<span class="indice">c</span> =
     {{ strengths.sigmac | number : "1.0-2" }} MPa
   </p>

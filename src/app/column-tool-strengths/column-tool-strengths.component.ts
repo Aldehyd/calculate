@@ -32,6 +32,7 @@ export class ColumnToolStrengthsComponent implements OnInit {
   gammas!: number;
   fyk!: number;
   k3!: number;
+  isELSStressLimited!: boolean;
 
   constructor(private columnService: columnService,
     private router: Router
@@ -50,7 +51,9 @@ export class ColumnToolStrengthsComponent implements OnInit {
     };
     this.calculateConcreteCompressionStrengths(this.columnService.properties.fck);
     this.calculateConcreteTractionStrengths(this.columnService.properties.fck);
-    this.calculateConcreteELSLimit(this.columnService.properties.fck);
+    this.checkIfELSStressLimited();
+    if(this.isELSStressLimited === true)
+      this.calculateConcreteELSLimit(this.columnService.properties.fck);
     if(this.columnService.properties.steel === 'S400') {
       this.strengths.fyk = 400;
     } else {
@@ -60,16 +63,19 @@ export class ColumnToolStrengthsComponent implements OnInit {
     this.calculateSteelELSLimit(this.strengths.fyk);
   }
 
+  checkIfELSStressLimited() {
+    this.isELSStressLimited = false;
+    if(this.columnService.properties.expoClass.includes('D') || this.columnService.properties.expoClass.includes('F') || this.columnService.properties.expoClass.includes('S'))
+      this.isELSStressLimited = true;
+  }
+
   calculateConcreteCompressionStrengths(fck: number): void {
-    this.alphacc = 1; // d'où vient cette valeur ?
-    this.gammac = 1.5; // d'où vient cette valeur ?
+    this.alphacc = 1; 
+    this.gammac = 1.5; 
     if(fck < 50) {
       this.lambda = 0.8;
       this.nu = 1;
-    } else {
-      //compléter
     };
-
     this.strengths.fcd = this.alphacc * fck / this.gammac;
     this.strengths.fcu = this.nu * fck / this.gammac;
   }
@@ -77,23 +83,21 @@ export class ColumnToolStrengthsComponent implements OnInit {
   calculateConcreteTractionStrengths(fck: number): void {
     if(fck <= 50) {
       this.strengths.fctm = 0.3*Math.pow(fck,2/3);
-    } else {
-      //compléter
     };
   }
 
   calculateConcreteELSLimit(fck: number): void {
-    this.k1 = 0.6; // d'où vient cette valeur ?
+    this.k1 = 0.6; 
     this.strengths.sigmac = this.k1 * fck;
   }
 
   calculateSteelStrengths(fyk: number): void {
-    this.gammas = 1.15; // d'où vient cette valeur ?
+    this.gammas = 1.15; 
     this.strengths.fyd = fyk / this.gammas;
   }
 
   calculateSteelELSLimit(fyk: number): void {
-    this.k3 = 0.8; // d'où vient cette valeur ?
+    this.k3 = 0.8; 
     this.strengths.sigmas = this.k3 * fyk;
   }
 
