@@ -22,6 +22,8 @@ export class ColumnToolPropertiesComponent implements OnInit {
   MColor!: string;
   showM!: false | 'g' | 'q';
   isFormValid!: boolean;
+  isPostCompliant!: boolean;
+  errorOnSubmit!: boolean;
 
   updateProperties$!: Observable<any>;
 
@@ -33,6 +35,8 @@ export class ColumnToolPropertiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.projectName = this.columnService.projectName;
+    this.isPostCompliant = false;
+    this.errorOnSubmit = false;
     this.columnForm = this.formBuilder.group({Ng: [null], Mg: [null], Nq: [null], Mq: [null], M01M02: [null], isM01M02Unknown: [false], expoClass: [null], fck: [null], steel: [null], length: [null], sectionLength: [null], sectionWidth: [null]});
     this.showN = false;
     this.showM = false;
@@ -70,22 +74,35 @@ export class ColumnToolPropertiesComponent implements OnInit {
     };
   }
 
+  checkPostCompliance(): void {
+    if(this.columnForm.value.length >= 3*this.columnForm.value.sectionLength/100 && this.columnForm.value.sectionLength <= 4*this.columnForm.value.sectionWidth) {
+      this.isPostCompliant = true;
+    } else {
+      this.isPostCompliant = false;
+    };
+  }
+
   submitForm(): void {
     if(this.isFormValid) {
-      this.rooter.navigateByUrl('/column-tool/strengths');
-      this.columnService.properties = {
-        Ng: this.columnForm.value.Ng,
-        Mg: this.columnForm.value.Mg,
-        Nq: this.columnForm.value.Nq,
-        Mq: this.columnForm.value.Mq,
-        M01M02: this.columnForm.value.M01M02,
-        isM01M02Unknown: this.columnForm.value.isM01M02Unknown,
-        expoClass: this.columnForm.value.expoClass,
-        fck: this.columnForm.value.fck,
-        steel: this.columnForm.value.steel,
-        length: this.columnForm.value.length,
-        sectionLength: this.columnForm.value.sectionLength,
-        sectionWidth: this.columnForm.value.sectionWidth
+      this.checkPostCompliance();
+      if(this.isPostCompliant === true) {
+        this.rooter.navigateByUrl('/column-tool/strengths');
+        this.columnService.properties = {
+          Ng: this.columnForm.value.Ng,
+          Mg: this.columnForm.value.Mg,
+          Nq: this.columnForm.value.Nq,
+          Mq: this.columnForm.value.Mq,
+          M01M02: this.columnForm.value.M01M02,
+          isM01M02Unknown: this.columnForm.value.isM01M02Unknown,
+          expoClass: this.columnForm.value.expoClass,
+          fck: this.columnForm.value.fck,
+          steel: this.columnForm.value.steel,
+          length: this.columnForm.value.length,
+          sectionLength: this.columnForm.value.sectionLength,
+          sectionWidth: this.columnForm.value.sectionWidth
+        };
+      } else {
+        this.errorOnSubmit = true;
       };
     };
   }

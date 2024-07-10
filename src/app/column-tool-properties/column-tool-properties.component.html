@@ -212,6 +212,10 @@
         </fieldset>
       </div>
     </div>
+    <p class="warning-message" *ngIf="errorOnSubmit === true">
+      Erreur : les dimensions du poteau ne respectent pas les prescriptions de
+      l'EN1992-1-1 5.3.1 (7) !
+    </p>
     <div class="bottom-links-container">
       <a routerLink="./.." class="basic-button">Précédent</a>
       <button
