@@ -51,6 +51,13 @@
     {{ lambdaY < lambdaLim ? "<" : ">" }} λ<span class="indice">lim</span>
   </p>
   <p>=> Calcul en {{ yCalculationType }}</p>
+  <p [ngClass]="{ 'warning-message': lambdaY > lambdaLim }">
+    {{
+      lambdaY < lambdaLim
+        ? "Les effets du second ordre peuvent être négligés."
+        : "Les effets du second ordre doivent être pris en compte !"
+    }}
+  </p>
   <h3>Plan de faible inertie</h3>
   <p>
     i<span class="indice">min</span> = h/racine(12) =
@@ -66,6 +73,13 @@
     {{ lambdaZ < lambdaLim ? "<" : ">" }} λ<span class="indice">lim</span>
   </p>
   <p>=> Calcul en {{ zCalculationType }}</p>
+  <p [ngClass]="{ 'warning-message': lambdaZ > lambdaLim }">
+    {{
+      lambdaZ < lambdaLim
+        ? "Les effets du second ordre peuvent être négligés."
+        : "Les effets du second ordre doivent être pris en compte !"
+    }}
+  </p>
   <div *ngIf="yCalculationType === 'flexion composée'">
     <h3>Sollicitations corrigées pour le calcul en flexion composée</h3>
     <p>
@@ -130,7 +144,12 @@
   </p>
   <div class="bottom-links-container">
     <a routerLink="./.." class="basic-button">Précédent</a>
-    <button type="submit" class="basic-button" (click)="onNextButtonClick()">
+    <button
+      [attr.aria-disabled]="buttonDisabled"
+      type="submit"
+      class="basic-button"
+      (click)="onNextButtonClick()"
+    >
       Calculer les armatures
     </button>
   </div>

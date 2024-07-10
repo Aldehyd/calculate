@@ -40,12 +40,15 @@ export class ColumnToolSollicitationsComponent implements OnInit {
   eSerA!: number;
   mSerA!: number;
 
+  buttonDisabled!: string;
+
   constructor(private columnService: columnService,
     private router:Router
   ) {}
 
   ngOnInit(): void {
     this.projectName = this.columnService.projectName;
+    this.buttonDisabled = "false";
     this.momentsSum = 1.35*this.columnService.properties.Mg + 1.5*this.columnService.properties.Mq;
     this.normalSum = 1.35*this.columnService.properties.Ng + 1.5*this.columnService.properties.Nq;
     this.e1 = this.momentsSum/this.normalSum;
@@ -81,45 +84,49 @@ export class ColumnToolSollicitationsComponent implements OnInit {
     if(this.lambdaY < this.lambdaLim) {
       this.yCalculationType = 'flexion composée';
     } else {
-      this.yCalculationType = 'compression simple';
+      this.yCalculationType = 'flexion composée';
+      this.buttonDisabled = "true";
     };
     if(this.lambdaZ > this.lambdaLim) {
       this.zCalculationType = 'flexion composée';
+      this.buttonDisabled = "true";
     } else {
       this.zCalculationType = 'compression simple';
     };
   }
 
   onNextButtonClick(): void {
-    this.columnService.sollicitations = {
-      momentsSum: this.momentsSum,
-      normalSum: this.normalSum,
-      e1: this.e1,
-      l0: this.l0,
-      A: this.A,
-      B: this.B,
-      C: this.C,
-      n: this.n,
-      iMinY: this.iMinY,
-      iMinZ: this.iMinZ,
-      lambdaY: this.lambdaY,
-      lambdaZ: this.lambdaZ,
-      lambdaLim: this.lambdaLim,
-      ei: this.ei,
-      yCalculationType: this.yCalculationType,
-      zCalculationType: this.zCalculationType,
-      mEdG0: this.mEdG0,
-      e0: this.e0,
-      d: this.d,
-      eA: this.eA,
-      mEdA: this.mEdA,
-      nSer: this.nSer,
-      mSerG0: this.mSerG0,
-      e0Ser: this.e0Ser,
-      eSerA: this.eSerA,
-      mSerA: this.mSerA
+    if(this.buttonDisabled === "false") {
+      this.columnService.sollicitations = {
+        momentsSum: this.momentsSum,
+        normalSum: this.normalSum,
+        e1: this.e1,
+        l0: this.l0,
+        A: this.A,
+        B: this.B,
+        C: this.C,
+        n: this.n,
+        iMinY: this.iMinY,
+        iMinZ: this.iMinZ,
+        lambdaY: this.lambdaY,
+        lambdaZ: this.lambdaZ,
+        lambdaLim: this.lambdaLim,
+        ei: this.ei,
+        yCalculationType: this.yCalculationType,
+        zCalculationType: this.zCalculationType,
+        mEdG0: this.mEdG0,
+        e0: this.e0,
+        d: this.d,
+        eA: this.eA,
+        mEdA: this.mEdA,
+        nSer: this.nSer,
+        mSerG0: this.mSerG0,
+        e0Ser: this.e0Ser,
+        eSerA: this.eSerA,
+        mSerA: this.mSerA
+      };
+      this.router.navigateByUrl('/column-tool/steels');
     };
-    this.router.navigateByUrl('/column-tool/steels');
   }
 
 }
