@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
 import { RouterModule } from '@angular/router';
+import { accountService } from '../services/account.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-column-tool-steel-choice',
@@ -39,8 +41,15 @@ export class ColumnToolSteelChoiceComponent implements OnInit {
     y: number
   }
 
+  projectSaved!: boolean;
+  errorOnProjectSave!: boolean;
+
+  saveProject$: Observable<any>;
+
   constructor(private columnService:columnService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public accountService: accountService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +99,8 @@ export class ColumnToolSteelChoiceComponent implements OnInit {
       }),
       tap(value => this.checkCracking(value))
     );
+    this.projectSaved = false;
+    this.errorOnProjectSave = false;
   }
 
   checkCracking(section: number): void {
@@ -162,5 +173,41 @@ export class ColumnToolSteelChoiceComponent implements OnInit {
       this.svgFrame.y = this.columnService.properties.sectionLength* this.svgFrame.scale;
     };
   }
+
+  saveProject(): void {
+    if(this.accountService.connected === true) {
+      this.saveProject$ = this.http.post('https://calculs-structure.fr/app/save_project',{
+        mail: this.accountService.userEmail,
+        project: {
+          name: this.columnService.projectName,
+          tool: 'Armatures pied de poteau en béton armé',
+          projectDetails: {
+            properties: this.columnService.properties,
+            strengths: this.columnService.strengths,
+            sollicitations: this.columnService.sollicitations,
+            requiredSteelsSections: this.columnService.requiredSteelsSections,
+            steelsChoice: {
+              compressedSteelsColumnsNumber: this.compressedSteelsForm.value.compressedSteelsColumnsNumber,
+              compressedSteelsDiameter: this.compressedSteelsForm.value.compressedSteelsDiameter,
+              tensionedSteelsRowsNumber: this.tensionedSteelsForm.value.tensionedSteelsRowsNumber,
+              tensionedSteelsColumnsNumber: this.tensionedSteelsForm.value.tensionedSteelsColumnsNumber,
+              tensionedSteelsDiameter: this.tensionedSteelsForm.value.tensionedSteelsDiameter
+            }
+          }
+        }
+      },{responseType: 'text'}).pipe(
+        tap(res => {
+          if(res === 'ok') {
+            this.projectSaved = true;
+          } else {
+            this.errorOnProjectSave = true;
+          };
+        })
+      );
+      this.saveProject$.subscribe();
+    }
+  }
+
+
 
 }
