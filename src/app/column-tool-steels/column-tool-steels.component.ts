@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { columnService } from '../services/column.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-column-tool-steels',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './column-tool-steels.component.html',
   styleUrl: './column-tool-steels.component.scss'
 })

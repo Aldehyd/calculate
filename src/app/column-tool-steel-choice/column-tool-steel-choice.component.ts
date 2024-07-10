@@ -3,11 +3,12 @@ import { columnService } from '../services/column.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-column-tool-steel-choice',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,RouterModule],
   templateUrl: './column-tool-steel-choice.component.html',
   styleUrl: './column-tool-steel-choice.component.scss'
 })

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { columnService } from '../services/column.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 interface strengthsInterface {
   fcd: number,
@@ -16,7 +16,7 @@ interface strengthsInterface {
 @Component({
   selector: 'app-column-tool-strengths',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './column-tool-strengths.component.html',
   styleUrl: './column-tool-strengths.component.scss'
 })
