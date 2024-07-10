@@ -5,25 +5,28 @@
 <div class="main-content">
   <h2>Béton</h2>
   <p>
-    f<span class="indice">cd</span> = {{ strengths.fcd | number : "1.0-2" }} MPa
+    Résistance de calcul : f<span class="indice">cd</span> =
+    {{ strengths.fcd | number : "1.0-2" }} MPa
   </p>
   <p>
-    f<span class="indice">cu</span> = {{ strengths.fcu | number : "1.0-2" }} MPa
+    Résistance de calcul : f<span class="indice">cu</span> =
+    {{ strengths.fcu | number : "1.0-2" }} MPa
   </p>
   <p>
-    f<span class="indice">ctm</span> =
+    Résistance à la traction : f<span class="indice">ctm</span> =
     {{ strengths.fctm | number : "1.0-2" }} MPa
   </p>
   <p>
-    σ<span class="indice">c</span> =
+    Contrainte limite à l'ELS : σ<span class="indice">c</span> =
     {{ strengths.sigmac | number : "1.0-2" }} MPa
   </p>
   <h2>Aciers</h2>
   <p>
-    f<span class="indice">yd</span> = {{ strengths.fyd | number : "1.0-2" }} MPa
+    Résistance de calcul : f<span class="indice">yd</span> =
+    {{ strengths.fyd | number : "1.0-2" }} MPa
   </p>
   <p>
-    σ<span class="indice">s</span> =
+    Contrainte limite à l'ELS : σ<span class="indice">s</span> =
     {{ strengths.sigmas | number : "1.0-2" }} MPa
   </p>
   <div class="bottom-links-container">
