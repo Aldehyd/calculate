@@ -148,3 +148,15 @@ fieldset {
     gap: 1rem;
     align-items: center;
 }
+
+.main-content.column-tool {
+    & h2 {
+        font-size: 1.8rem;
+        margin: 1rem 0;
+        color: #268D75;
+    }
+    & h3 {
+        font-size: 1.6rem;
+        margin: 1rem 0;
+    }
+}

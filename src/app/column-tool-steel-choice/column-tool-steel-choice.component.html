@@ -2,7 +2,7 @@
   <span class="project-name">{{ projectName | titlecase }} :</span> Armatures
   pied de poteau en béton armé - Choix du ferraillage
 </h1>
-<div class="main-content">
+<div class="main-content column-tool">
   <div class="up-container">
     <div class="svg-container">
       <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
@@ -103,8 +103,8 @@
             Section recquise :
             <span class="bold">{{
               requiredCompressedSteelsSection > 0
-                ? requiredCompressedSteelsSection
-                : (0 | number : "1.0-2")
+                ? (requiredCompressedSteelsSection | number : "1.0-2")
+                : (0 | number : "1.0-0")
             }}</span>
             cm²
           </p>
