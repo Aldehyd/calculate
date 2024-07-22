@@ -28,6 +28,7 @@ export class ToolsListComponent implements OnInit{
       {
         id: 0,
         title: "Section à parois minces",
+        material: "Métal",
         url: "section-tool",
         description: "Calcul des propriétés d'une section à parois minces avec ou sans raidisseur.",
         norm: "Norme: EN NF 1993 1-3"
@@ -35,13 +36,23 @@ export class ToolsListComponent implements OnInit{
       {
         id: 1,
         title: "Résistance et déformation des éléments bois",
+        material: "Bois",
         url: "wood-strength-deformation",
         description: "Détermination des coefficients de résistance et déformation des éléments bois en fonction de la classe de service.",
         norm: "Norme: EN NF 1995 1-1"
       },
       {
         id: 2,
+        title: "Fluage et coefficients d'équivalence",
+        material: "Béton armé",
+        url: "fluage-tool",
+        description: "Détermination du coefficient de fluage et des coefficients d'équivalence.",
+        norm: "Norme : EN NF 1992 1-1"
+      },
+      {
+        id: 3,
         title: "Armatures pied de poteau en béton armé",
+        material: "Béton armé",
         url: "column-tool",
         description: "Calcul des armatures longitudinales en pied de poteau en béton armé, encastré en tête dans une structure contreventée.",
         norm: "Norme: EN NF 1992 1-1"

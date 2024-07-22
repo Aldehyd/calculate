@@ -15,6 +15,7 @@ import { woodStrengthDeformationService } from '../services/wood-strength-deform
 export class ToolComponent implements OnInit {
 
   @Input() tool!: Tool;
+  materialColor!: string;
 
   constructor(
     private router: Router,
@@ -23,6 +24,23 @@ export class ToolComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setColor();
+  }
+
+  setColor(): void {
+    switch(this.tool.material) {
+      case 'Métal':
+        this.materialColor = '#1D5A89';
+        break;
+      case 'Bois':
+        this.materialColor = '#B4380A';
+        break;
+      case 'Béton armé':
+        this.materialColor = '#952975';
+        break;
+      default:
+        break;
+    };
   }
 
   onDetailsButtonClick(): void {

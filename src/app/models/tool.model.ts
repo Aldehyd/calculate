@@ -3,6 +3,7 @@ export class Tool {
     constructor(
         public id: number,
         public title: string, 
+        public material: string,
         public url: string,
         public description: string,
         public norm: string,
