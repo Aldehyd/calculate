@@ -14,14 +14,20 @@
   </button>
 </p>
 <div *ngIf="step === 2" class="calculation-container">
-  <p>A<span class="indice">c</span> = {{ Ac | number : "1.0-0" }} mm²</p>
-  <p>u<span class="indice">c</span> = {{ uc | number : "1.0-0" }} mm</p>
   <p>
-    h<span class="indice">0</span> = 2 x A<span class="indice">c</span> / u<span
+    A<span class="indice">c</span> = Aire de la section transversale :
+    {{ Ac | number : "1.0-0" }} mm²
+  </p>
+  <p>
+    u<span class="indice">c</span> = Périmètre de la partie exposée à la
+    dessiccation : {{ uc | number : "1.0-0" }} mm
+  </p>
+  <p>
+    Rayon moyen de l'élément : h<span class="indice">0</span> = 2 x A<span
       class="indice"
       >c</span
     >
-    = {{ h0 | number : "1.0-0" }} mm
+    / u<span class="indice">c</span> = {{ h0 | number : "1.0-0" }} mm
   </p>
 </div>
 <div class="main-content fluage-tool">
@@ -70,6 +76,7 @@
       *ngIf="step > 0"
       class="line line--cement"
       [ngStyle]="{
+        left: cementLineLeft + 'px',
         transform:
           'rotate(' +
           cementLineRotation +
@@ -101,7 +108,11 @@
         height: fluageLineLength + 'px'
       }"
     >
-      <span class="line_head">&#11206;</span>
+      <span
+        class="line_head"
+        [ngStyle]="{ bottom: 0, transform: 'translateX(-50%)' }"
+        >&#11206;</span
+      >
       <span class="line_result">{{ fluageCoeff | number : "1.0-3" }}</span>
     </div>
     <button

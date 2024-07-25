@@ -31,15 +31,14 @@ export class FluageToolPropertiesComponent implements OnInit {
     this.isFormValid = false;
     this.fluageForm = this.formBuilder.group({humidity: [null], concreteClass: [null], loadTime: [null], cementClass: [null], smallHeight: [null], bigHeight: [null], width: [null]});
     this.selectedBeamSides = [];
+    this.areFieldsCompleted = false;
     this.updateFluageForm$ = this.fluageForm.valueChanges.pipe(
       map(values => {
-        if(this.selectedBeamSides.length > 0) {
           this.areFieldsCompleted = true;
           for(let prop in values){
              if(values[prop] === null)
               this.areFieldsCompleted = false
           };
-        };
         if(this.areFieldsCompleted && this.selectedBeamSides.length > 0) {
           this.isFormValid = true;
         } else {
@@ -56,11 +55,13 @@ export class FluageToolPropertiesComponent implements OnInit {
     } else {
       this.selectedBeamSides.push(side);
     };
+    console.log(this.areFieldsCompleted,this.selectedBeamSides,this.isFormValid)
     if(this.areFieldsCompleted === true && this.selectedBeamSides.length > 0) {
       this.isFormValid = true;
     } else {
       this.isFormValid = false;
     };
+    console.log(this.isFormValid)
   }
 
   submitForm(): void {

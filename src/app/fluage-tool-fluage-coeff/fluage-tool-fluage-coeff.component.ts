@@ -27,6 +27,7 @@ export class FluageToolFluageCoeffComponent implements OnInit, AfterViewInit {
   h0Positions!: number[];
   isMouseDown!: boolean;
   containerLeftPosition!: number;
+  cementLineLeft!: number;
   cementLineRotation!: number;
   cementLineLength!: number;
   concreteIndicatorPositions!: any;
@@ -48,37 +49,57 @@ export class FluageToolFluageCoeffComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.projectName = this.fluageService.projectName;
     this.step = 0;
-    this.stepNames = ['Age de mise en charge','Classe de ciment','Rayon de ','Classe de béton','Coefficient de fluage'];
+    this.stepNames = ['Age de mise en charge','Classe de ciment','Rayon moyen','Classe de béton','Coefficient de fluage'];
     this.humidity = this.fluageService.properties.humidity;
     this.loadTime = this.fluageService.properties.loadTime;
     this.concreteClass = this.fluageService.properties.concreteClass;
     this.cementClass = this.fluageService.properties.cementClass;
-    this.loadTimePositions = [23,59,80,105,140,176,196,222,255];
+    if(this.humidity === 'inside') {
+      this.loadTimePositions = [23,59,80,105,140,176,196,222,255];
+      this.cementLineLeft = 265;
+      this.h0Positions = [295,328,363,397,432,467,502,537];
+      this.concreteIndicatorPositions = {
+        '20': [102,45],
+        '25': [115,45],
+        '30': [127,45],
+        '35': [139,45],
+        '40': [149,45],
+        '45': [158,45],
+        '50': [167,45],
+        '55': [171,5],
+        '60': [178,45],
+        '70': [184,5],
+        '80': [191,45],
+        '90': [196,5]
+      };
+    } else {
+      this.loadTimePositions = [28,63,83,109,142,177,196,224,257];
+      this.cementLineLeft = 269;
+      this.h0Positions = [290,320,350,381,412,442,474,505];
+      this.concreteIndicatorPositions = {
+        '20': [110,54],
+        '25': [121,54],
+        '30': [132,54],
+        '35': [144,54],
+        '40': [155,45],
+        '45': [160,9],
+        '50': [167,54],
+        '55': [172,9],
+        '60': [179,54],
+        '70': [183,9],
+        '80': [191,54],
+        '90': [195,8]
+    };
+  };
     this.loadTimeLinePosition = this.setLoadTimeLinePosition();
     this.isMouseDown = false;
     this.cementLineRotation = 0;
     this.h0LinePosition =0;
-    this.h0Positions = [295,328,363,397,432,467,502];
-    this.concreteIndicatorPositions = {
-      '20': [102,45],
-      '25': [115,45],
-      '30': [127,45],
-      '35': [139,45],
-      '40': [149,45],
-      '45': [158,45],
-      '50': [167,45],
-      '55': [171,5],
-      '60': [178,45],
-      '70': [184,5],
-      '80': [191,45],
-      '90': [196,5]
-    };
     this.concreteIndicatorPosition = [0,0];
     this.concreteLinePosition = this.concreteIndicatorPositions[this.concreteClass][0];
     this.fluageLinePosition = [265,0];
     this.fluageLineLength = 0;
     this.fluageCoeff = 0;
-    console.log(this.fluageService)
   }
 
   ngAfterViewInit(): void {

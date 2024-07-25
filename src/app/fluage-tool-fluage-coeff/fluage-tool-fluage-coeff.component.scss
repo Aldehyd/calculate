@@ -94,11 +94,10 @@
         width: 4px;
         background-color: red;
         & .line_head {
-            bottom: 0;
             top: inherit;
             font-size: 4rem;
             color: red;
-            transform: translate(-75%,-100%);
+            transform: translateX(2px);
         }
         & .line_result {
             display: block;
