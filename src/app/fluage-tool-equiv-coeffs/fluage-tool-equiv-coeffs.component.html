@@ -1,0 +1,42 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Coefficients
+  de fluage et d'équivalence - Coefficients d'équivalence
+</h1>
+<div class="main-content fluage-tool">
+  <h2>Module de déformation instantanée</h2>
+  <p>
+    f<span class="indice">cm</span> = f<span class="indice">ck</span> + 8 =
+    {{ fcm | number : "1.0-0" }}
+    MPa
+  </p>
+  <p>
+    E<span class="indice">cm</span>(t<span class="indice">0</span>) = E<span
+      class="indice"
+      >cm</span
+    >
+    = 22000 x (f<span class="indice">cm</span>/10)^(0.3) =
+    {{ Ecm | number : "1.0-0" }} MPa
+  </p>
+  <h2>Module d'élasticité effectif tangent du béton</h2>
+  <p>
+    E<span class="indice">c,eff</span> = E<span class="indice">cm</span>(t<span
+      class="indice"
+      >0</span
+    >)/(1 + phi(infini,t<span class="indice">(0)</span>)) =
+    {{ Eceff | number : "1.0-0" }} MPa
+  </p>
+  <h2>Coefficients d'équivalence</h2>
+  <p>
+    Pour le module d'élasticité effectif tangent du béton : alpha<span
+      class="indice"
+      >e</span
+    >
+    = E<span class="indice">s</span> / E<span class="indice">c,eff</span> =
+    {{ alphaEeff | number : "1.0-2" }}
+  </p>
+  <p>
+    Pour le module d'élasticité instantanée : alpha<span class="indice">e</span>
+    = E<span class="indice">s</span> / E<span class="indice">cm</span> =
+    {{ alphaEm | number : "1.0-2" }}
+  </p>
+</div>

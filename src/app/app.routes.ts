@@ -22,6 +22,7 @@ import { ColumnToolSteelChoiceComponent } from './column-tool-steel-choice/colum
 import { FluageToolComponent } from './fluage-tool/fluage-tool.component';
 import { FluageToolPropertiesComponent } from './fluage-tool-properties/fluage-tool-properties.component';
 import { FluageToolFluageCoeffComponent } from './fluage-tool-fluage-coeff/fluage-tool-fluage-coeff.component';
+import { FluageToolEquivCoeffsComponent } from './fluage-tool-equiv-coeffs/fluage-tool-equiv-coeffs.component';
 
 export const routes: Routes = [
     {path: '', component: ToolsListComponent},
@@ -47,5 +48,6 @@ export const routes: Routes = [
     {path: 'fluage-tool',component: FluageToolComponent},
     {path: 'fluage-tool/properties',component: FluageToolPropertiesComponent},
     {path: 'fluage-tool/fluage-coeff',component: FluageToolFluageCoeffComponent},
+    {path: 'fluage-tool/equiv-coeffs',component: FluageToolEquivCoeffsComponent},
     {path: '**', redirectTo: ''}
 ];

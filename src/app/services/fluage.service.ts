@@ -32,7 +32,7 @@ export class fluageService implements OnInit {
 
         this.coeffs = {
             fluageCoeff: 0
-        }
+        };
     }
 
     

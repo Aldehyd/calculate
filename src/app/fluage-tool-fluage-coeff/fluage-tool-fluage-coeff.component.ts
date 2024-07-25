@@ -78,6 +78,7 @@ export class FluageToolFluageCoeffComponent implements OnInit, AfterViewInit {
     this.fluageLinePosition = [265,0];
     this.fluageLineLength = 0;
     this.fluageCoeff = 0;
+    console.log(this.fluageService)
   }
 
   ngAfterViewInit(): void {
@@ -124,7 +125,7 @@ export class FluageToolFluageCoeffComponent implements OnInit, AfterViewInit {
   calculateH0(): void {
     this.uc = this.fluageService.properties.uc;
     this.Ac = this.fluageService.properties.Ac;
-    this.h0 = this.fluageService.properties.Ac/(2*this.fluageService.properties.uc);
+    this.h0 = 2*this.fluageService.properties.Ac/this.fluageService.properties.uc;
     this.h0LinePosition = this.setH0LinePosition();
   }
 
@@ -236,8 +237,10 @@ export class FluageToolFluageCoeffComponent implements OnInit, AfterViewInit {
 
   onNextButtonClick():void {
     if(this.fluageCoeff !==0) {
-      this.fluageService.coeffs.fluageCoeff = this.fluageCoeff;
-      // this.router.navigateByUrl('fluage-tool/coeffs-equivalence');
+      this.fluageService.coeffs = {
+        fluageCoeff: this.fluageCoeff
+      };
+      this.router.navigateByUrl('fluage-tool/equiv-coeffs');
     };
   }
 }
