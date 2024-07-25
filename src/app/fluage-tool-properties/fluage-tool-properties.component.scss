@@ -1,0 +1,96 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+p {
+    margin-bottom: 1rem;
+}
+input[type='number'] {
+    width: 4rem;
+}
+.columns-container {
+    display: flex;
+    gap: 4rem;
+}
+.svg-container {
+    position: relative;
+    width: fit-content;
+}
+.input-container {
+    position: absolute;
+    width: fit-content;
+    &--small-height {
+        top: 85px;
+        right: 10px;
+    }
+    &--big-height {
+        top: 160px;
+        right: 10px;
+    }
+    &--width {
+        top: 270px;
+        left: 130px;
+    }
+}
+.beam-text {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    font-weight: bold;
+    color: green;
+}
+.beam-side {
+    position: absolute;
+    display: block;
+    opacity: 0.3;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+    &.selected {
+        opacity: 1;
+    }
+    &--left {
+        height: 105px;
+        width: 8px;
+        top: 120px;
+        left: 107px;
+        background-color: green;
+    }
+    &--right {
+        height: 105px;
+        width: 8px;
+        top: 120px;
+        left: 188px;
+        background-color: green;
+    }
+    &--down {
+        height: 8px;
+        width: 89px;
+        top: 218px;
+        left: 107px;
+        background-color: green;
+    }
+}
+svg {
+    padding: 2rem;
+    height: 350px;
+    width: 380px;
+    background-color: white;
+    & path {
+        stroke: black;
+        stroke-width: 0.2rem;
+        fill: transparent;
+    }
+    & rect {
+        stroke: black;
+        stroke-width: 0.2rem;
+        fill: transparent;
+    }
+    & .cote {
+        stroke: #268D75;
+    }
+}

@@ -1,0 +1,151 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Coefficients
+  de fluage et d'équivalence - Coefficient de fluage
+</h1>
+<p class="step-title">
+  <span class="step-title_step">Etape {{ step }} : </span>{{ stepNames[step] }}
+  <button
+    *ngIf="step < 4"
+    type="button"
+    class="step-title_button"
+    (click)="increaseStep()"
+  >
+    {{ step < 3 ? "Etape suivante" : "Déterminer coeff" }}
+  </button>
+</p>
+<div *ngIf="step === 2" class="calculation-container">
+  <p>A<span class="indice">c</span> = {{ Ac | number : "1.0-0" }} mm²</p>
+  <p>u<span class="indice">c</span> = {{ uc | number : "1.0-0" }} mm</p>
+  <p>
+    h<span class="indice">0</span> = A<span class="indice">c</span> / 2.u<span
+      class="indice"
+      >c</span
+    >
+    = {{ h0 | number : "1.0-0" }} mm
+  </p>
+</div>
+<div class="main-content fluage-tool">
+  <div
+    #container
+    class="coeff-tool-container"
+    (mouseup)="setMouseDown(false)"
+    (mouseover)="setCementLineRotation($event)"
+    (mouseleave)="setMouseDown(false)"
+  >
+    <img
+      *ngIf="humidity === 'inside'"
+      src="../../assets/img/fluage-inside.jpg"
+    />
+    <img
+      *ngIf="humidity === 'outside'"
+      src="../../assets/img/fluage-outside.jpg"
+    />
+    <div
+      class="line line--load-time"
+      [ngStyle]="{ top: loadTimeLinePosition + 'px' }"
+    >
+      <span class="line_head">{{ loadTime }} j</span>
+    </div>
+    <div
+      *ngIf="step > 1"
+      class="line line--h0"
+      [ngStyle]="{ left: h0LinePosition + 'px' }"
+    >
+      <span class="line_head">{{ h0 | number : "1.0-0" }}</span>
+    </div>
+    <div
+      *ngIf="step > 2"
+      class="line line--concrete"
+      [ngStyle]="{ top: concreteLinePosition + 'px' }"
+    ></div>
+    <span
+      *ngIf="step > 2"
+      class="concrete-indicator"
+      [ngStyle]="{
+        top: concreteIndicatorPosition[0] + 'px',
+        right: concreteIndicatorPosition[1] + 'px'
+      }"
+    ></span>
+    <div
+      *ngIf="step > 0"
+      class="line line--cement"
+      [ngStyle]="{
+        transform:
+          'rotate(' +
+          cementLineRotation +
+          'deg) scaleY(' +
+          cementLineLength / 250 +
+          ')'
+      }"
+    >
+      <span
+        class="line_head"
+        (mousedown)="setMouseDown(true)"
+        [ngStyle]="{
+          transform:
+            'rotate(' +
+            -cementLineRotation +
+            'deg) translateX(-50%) scaleY(' +
+            250 / cementLineLength +
+            ')'
+        }"
+        >{{ cementClass }}</span
+      >
+    </div>
+    <div
+      *ngIf="step === 4"
+      class="line line--coeff"
+      [ngStyle]="{
+        left: fluageLinePosition[1] + 'px',
+        top: fluageLinePosition[0] + 'px',
+        height: fluageLineLength + 'px'
+      }"
+    >
+      <span class="line_head">&#11206;</span>
+      <span class="line_result">{{ fluageCoeff | number : "1.0-3" }}</span>
+    </div>
+    <button
+      *ngIf="step === 1"
+      type="button"
+      class="arrow-cement-button arrow-cement-button--left"
+      (click)="modifyCementLineRotation('left')"
+    >
+      &#11207;
+    </button>
+    <button
+      *ngIf="step === 1"
+      type="button"
+      class="arrow-cement-button arrow-cement-button--right"
+      (click)="modifyCementLineRotation('right')"
+    >
+      &#11208;
+    </button>
+    <button
+      *ngIf="step === 3"
+      type="button"
+      class="arrow-concrete-button arrow-concrete-button--up"
+      (click)="modifyConcreteLinePosition('up')"
+    >
+      &#11205;
+    </button>
+    <button
+      *ngIf="step === 3"
+      type="button"
+      class="arrow-concrete-button arrow-concrete-button--down"
+      (click)="modifyConcreteLinePosition('down')"
+    >
+      &#11206;
+    </button>
+  </div>
+  <div class="bottom-links-container">
+    <a routerLink="/fluage-tool/properties" class="basic-button">Précédent</a>
+    <button
+      type="submit"
+      class="basic-button"
+      (click)="onNextButtonClick()"
+      [attr.aria-disabled]="fluageCoeff === 0 ? 'true' : 'false'"
+    >
+      Coefficient de fluage
+    </button>
+  </div>
+</div>

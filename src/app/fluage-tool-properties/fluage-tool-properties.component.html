@@ -1,0 +1,113 @@
+<h1>
+  <span class="project-name">{{ projectName | titlecase }} :</span> Coefficients
+  de fluage et d'équivalence - Données d'entrée
+</h1>
+<div class="main-content fluage-tool">
+  <form [formGroup]="fluageForm">
+    <div class="columns-container">
+      <div>
+        <div class="svg-container">
+          <div class="input-container input-container--small-height">
+            <input type="number" formControlName="smallHeight" /><span>
+              mm</span
+            >
+          </div>
+          <div class="input-container input-container--big-height">
+            <input type="number" formControlName="bigHeight" /><span> mm</span>
+          </div>
+          <div class="input-container input-container--width">
+            <input type="number" formControlName="width" /><span> mm</span>
+          </div>
+          <span
+            class="beam-side beam-side--left"
+            (click)="handleBeamSide('left')"
+            [ngClass]="{ selected: selectedBeamSides.includes('left') }"
+          ></span>
+          <span
+            class="beam-side beam-side--down"
+            (click)="handleBeamSide('down')"
+            [ngClass]="{ selected: selectedBeamSides.includes('down') }"
+          ></span>
+          <span
+            class="beam-side beam-side--right"
+            (click)="handleBeamSide('right')"
+            [ngClass]="{ selected: selectedBeamSides.includes('right') }"
+          ></span>
+          <span class="beam-text"
+            >Sélectionnez les faces de la retombée exposées à la dissécation
+            :</span
+          >
+          <svg class="svg-container_svg" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 60 h200 l-10 40 h-60 v100 h-80 v-100 h-60 l10 -40" />
+            <path
+              class="cote"
+              d="M260 200 h20 h-10 v-100 h10 h-20 h10 v-40 h-10 h20"
+            />
+            <path class="cote" d="M90 225 v20 v-10 h80 v10 v-20" />
+          </svg>
+        </div>
+      </div>
+      <div>
+        <p>
+          <label>
+            Humidité relative :
+            <select name="" id="" formControlName="humidity">
+              <option value="inside">Environnement intérieur : 50%</option>
+              <option value="outside">Environnement extérieur: 80%</option>
+            </select>
+          </label>
+        </p>
+        <p>
+          <label>
+            Classe de résistance du béton :
+            <select name="" id="" formControlName="concreteClass">
+              <option value="20">C20/25</option>
+              <option value="25">C25/30</option>
+              <option value="30">C30/37</option>
+              <option value="35">C35/45</option>
+              <option value="40">C40/50</option>
+              <option value="45">C45/55</option>
+              <option value="50">C50/60</option>
+              <option value="55">C55/67</option>
+              <option value="60">C60/75</option>
+              <option value="70">C70/85</option>
+              <option value="80">C80/95</option>
+              <option value="90">C90/105</option>
+            </select>
+          </label>
+        </p>
+        <p>
+          <label>
+            Classe de ciment :
+            <select name="" id="" formControlName="cementClass">
+              <option value="S">S</option>
+              <option value="N">N</option>
+              <option value="R">R</option>
+            </select>
+          </label>
+        </p>
+        <p>
+          <label>
+            Age de mise en charge :
+            <input
+              type="number"
+              formControlName="loadTime"
+              class="thickness-field"
+            /><span> jours</span>
+          </label>
+        </p>
+      </div>
+    </div>
+    <div class="bottom-links-container">
+      <a routerLink="/fluage-tool" class="basic-button">Précédent</a>
+      <button
+        type="submit"
+        class="basic-button"
+        (click)="submitForm()"
+        [attr.aria-disabled]="isFormValid === true ? 'false' : 'true'"
+      >
+        Coefficient de fluage
+      </button>
+    </div>
+  </form>
+</div>
