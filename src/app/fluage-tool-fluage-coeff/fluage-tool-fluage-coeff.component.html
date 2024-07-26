@@ -15,12 +15,14 @@
 </p>
 <div *ngIf="step === 2" class="calculation-container">
   <p>
-    A<span class="indice">c</span> = Aire de la section transversale :
+    Aire de la section transversale : A<span class="indice">c</span> =
     {{ Ac | number : "1.0-0" }} mm²
   </p>
   <p>
-    u<span class="indice">c</span> = Périmètre de la partie exposée à la
-    dessiccation : {{ uc | number : "1.0-0" }} mm
+    Périmètre de la partie exposée à la dessiccation : u<span class="indice"
+      >c</span
+    >
+    = {{ uc | number : "1.0-0" }} mm
   </p>
   <p>
     Rayon moyen de l'élément : h<span class="indice">0</span> = 2 x A<span
@@ -110,7 +112,7 @@
     >
       <span
         class="line_head"
-        [ngStyle]="{ bottom: 0, transform: 'translateX(-50%)' }"
+        [ngStyle]="{ top: '100%', transform: 'translate(-75%,-120%)' }"
         >&#11206;</span
       >
       <span class="line_result">{{ fluageCoeff | number : "1.0-3" }}</span>
@@ -156,7 +158,7 @@
       (click)="onNextButtonClick()"
       [attr.aria-disabled]="fluageCoeff === 0 ? 'true' : 'false'"
     >
-      Coefficient de fluage
+      Coefficients d'équivalence
     </button>
   </div>
 </div>

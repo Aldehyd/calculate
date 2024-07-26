@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { fluageService } from '../services/fluage.service';
+import { accountService } from '../services/account.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-fluage-tool-equiv-coeffs',
@@ -21,7 +24,14 @@ export class FluageToolEquivCoeffsComponent implements OnInit {
   alphaEeff!: number;
   alphaEm!: number;
 
-  constructor(private router: Router, private fluageService: fluageService) {}
+  saveProject$!: Observable<any>;
+  projectSaved!: boolean;
+  errorOnProjectSave!: boolean;
+
+  constructor(
+    private fluageService: fluageService,
+    public accountService: accountService,
+    private http: HttpClient) {}
 
   ngOnInit(): void {
     this.projectName = this.fluageService.projectName;
@@ -32,6 +42,35 @@ export class FluageToolEquivCoeffsComponent implements OnInit {
     this.Eceff = this.Ecm/(1+this.fluageCoeff);
     this.alphaEeff = 200000/this.Eceff;
     this.alphaEm = 200000/this.Ecm;
+  }
+
+  saveProject(): void {
+    if(this.accountService.connected === true) {
+      this.saveProject$ = this.http.post('https://calculs-structure.fr/app/save_project',{
+        mail: this.accountService.userEmail,
+        project: {
+          name: this.fluageService.projectName,
+          tool: "Coefficients de fluage et d'équivalence",
+          projectDetails: {
+            properties: this.fluageService.properties,
+            coeffs: {
+              fluageCoeff: this.fluageCoeff,
+              alphaEeff: this.alphaEeff,
+              alphaEm: this.alphaEm
+            }
+          }
+        }
+      },{responseType: 'text'}).pipe(
+        tap(res => {
+          if(res === 'ok') {
+            this.projectSaved = true;
+          } else {
+            this.errorOnProjectSave = true;
+          };
+        })
+      );
+      this.saveProject$.subscribe();
+    }
   }
 
 }

@@ -55,13 +55,11 @@ export class FluageToolPropertiesComponent implements OnInit {
     } else {
       this.selectedBeamSides.push(side);
     };
-    console.log(this.areFieldsCompleted,this.selectedBeamSides,this.isFormValid)
     if(this.areFieldsCompleted === true && this.selectedBeamSides.length > 0) {
       this.isFormValid = true;
     } else {
       this.isFormValid = false;
     };
-    console.log(this.isFormValid)
   }
 
   submitForm(): void {
