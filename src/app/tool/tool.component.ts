@@ -4,6 +4,8 @@ import { Tool } from '../models/tool.model';
 import { Router, RouterModule } from '@angular/router';
 import { sectionToolService } from '../services/section-tool.service';
 import { woodStrengthDeformationService } from '../services/wood-strength-deformation-service';
+import { columnService } from '../services/column.service';
+import { fluageService } from '../services/fluage.service';
 
 @Component({
   selector: 'app-tool',
@@ -20,7 +22,9 @@ export class ToolComponent implements OnInit {
   constructor(
     private router: Router,
     private sectionToolService: sectionToolService,
-    private woodStrengthDeformationService: woodStrengthDeformationService
+    private woodStrengthDeformationService: woodStrengthDeformationService,
+    private columnService: columnService,
+    private fluageService: fluageService
   ) {}
 
   ngOnInit(): void {
@@ -71,8 +75,13 @@ export class ToolComponent implements OnInit {
         this.router.navigateByUrl(this.tool.url);
         break;
       case 2 : 
-        // this.woodStrengthDeformationService.modifyProject = false;
-        // this.woodStrengthDeformationService.projectName = null;
+        this.fluageService.modifyProject = false;
+        this.fluageService.projectName = null;
+        this.router.navigateByUrl(this.tool.url);
+        break;
+      case 3 : 
+        this.columnService.modifyProject = false;
+        this.columnService.projectName = null;
         this.router.navigateByUrl(this.tool.url);
         break;
       default:
